@@ -102,3 +102,39 @@ for i in range(1, 2):
     merged_df.loc[merged_df['runningIndex'] == i, 'Guest_y_coords'] = y_coords
     merged_df.loc[merged_df['runningIndex'] == i, 'Guest_z_coords'] = z_coords
     
+def calculateDistanceToCentroid(stepframe, centroidNumber):
+    x_distance = stepframe['Guest_x_coords'] - stepframe['x_coords_of centroid ' + str(centroidNumber)]
+    y_distance = stepframe['Guest_y_coords'] - stepframe['y_coords_of centroid ' + str(centroidNumber)]
+    z_distance = stepframe['Guest_z_coords'] - stepframe['z_coords_of centroid ' + str(centroidNumber)]
+    distance = ((x_distance**2 + y_distance**2 + z_distance**2)**0.5).astype(float)
+    return distance
+
+#Finally, in each step, calculate the distance between each centroid and the guest molecule
+for i in range(1, 2):
+    # Get the stepframe for the current step
+    stepframe = merged_df[merged_df['runningIndex'] == i]
+    for j in range (1, numOfCentroides+1):
+        merged_df.loc[merged_df['runningIndex']==i, 'distance_to_centroid ' + str(j)] = calculateDistanceToCentroid(stepframe, j)
+        #stepframe['x_coords_of centroid ' + str(j)] = calculateCentroidCoordinates(j-1, stepframe, 1)
+        #stepframe['y_coords_of centroid ' + str(j)] = calculateCentroidCoordinates(j-1, stepframe, 2)
+        #stepframe['z_coords_of centroid ' + str(j)] = calculateCentroidCoordinates(j-1, stepframe, 3)
+        #print(stepframe)
+        continue
+    
+# Plot the distances to the centroids over the course of the simulation
+# Loop over every centroid
+for j in range(1, numOfCentroides+1):
+    # Get the distances for the current centroid
+    distances = merged_df['distance_to_centroid ' + str(j)]
+    
+    # Plot the distances against the runningIndex
+    plt.plot(merged_df['runningIndex'], distances, label='Centroid ' + str(j))
+
+# Set the labels and title
+plt.xlabel('Step')
+plt.ylabel('Distance to Centroid')
+plt.title('Distances to Centroids')
+plt.legend()
+
+# Show the plot
+plt.show()
