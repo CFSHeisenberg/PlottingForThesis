@@ -49,6 +49,9 @@ merged_df = pd.concat(dfs, axis=0, ignore_index=True)
 #Add new index assigning each row to its respective step in the simulation. First 720 should be 1, next 720 rows should be 2, etc.
 merged_df['runningIndex'] = ((merged_df.index)//(numAtoms)).astype(int)+1
 
+#Print the dataframe to check if everything worked
+print(merged_df)
+
 #Find max value of runningIndex column, i.e. number of steps performed in total
 numSteps = merged_df['runningIndex'].max()
 
@@ -121,20 +124,4 @@ for i in range(1, 2):
         #print(stepframe)
         continue
     
-# Plot the distances to the centroids over the course of the simulation
-# Loop over every centroid
-for j in range(1, numOfCentroides+1):
-    # Get the distances for the current centroid
-    distances = merged_df['distance_to_centroid ' + str(j)]
     
-    # Plot the distances against the runningIndex
-    plt.plot(merged_df['runningIndex'], distances, label='Centroid ' + str(j))
-
-# Set the labels and title
-plt.xlabel('Step')
-plt.ylabel('Distance to Centroid')
-plt.title('Distances to Centroids')
-plt.legend()
-
-# Show the plot
-plt.show()
