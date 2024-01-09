@@ -9,7 +9,7 @@ from concurrent import futures
 import sys
 import PQAnalysis as pq
 from PQAnalysis.io.trajectoryReader import TrajectoryReader
-
+from tkinter import Tk, Label, Entry, Button, IntVar, Checkbutton
 
 warnings.filterwarnings("ignore")
 
@@ -71,9 +71,6 @@ centroid_indices_j = centroid_indices.values.flatten()
 merged_df_values = merged_df.values
 #print(merged_df_values.shape)
 
-# Number of steps to plot
-stepstoplot = 150
-
 # Get lattice values
 lattice_values = np.array(lattice.values[0][1:4])
 
@@ -85,7 +82,7 @@ def imaging(coords, previous_coords, i):
     return coords_changed
 
 # Function to calculate distances from the guest centroid to each host centroid for a given step
-def calculate_distance(i):
+def calculate_distance(i, selected_centroids):
     if i == 1:  
         
         #Get partial numpy array of current step. Takes only the rows of the current step
@@ -106,7 +103,6 @@ def calculate_distance(i):
         # Get coordinates of cartesian centroids for both host and guest via the mean of their coordinates
         center_guest_coords = np.mean(guest_coords, axis=0)
         center_host_coords = np.mean(np.split(centroid_coords, numOfCentroids), axis=1)
-
 
         # Calculate distance between each centroid to the guest centroid
         distance_to_center = np.linalg.norm((center_guest_coords - center_host_coords).astype(float), axis=1)
@@ -146,43 +142,78 @@ def calculate_distance(i):
         center_guest_coords = np.mean(guest_coords, axis=0)
         center_host_coords_imaged = np.mean(np.split(centroid_coords_imaged, numOfCentroids), axis=1)
         
-
         # Calculate distance between each centroid to the guest centroid
         distance_to_center = np.linalg.norm((center_guest_coords - center_host_coords_imaged).astype(float), axis=1)
 
-        # Return the calculated distances
-    return distance_to_center
+    # Return the calculated distances for selected centroids
+    return [distance_to_center[j-1] for j in selected_centroids]
 
-# Use ThreadPoolExecutor to parallelize the distance calculation
-with futures.ThreadPoolExecutor(1) as executor:
-    
-    # List to store the future objectst
-    futures_list = []
+# Function to handle the button click event
+def plot_distances():
+    # Get the total steps to plot from the entry field
+    total_steps = entry.get()
+    try:
+        # Convert the total steps to an integer
+        total_steps = int(total_steps)
+        
+        # Get the selected centroids to plot
+        selected_centroids = [var.get() for var in centroid_vars]
+        selected_centroids = [i+1 for i, val in enumerate(selected_centroids) if val == 1]
+        
+        # Use ThreadPoolExecutor to parallelize the distance calculation
+        with futures.ThreadPoolExecutor(1) as executor:
+            # List to store the future objects
+            futures_list = []
 
-    # Loop over every step of the simulation
-    for i in range(1, stepstoplot):
-        # Print the step number
-        print(i)
-        # Submit the distance calculation task to the executor
-        future = executor.submit(calculate_distance, i)
-        futures_list.append(future)
+            # Loop over the specified steps
+            for i in range(1, total_steps + 1):
+                # Submit the distance calculation task to the executor
+                future = executor.submit(calculate_distance, i, selected_centroids)
+                futures_list.append(future)
 
-    # Wait for all the tasks to complete and retrieve the results
-    results = [future.result() for future in futures_list]
+            # Wait for all the tasks to complete and retrieve the results
+            results = [future.result() for future in futures_list]
 
-print("DONE")
+        # Plot the distances for each selected centroid to the guest centroid
+        for j, centroid in enumerate(selected_centroids):
+            plt.plot(range(1, total_steps + 1), [result[j] for result in results], label=f'Centroid {centroid}')
 
-# Plot the distances for each centroid to the guest centroid
-for j in range(1, numOfCentroids + 1):
-    plt.plot(range(1, stepstoplot), [result[j-1] for result in results], label=f'Centroid {j}')
+        # End timer and print total calculation time
+        end_time = time.time()
+        total_time = end_time - start_time
+        print(f"Total calculation time: {total_time} seconds")
 
-# End timer and print total calculation time
-end_time = time.time()
-total_time = end_time - start_time
-print(f"Total calculation time: {total_time} seconds")
+        # Edit and show plot
+        plt.xlabel('Step Number')
+        plt.ylabel('Distance')
+        plt.legend()
+        plt.show()
+    except ValueError:
+        print("Invalid input. Please enter a valid integer for the total steps.")
 
-# Edit and show plot
-plt.xlabel('Step Number')
-plt.ylabel('Distance')
-plt.legend()
-plt.show()
+# Create a simple interface using Tkinter
+root = Tk()
+root.title("Plotting Interface")
+root.geometry("300x400")
+root.configure(bg='white')
+
+# Create a label and an entry field for entering the total steps to plot
+label = Label(root, text="Enter the total steps to plot:", bg='white')
+label.pack(pady=10)
+entry = Entry(root)
+entry.pack(pady=5)
+
+# Create a set of buttons for selecting centroids to plot
+centroid_vars = []
+for i in range(1, numOfCentroids + 1):
+    var = IntVar()
+    centroid_vars.append(var)
+    button = Checkbutton(root, text=f"Centroid {i}", variable=var, bg='white')
+    button.pack()
+
+# Create a button to run the plotting procedure
+button = Button(root, text="Plot", command=plot_distances, bg='red', fg='white', relief='flat')
+button.pack(pady=10)
+
+# Start the Tkinter event loop
+root.mainloop()
