@@ -71,181 +71,97 @@ centroid_indices_j = centroid_indices.values.flatten()
 merged_df_values = merged_df.values
 #print(merged_df_values.shape)
 
-stepstoplot = 126
+# Number of steps to plot
+stepstoplot = 150
 
-#print(lattice.values[0][1:4])
-
-#Image coordinates to mirror coordinates
-#ef nearest_image(distance):
- #   nearest_image_distance = distance - np.round(distance/lattice.values[0][1:4]) * lattice.values[0][1:4]
- #   return nearest_image_distance
-   
-   
+# Get lattice values
 lattice_values = np.array(lattice.values[0][1:4])
-print("lattice values shape" ,lattice_values.shape)
 
     
 def imaging(coords, previous_coords, i):
-    #print(coords.shape)
-    #print(next_coords.shape)
     difference = np.array(coords - previous_coords)
-    #Divide each row in difference by the lattice values, element wise
-    #print(difference.shape)
-    #lattice_values_reshaped = lattice_values.reshape(1, 3)
-    #division = np.divide(difference, lattice_values_reshaped)
-    #print("divison shape",division.shape)
-    #print()
-    #if any(j>10 or j<-10 for j in difference.flatten()):
-        #print("WARNING: Atoms have moved by more than 10 Angstroms in step", i, "! Correcting...")
-    division = np.divide(difference, lattice_values).astype(float)
-    #if any(j>0.5 or j<-0.5 for j in division.flatten()):
-        #print("WARNING: Division in step", i, "! Correcting...")
-    #print("Diviosion", division)
-    rounded_division = np.round(division)
-    #if any(j==1 or j==-1 for j in rounded_division.flatten()):
-        #print("WARNING: Movement in step", i, "! Correcting...")
-    movement = rounded_division * lattice_values
-    difference_new = difference - np.round(np.divide(difference, lattice_values).astype(float)) * lattice_values
-    diffdifference = difference_new - difference
-    
-    #print("difference new shape", difference_new.shape)
+    difference_new = difference - np.round(np.divide(difference, lattice_values).astype(float)) * lattice_values 
     coords_changed = previous_coords + difference_new
-    #if any(j>1 or j<-1 for j in diffdifference.flatten()):
-        #print("WARNING: Movement did not work", i, "! Movement:", movement, "Diff", difference, "Diff_new", difference_new, "new coords", coords_changed)
-        #print("totaldiff", coords_changed - coords)
-    #print(coords_changed - coords)
-    #print(coords.shape)
-    #print(difference_new, "in step", i)
-
     return coords_changed
 
-# Function to calculate distance for a given step
+# Function to calculate distances from the guest centroid to each host centroid for a given step
 def calculate_distance(i):
-    if i == 1:
-        # Get partial dataframe of current step
-        stepframe = merged_df[merged_df['runningIndex'] == i]
+    if i == 1:  
         
         #Get partial numpy array of current step. Takes only the rows of the current step
         stepframe_values = merged_df_values[(i-1)*numAtoms:i*numAtoms, :]
-        #Get partial numpy array of next step. Takes only the rows of the next step
-        #print(stepframe_values.shape)
-        #print(stepframe_values)
 
-        # Get another slice of the partial dataframe that only contains the atoms making up centroids
-        #stepframe_j = stepframe[stepframe['cleanedIndex'].isin(centroid_indices_j)]
-        
         # Get partial numpy array of shape (108,7) only containing those entries of stepframe_values whose fifth element, i.e. the cleanedIndex are in centroid_indices_j
         stepframe_j_values = stepframe_values[np.isin(stepframe_values[:, 5], centroid_indices_j)]
-        # Get partial numpy array of shape (108,7) only containing those entries of stepframe_values_next whose fifth element, i.e. the cleanedIndex are in centroid_indices_j
-        #print(stepframe_j_values.shape)
-        
-        #print(stepframe_j_values.shape)
 
         # Get coordinates of the atoms making up centroids in current step
         centroid_coords = stepframe_j_values[:, 1:4]
-        # Get coordinates of the atoms making up centroids in next step
-        #print(centroid_coords.shape)
-        #centroid_coords = stepframe_j.loc[stepframe_j['cleanedIndex'].isin(centroid_indices_j), 1:3].values
-        #centroid_coords = nearest_image(centroid_coords)
 
-        # Get coordinates of the relevant guest atoms in current step
+        # Get partial numpy array of shape (6, 7) only containing those entries of stepframe_values whose fifth element, i.e. the cleanedIndex are in guest_indices
         stepframe_g_values = stepframe_values[np.isin(stepframe_values[:, 5], guest_indices)]
-        guest_coords = stepframe_g_values[:, 1:4]
-        #print(guest_coords.shape)
-        #guest_coords = stepframe.loc[stepframe['cleanedIndex'].isin(guest_indices), 1:3].values
-        #guest_coords = nearest_image(guest_coords)
         
-        #Compare centroid coordinates in next step to centroid coordinates in current step
+        # Get coordinates of the relevant guest atoms in current step
+        guest_coords = stepframe_g_values[:, 1:4]
 
-        # Get coordinates of cartesian centroids for both host and guest
+        # Get coordinates of cartesian centroids for both host and guest via the mean of their coordinates
         center_guest_coords = np.mean(guest_coords, axis=0)
         center_host_coords = np.mean(np.split(centroid_coords, numOfCentroids), axis=1)
-        #print(center_guest_coords.shape)
-        #print(center_host_coords.shape)
+
 
         # Calculate distance between each centroid to the guest centroid
-        #print(center_guest_coords- center_host_coords)
-        #print((center_guest_coords - center_host_coords).dtype)
-        #print((center_guest_coords-center_host_coords).shape)
         distance_to_center = np.linalg.norm((center_guest_coords - center_host_coords).astype(float), axis=1)
-    
-        #distance_to_center = np.sqrt(np.sum((center_guest_coords - center_host_coords)**2, axis=1))
-    else:
-        # Get partial dataframe of current step
-        stepframe = merged_df[merged_df['runningIndex'] == i]
         
+    else:
+    
         #Get partial numpy array of current step. Takes only the rows of the current step
         stepframe_values = merged_df_values[(i-1)*numAtoms:i*numAtoms, :]
-        #Get partial numpy array of previous step. Takes only the rows of the next step
+        
+        #Get partial numpy array of previous step. Takes only the rows of the previous step
         stepframe_values_previous = merged_df_values[(i-2)*numAtoms:(i-1)*numAtoms, :]
-        #print(stepframe_values.shape)
-        #print(stepframe_values)
-
-        # Get another slice of the partial dataframe that only contains the atoms making up centroids
-        #stepframe_j = stepframe[stepframe['cleanedIndex'].isin(centroid_indices_j)]
         
-        # Get partial numpy array of shape (108,7) only containing those entries of stepframe_values whose fifth element, i.e. the cleanedIndex are in centroid_indices_j
+        # Get partial numpy array of shape (108,7) of the current step only containing those entries of stepframe_values whose fifth element, i.e. the cleanedIndex are in centroid_indices_j
         stepframe_j_values = stepframe_values[np.isin(stepframe_values[:, 5], centroid_indices_j)]
-        # Get partial numpy array of shape (108,7) only containing those entries of stepframe_values_next whose fifth element, i.e. the cleanedIndex are in centroid_indices_j
-        stepframe_j_values_previous = stepframe_values_previous[np.isin(stepframe_values_previous[:, 5], centroid_indices_j)]
-        #print(stepframe_j_values.shape)
         
-        #print(stepframe_j_values.shape)
+        # Get partial numpy array of shape (108,7) of the previous step only containing those entries of stepframe_values_next whose fifth element, i.e. the cleanedIndex are in centroid_indices_j
+        stepframe_j_values_previous = stepframe_values_previous[np.isin(stepframe_values_previous[:, 5], centroid_indices_j)]       
 
         # Get coordinates of the atoms making up centroids in current step
         centroid_coords = stepframe_j_values[:, 1:4]
-        # Get coordinates of the atoms making up centroids in next step
+        # Get coordinates of the atoms making up centroids in previous step
         centroid_coords_previous = stepframe_j_values_previous[:, 1:4]
-        #print(centroid_coords.shape)
-        #centroid_coords = stepframe_j.loc[stepframe_j['cleanedIndex'].isin(centroid_indices_j), 1:3].values
-        #centroid_coords = nearest_image(centroid_coords)
 
-        # Get coordinates of the relevant guest atoms in current step
+        # Get partial numpy array of shape (6, 7) only containing those entries of stepframe_values whose fifth element, i.e. the cleanedIndex are in guest_indices
         stepframe_g_values = stepframe_values[np.isin(stepframe_values[:, 5], guest_indices)]
-        guest_coords = stepframe_g_values[:, 1:4]
-        #print(guest_coords.shape)
-        #guest_coords = stepframe.loc[stepframe['cleanedIndex'].isin(guest_indices), 1:3].values
-        #guest_coords = nearest_image(guest_coords)
         
-        #Compare centroid coordinates in next step to centroid coordinates in current step
+        # Get coordinates of the relevant guest atoms in current step
+        guest_coords = stepframe_g_values[:, 1:4]
+        
+        #Compare centroid coordinates in next step to centroid coordinates in current step, image them if necessary
         centroid_coords_imaged = imaging(centroid_coords, centroid_coords_previous, i)
-        diff = centroid_coords_imaged - centroid_coords
-         #if any element of diff is not null, print diff
-        if any(j>10 or j<-10 for j in diff.flatten()):
-            print(i, diff)
-        #Overwrite the values in the dataframe accessed by stepframe_j_values with centroid_coords_imaged
-        #merged_df_values[(i-1)*numAtoms:i*numAtoms, 1:4][np.isin(stepframe_values[:,5], centroid_indices_j)] = centroid_coords_imaged
-     
-        #if (any(j>10 or j<-10 for j in centroid_coords_imaged.flatten())):
-            #print("WARNING: Atoms outside of box in step", i, "! Correcting...")
+        
+        #Overwrite the values in the dataframe accessed by stepframe_j_values with centroid_coords_imaged for the next step
+        merged_df_values[(i-1)*numAtoms:i*numAtoms, 1:4][np.isin(stepframe_values[:,5], centroid_indices_j)] = centroid_coords_imaged
 
-        # Get coordinates of cartesian centroids for both host and guest
+        # Get coordinates of cartesian centroids for both host and guest centroids via the mean of their coordinates
         center_guest_coords = np.mean(guest_coords, axis=0)
         center_host_coords_imaged = np.mean(np.split(centroid_coords_imaged, numOfCentroids), axis=1)
-        #print("did it work?" , centroid_coords_imaged - centroid_coords)
-        #center_host_coords_next = np.mean(np.split(centroid_coords_previous, numOfCentroids), axis=1)
-        #print(center_guest_coords.shape)
-        #print(center_host_coords.shape)
         
 
         # Calculate distance between each centroid to the guest centroid
-        #print(center_guest_coords- center_host_coords)
-        #print((center_guest_coords - center_host_coords).dtype)
-        #print((center_guest_coords-center_host_coords).shape)
         distance_to_center = np.linalg.norm((center_guest_coords - center_host_coords_imaged).astype(float), axis=1)
-        #distance_to_center_next = np.linalg.norm((center_guest_coords - center_host_coords_next).astype(float), axis=1)
 
         # Return the calculated distances
     return distance_to_center
 
 # Use ThreadPoolExecutor to parallelize the distance calculation
-with futures.ThreadPoolExecutor() as executor:
+with futures.ThreadPoolExecutor(1) as executor:
     
     # List to store the future objectst
     futures_list = []
 
     # Loop over every step of the simulation
     for i in range(1, stepstoplot):
+        # Print the step number
         print(i)
         # Submit the distance calculation task to the executor
         future = executor.submit(calculate_distance, i)
@@ -254,16 +170,9 @@ with futures.ThreadPoolExecutor() as executor:
     # Wait for all the tasks to complete and retrieve the results
     results = [future.result() for future in futures_list]
 
-    # Write calculated distances into new columns of the original dataframe
-    #for i, result in enumerate(results):
-        #print(i)
-        #merged_df.loc[merged_df['runningIndex'] == (i), [f'distance_to_centroid {j}' for j in range(1, numOfCentroids + 1)]] = result
-
-# Filter the dataframe to include only rows with non-null distance values
-#filtered_df = merged_df.dropna(subset=[f'distance_to_centroid {j}' for j in range(1, numOfCentroids + 1)])
-
 print("DONE")
 
+# Plot the distances for each centroid to the guest centroid
 for j in range(1, numOfCentroids + 1):
     plt.plot(range(1, stepstoplot), [result[j-1] for result in results], label=f'Centroid {j}')
 
