@@ -73,12 +73,12 @@ merged_df_values = merged_df.values
 
 stepstoplot = 126
 
-print(lattice.values[0][1:4])
+#print(lattice.values[0][1:4])
 
 #Image coordinates to mirror coordinates
-def nearest_image(distance):
-    nearest_image_distance = distance - np.round(distance/lattice.values[0][1:4]) * lattice.values[0][1:4]
-    return nearest_image_distance
+#ef nearest_image(distance):
+ #   nearest_image_distance = distance - np.round(distance/lattice.values[0][1:4]) * lattice.values[0][1:4]
+ #   return nearest_image_distance
    
    
 lattice_values = np.array(lattice.values[0][1:4])
@@ -107,10 +107,12 @@ def imaging(coords, previous_coords, i):
     movement = rounded_division * lattice_values
     difference_new = difference - np.round(np.divide(difference, lattice_values).astype(float)) * lattice_values
     diffdifference = difference_new - difference
-    #if any(j>1 or j<-1 for j in diffdifference.flatten()):
-        #print("WARNING: Movement did not work", i, "! Movement:", movement, "Diff", difference, "Diff_new", difference_new)
+    
     #print("difference new shape", difference_new.shape)
     coords_changed = previous_coords + difference_new
+    #if any(j>1 or j<-1 for j in diffdifference.flatten()):
+        #print("WARNING: Movement did not work", i, "! Movement:", movement, "Diff", difference, "Diff_new", difference_new, "new coords", coords_changed)
+        #print("totaldiff", coords_changed - coords)
     #print(coords_changed - coords)
     #print(coords.shape)
     #print(difference_new, "in step", i)
@@ -166,7 +168,6 @@ def calculate_distance(i):
         #print((center_guest_coords - center_host_coords).dtype)
         #print((center_guest_coords-center_host_coords).shape)
         distance_to_center = np.linalg.norm((center_guest_coords - center_host_coords).astype(float), axis=1)
-        distance_to_center_next = 0
     
         #distance_to_center = np.sqrt(np.sum((center_guest_coords - center_host_coords)**2, axis=1))
     else:
@@ -208,8 +209,15 @@ def calculate_distance(i):
         
         #Compare centroid coordinates in next step to centroid coordinates in current step
         centroid_coords_imaged = imaging(centroid_coords, centroid_coords_previous, i)
-        if (any(j>20 or j<-20 for j in centroid_coords_imaged.flatten())):
-            print("WARNING: Atoms outside of box in step", i, "! Correcting...")
+        diff = centroid_coords_imaged - centroid_coords
+         #if any element of diff is not null, print diff
+        if any(j>10 or j<-10 for j in diff.flatten()):
+            print(i, diff)
+        #Overwrite the values in the dataframe accessed by stepframe_j_values with centroid_coords_imaged
+        #merged_df_values[(i-1)*numAtoms:i*numAtoms, 1:4][np.isin(stepframe_values[:,5], centroid_indices_j)] = centroid_coords_imaged
+     
+        #if (any(j>10 or j<-10 for j in centroid_coords_imaged.flatten())):
+            #print("WARNING: Atoms outside of box in step", i, "! Correcting...")
 
         # Get coordinates of cartesian centroids for both host and guest
         center_guest_coords = np.mean(guest_coords, axis=0)
@@ -238,7 +246,7 @@ with futures.ThreadPoolExecutor() as executor:
 
     # Loop over every step of the simulation
     for i in range(1, stepstoplot):
-        #print(i)
+        print(i)
         # Submit the distance calculation task to the executor
         future = executor.submit(calculate_distance, i)
         futures_list.append(future)
