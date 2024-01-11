@@ -69,7 +69,6 @@ centroid_indices_j = centroid_indices.values.flatten()
 
 # Convert data to NumPy arrays outside the loop
 merged_df_values = merged_df.values
-#print(merged_df_values.shape)
 
 # Get lattice values
 lattice_values = np.array(lattice.values[0][1:4])
@@ -185,7 +184,7 @@ def plot_distances():
 
         # Edit and show plot
         plt.xlabel('Step Number')
-        plt.ylabel('Distance')
+        plt.ylabel('Distance to Guest Centroid [Å]')
         plt.legend()
         plt.show()
     except ValueError:
