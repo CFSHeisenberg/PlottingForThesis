@@ -1,4 +1,5 @@
 from concurrent import futures
+import os
 from tkinter import Entry
 from matplotlib import pyplot as plt
 import numpy as np
@@ -26,18 +27,18 @@ class DistancePlotter:
 
             # Get partial numpy array of shape (108,7) only containing those entries of stepframe_values whose fifth element, i.e. the cleanedIndex are in centroid_indices_j
             stepframe_j_values = stepframe_values[np.isin(stepframe_values[:, 5], self.centroid_indices_j)]
-            print(self.centroid_indices_j)
+            #print(self.centroid_indices_j)
 
             # Get coordinates of the atoms making up centroids in current step
             centroid_coords = stepframe_j_values[:, 1:4]
-            print(centroid_coords)
+            #print(centroid_coords)
 
             # Get partial numpy array of shape (6, 7) only containing those entries of stepframe_values whose fifth element, i.e. the cleanedIndex are in guest_indices
             stepframe_g_values = stepframe_values[np.isin(stepframe_values[:, 5], self.guest_indices)]
 
             # Get coordinates of the relevant guest atoms in current step
             guest_coords = stepframe_g_values[:, 1:4]
-            print(guest_coords)
+            #print(guest_coords)
 
             # Get coordinates of cartesian centroids for both host and guest via the mean of their coordinates
             center_guest_coords = np.mean(guest_coords, axis=0)
@@ -85,6 +86,30 @@ class DistancePlotter:
 
         # Return the calculated distances for selected centroids
         return [distance_to_center[j-1] for j in selected_centroids]
+    
+    def calcAndSaveAllDistancesForNSteps(self, stepsToCalculate, directory):
+        filename = 'distances_for_' + str(stepsToCalculate) + '_steps.npy'
+        # Get the total steps to plot from the entry field
+        try:
+        # Use ThreadPoolExecutor to parallelize the distance calculation
+            with futures.ThreadPoolExecutor(1) as executor:
+                # List to store the future objects
+                futures_list = []
+
+                # Loop over the specified steps
+                for i in range(1, stepsToCalculate + 1):
+                    # Submit the distance calculation task to the executor
+                    future = executor.submit(self.calculate_distance, i, np.arange(1, self.numOfCentroids + 1))
+                    futures_list.append(future)
+
+                # Wait for all the tasks to complete and retrieve the results
+                results = [future.result() for future in futures_list]
+                savepath = os.path.join(directory, filename)
+                np.save(savepath, results)
+                return savepath
+        except ValueError:
+            print("Invalid input. Please enter a valid integer for the total steps.")
+                
 
     def plot_distances(self, stepsToPlot, centroid_vars):
         # Get the total steps to plot from the entry field
@@ -122,3 +147,24 @@ class DistancePlotter:
             plt.show()
         except ValueError:
             print("Invalid input. Please enter a valid integer for the total steps.")
+            
+def plotFromSavedDistances(centroid_vars, file_path):
+        
+    #Open numpy array from file
+    results = np.load(file_path)
+        
+    #Get the steps to plot from the name of the file
+    stepsToPlot = int(file_path.split('_')[2])
+        
+    # Get the selected centroids to plot
+    selected_centroids = [var.get() for var in centroid_vars]
+    selected_centroids = [i+1 for i, val in enumerate(selected_centroids) if val == 1]
+            
+    # Plot the distances for each selected centroid to the guest centroid
+    for j, centroid in enumerate(selected_centroids):            plt.plot(range(1, stepsToPlot + 1), [result[j] for result in results], label=f'Centroid {centroid}')
+
+    # Edit and show plot
+    plt.xlabel('Step Number')
+    plt.ylabel('Distance to Guest Centroid [Å]')
+    plt.legend()
+    plt.show()
