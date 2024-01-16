@@ -4,6 +4,9 @@ import os.path
 from readerAndLoader import ReaderAndLoader
 from calculateAndPlot import DistancePlotter
 from calculateAndPlot import plotFromSavedDistances
+import tkinter as tk
+from tkinter import *
+import os
 
 DEFAULT_FILE_PREFIX = "MIL68Ga"
 DEFAULT_DIRECTORY = "/home/mfi/Desktop/mfi/MIL-68Ga-guest"
@@ -121,7 +124,7 @@ def plot_from_distances_file():
 # Function to calculate distances and save data
 def calculate_distances(save_directory):
     
-    steps = int(stepsToPlot_entry.get())
+    steps = int(stepsToCalc_entry.get())
     index_filename = index_entry.get()
     directory = directory_entry.get()
     file_path = os.path.join(directory_entry.get(), "sourcedata.npy")
@@ -135,6 +138,10 @@ def calculate_distances(save_directory):
 # Create the main window
 window = tk.Tk()
 window.title("Trajectory Analyzer for centroid distances")
+
+scroll_bar = Scrollbar(window)
+
+scroll_bar.pack(side=RIGHT, fill=Y)
 
 # Create a frame for the directory, prefix, and index filename widgets
 input_frame = tk.Frame(window, highlightbackground="red", highlightthickness=4)
@@ -259,22 +266,22 @@ plotfromdistance_button.pack()
 
 
 
+# Create a frame for the properties of simulation
+properties_frame = tk.Frame(window, highlightbackground="purple", highlightthickness=4)
+properties_frame.pack(pady=20)
 
-
-
-
-
-
-
+# Create a label for the frame
+properties_label = tk.Label(properties_frame, text="Properties of simulation", fg="purple")
+properties_label.pack()
 
 # Create the labels for numAtoms, number of centroids and lattice parameters
-num_atoms_label = tk.Label(window, text="Number of Atoms: ")
+num_atoms_label = tk.Label(properties_frame, text="Number of Atoms: ")
 num_atoms_label.pack()
 
-num_centroids_label = tk.Label(window, text="Number of Centroids: ")
+num_centroids_label = tk.Label(properties_frame, text="Number of Centroids: ")
 num_centroids_label.pack()
 
-lattice_params_label = tk.Label(window, text="Lattice Parameters: ")
+lattice_params_label = tk.Label(properties_frame, text="Lattice Parameters: ")
 lattice_params_label.pack()
 
 
