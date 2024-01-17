@@ -17,7 +17,9 @@ class DistancePlotter:
 #Imaging using the row of lattice values of the current step 
     def imaging(self, coords, previous_coords, i):
         difference = np.array(coords - previous_coords)
-        difference_new = difference - np.round(np.divide(difference, self.merged_lattice_values[i-1, 1:4]).astype(float)) * self.lattice_values 
+        print("diff" , difference)
+        print("lattice values", self.merged_lattice_values[i-1, 1:4])
+        difference_new = difference - np.round(np.divide(difference, self.merged_lattice_values[i-1, 1:4].astype(float)).astype(float)) * self.merged_lattice_values[i-1, 1:4].astype(float) 
         coords_changed = previous_coords + difference_new
         return coords_changed
 

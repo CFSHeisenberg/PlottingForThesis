@@ -18,13 +18,13 @@ numAtoms = lattice[0][0] - 1
 # Save indices of carbons of which to form centroids
 centroid_indices = pd.read_csv(os.path.join(directory, 'indicessorted.dat'), delimiter=" ", header=None)
 
-print(centroid_indices.dropna(axis=1))
+#print(centroid_indices.dropna(axis=1))
 
 # Get number of centroids from the number of rows in the dataframe
 numOfCentroids = centroid_indices.index.size
 
 for i, filename in enumerate(sorted(os.listdir(directory))):
-    print("filename before loop", filename)
+    #print("filename before loop", filename)
     if filename.endswith('.xyz') and filename.startswith("MOF5"):
         file_path = os.path.join(directory, filename)
         df = pd.read_csv(file_path, delimiter='\s+', header=None, skiprows=1, on_bad_lines='skip')
@@ -68,8 +68,8 @@ merged_df_values = merged_df.values
 # Convert data to NumPy arrays outside the loop
 merged_df_lattices_values = merged_df_lattices.values
 
-print(merged_df_lattices_values)
-print(merged_df_lattices_values[1, 1:4])
+#print(merged_df_lattices_values)
+print(merged_df_lattices_values[1,1:4])
 
 # Get lattice values
 lattice_values = np.array(lattice.values[0][1:4])

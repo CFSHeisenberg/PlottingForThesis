@@ -16,6 +16,8 @@ class DistancePlotter:
 
     def imaging(self, coords, previous_coords, i):
         difference = np.array(coords - previous_coords)
+        print("diff" , difference)
+        print("lattice values", self.lattice_values)
         difference_new = difference - np.round(np.divide(difference, self.lattice_values).astype(float)) * self.lattice_values 
         coords_changed = previous_coords + difference_new
         return coords_changed

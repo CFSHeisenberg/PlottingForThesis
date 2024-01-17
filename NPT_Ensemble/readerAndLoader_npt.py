@@ -88,12 +88,15 @@ class ReaderAndLoader:
 
         # Convert data to NumPy arrays outside the loop
         merged_df_values = merged_df.values
+        
+        # Convert lattice data to NumPy arrays outside the loop
+        merged_df_lattices_values = merged_df_lattices.values
 
         # Save the merged_df_values numpy array to a file
         saved_path = os.path.join(directory, 'sourcedata.npy')
         saved_path_lattices = os.path.join(directory, 'sourcedata_lattices.npy')
         np.save(saved_path, merged_df_values)
-        np.save(saved_path_lattices, merged_df_lattices)
+        np.save(saved_path_lattices, merged_df_lattices_values)
 
         return saved_path, saved_path_lattices
 
