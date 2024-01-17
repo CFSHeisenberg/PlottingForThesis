@@ -47,8 +47,6 @@ def check_saved_data_distances():
         index_filename = index_entry.get()
         
         data, numAtoms, centroid_indices_flat, guest_indices, numOfCentroids, lattice_values, centroid_indices = ReaderAndLoader.load_data(directory, index_filename, file_path)  # Call the function to load the saved data    
-
-       
             
         # Create tick boxes for each centroid
         global centroid_vars
@@ -81,7 +79,6 @@ def plot_distances():
     #data, numAtoms, centroid_indices_flat, guest_indices, numOfCentroids, lattice_values = ReaderAndLoader.load_data(directory_entry.get(), index_entry.get(), os.path.join(directory_entry.get(), "sourcedata.npy"))
     #distancePlotter = DistancePlotter(merged_df_values=data, numAtoms=numAtoms, centroid_indices_j=centroid_indices_flat, guest_indices=guest_indices, numOfCentroids=numOfCentroids, lattice_values=lattice_values)
     stepsToPlot = int(stepsToPlot_entry.get())
-    print("centroid vards=" ,centroid_vars)
     distancePlotter.plot_distances(stepsToPlot, centroid_vars)
     
     # Start the main event loop

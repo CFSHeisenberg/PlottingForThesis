@@ -25,9 +25,9 @@ class DistancePlotter:
             # Get partial numpy array of current step. Takes only the rows of the current step
             stepframe_values = self.merged_df_values[(i-1)*self.numAtoms:i*self.numAtoms, :]
 
+
             # Get partial numpy array of shape (108,7) only containing those entries of stepframe_values whose fifth element, i.e. the cleanedIndex are in centroid_indices_j
             stepframe_j_values = stepframe_values[np.isin(stepframe_values[:, 5], self.centroid_indices_j)]
-            #print(self.centroid_indices_j)
 
             # Get coordinates of the atoms making up centroids in current step
             centroid_coords = stepframe_j_values[:, 1:4]
@@ -42,6 +42,7 @@ class DistancePlotter:
 
             # Get coordinates of cartesian centroids for both host and guest via the mean of their coordinates
             center_guest_coords = np.mean(guest_coords, axis=0)
+            #print shape of centroid_coords
             center_host_coords = np.mean(np.split(centroid_coords, self.numOfCentroids), axis=1)
 
             # Calculate distance between each centroid to the guest centroid

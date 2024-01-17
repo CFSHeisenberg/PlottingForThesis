@@ -1,15 +1,15 @@
 import tkinter as tk
 from tkinter import filedialog
 import os.path
-from readerAndLoader import ReaderAndLoader
-from calculateAndPlot import DistancePlotter
-from calculateAndPlot import plotFromSavedDistances
+from readerAndLoader_npt import ReaderAndLoader
+from calculateAndPlot_npt import DistancePlotter
+from calculateAndPlot_npt import plotFromSavedDistances
 import tkinter as tk
 from tkinter import *
 import os
 
-DEFAULT_FILE_PREFIX = "MIL68Ga"
-DEFAULT_DIRECTORY = "/home/mfi/Desktop/mfi/MIL-68Ga-guest"
+DEFAULT_FILE_PREFIX = "MOF5"
+DEFAULT_DIRECTORY = "/home/mfi/Desktop/mfi/filesManuelOtt"
 DEFAULT_INDEX_FILENAME = "indicessorted.dat"  # Set default index filename
 
 ReaderAndLoader = ReaderAndLoader()
@@ -47,8 +47,6 @@ def check_saved_data_distances():
         index_filename = index_entry.get()
         
         data, numAtoms, centroid_indices_flat, guest_indices, numOfCentroids, lattice_values, centroid_indices = ReaderAndLoader.load_data(directory, index_filename, file_path)  # Call the function to load the saved data    
-
-       
             
         # Create tick boxes for each centroid
         global centroid_vars
@@ -65,14 +63,24 @@ def check_saved_data_distances():
 
 def check_saved_data():
     file_path = os.path.join(directory_entry.get(), "sourcedata.npy")
-    if os.path.isfile(file_path):
+    file_path_lattices = os.path.join(directory_entry.get(), "sourcedata_lattices.npy")
+    if os.path.isfile(file_path) and os.path.isfile(file_path_lattices):
         load_saved_data_button.config(state=tk.NORMAL)
-        saved_data_label.config(text="Saved data found in chosen directory!", fg="green")
+        saved_data_label.config(text="Source data and lattice-data found in chosen directory!", fg="green")
         plot_button.config(state=tk.DISABLED)  # Disable the plot button
 
+    elif os.path.isfile(file_path) and not os.path.isfile(file_path_lattices):
+        load_saved_data_button.config(state=tk.DISABLED)
+        saved_data_label.config(text="No lattice-data (sourcedata_lattices.npy) found in chosen directory. Try loading the data using the button above.", fg="black")
+        plot_button.config(state=tk.DISABLED)  # Disable the plot button
+        
+    elif not os.path.isfile(file_path) and os.path.isfile(file_path_lattices):
+        load_saved_data_button.config(state=tk.DISABLED)
+        saved_data_label.config(text="No source data (sourcedata.npy) found in chosen directory. Try loading the data using the button above.", fg="black")
+        plot_button.config(state=tk.DISABLED)  # Disable the plot button
     else:
         load_saved_data_button.config(state=tk.DISABLED)
-        saved_data_label.config(text="No saved data found in chosen directory.", fg="black")
+        saved_data_label.config(text="No source data (sourcedata.npy) and no lattice-data (sourcedata_lattices.npy) found in chosen directory. Try loading the data using the button above.", fg="black")
         plot_button.config(state=tk.DISABLED)  # Disable the plot button
 
 def plot_distances():
@@ -81,7 +89,6 @@ def plot_distances():
     #data, numAtoms, centroid_indices_flat, guest_indices, numOfCentroids, lattice_values = ReaderAndLoader.load_data(directory_entry.get(), index_entry.get(), os.path.join(directory_entry.get(), "sourcedata.npy"))
     #distancePlotter = DistancePlotter(merged_df_values=data, numAtoms=numAtoms, centroid_indices_j=centroid_indices_flat, guest_indices=guest_indices, numOfCentroids=numOfCentroids, lattice_values=lattice_values)
     stepsToPlot = int(stepsToPlot_entry.get())
-    print("centroid vards=" ,centroid_vars)
     distancePlotter.plot_distances(stepsToPlot, centroid_vars)
     
     # Start the main event loop
@@ -90,13 +97,13 @@ def load_saved_data():
     directory = directory_entry.get()
     index_filename = index_entry.get()
     file_path = os.path.join(directory_entry.get(), "sourcedata.npy")
+    file_path_lattices = os.path.join(directory_entry.get(), "sourcedata_lattices.npy")
     
-    data, numAtoms, centroid_indices_flat, guest_indices, numOfCentroids, lattice_values, centroid_indices = ReaderAndLoader.load_data(directory, index_filename, file_path)  # Call the function to load the saved data
-    distancePlotter = DistancePlotter(merged_df_values=data, numAtoms=numAtoms, centroid_indices_j=centroid_indices, guest_indices=guest_indices, numOfCentroids=numOfCentroids, lattice_values=lattice_values)
+    data, numAtoms, centroid_indices_flat, guest_indices, numOfCentroids, lattice_values, centroid_indices, lat_data = ReaderAndLoader.load_data(directory, index_filename, file_path, file_path_lattices)  # Call the function to load the saved data
+    distancePlotter = DistancePlotter(merged_df_values=data, numAtoms=numAtoms, centroid_indices_j=centroid_indices, guest_indices=guest_indices, numOfCentroids=numOfCentroids, merged_lattice_values = lat_data)
     
     num_atoms_label.config(text=f"Number of Atoms: {numAtoms}")
     num_centroids_label.config(text=f"Number of Centroids: {numOfCentroids}")
-    lattice_params_label.config(text=f"Lattice Parameters: {lattice_values}")
     plot_button.config(state=tk.NORMAL)  # Enable the plot button
 
     # Create tick boxes for each centroid
@@ -190,7 +197,7 @@ button_label = tk.Label(button_frame, text="Read and save trajectories or load e
 button_label.pack()
 
 # Create the load button
-load_button = tk.Button(button_frame, text="Read and save XYZ Files", command=read_and_save_data)
+load_button = tk.Button(button_frame, text="Read and save XYZ Files and lattices", command=read_and_save_data)
 load_button.pack()
 
 # Create the load saved data button
@@ -280,9 +287,6 @@ num_atoms_label.pack()
 
 num_centroids_label = tk.Label(properties_frame, text="Number of Centroids: ")
 num_centroids_label.pack()
-
-lattice_params_label = tk.Label(properties_frame, text="Lattice Parameters: ")
-lattice_params_label.pack()
 
 
 
