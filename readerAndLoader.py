@@ -74,6 +74,10 @@ class ReaderAndLoader:
         np.save(saved_path, merged_df_values)
 
         return saved_path
+    
+    def getNumCentroids (self, directory, index_filename):
+        self.numOfCentroids = pd.read_csv(os.path.join(directory, index_filename), delimiter=" ", header=None).index.size
+        return self.numOfCentroids
 
     def load_data(self, directory, index_filename, saved_path):
         # Load the data from the saved file

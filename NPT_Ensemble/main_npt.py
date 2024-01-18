@@ -46,8 +46,8 @@ def check_saved_data_distances():
         directory = directory_entry.get()
         index_filename = index_entry.get()
         
-        data, numAtoms, centroid_indices_flat, guest_indices, numOfCentroids, lattice_values, centroid_indices = ReaderAndLoader.load_data(directory, index_filename, file_path)  # Call the function to load the saved data    
-            
+        numOfCentroids = ReaderAndLoader.getNumCentroids(directory, index_filename)
+                    
         # Create tick boxes for each centroid
         global centroid_vars
         centroid_vars = []
@@ -71,12 +71,12 @@ def check_saved_data():
 
     elif os.path.isfile(file_path) and not os.path.isfile(file_path_lattices):
         load_saved_data_button.config(state=tk.DISABLED)
-        saved_data_label.config(text="No lattice-data (sourcedata_lattices.npy) found in chosen directory. Try loading the data using the button above.", fg="black")
+        saved_data_label.config(text="No lattice-data (sourcedata_lattices.npy) found in chosen directory. Try reading in the trajectories.", fg="black")
         plot_button.config(state=tk.DISABLED)  # Disable the plot button
         
     elif not os.path.isfile(file_path) and os.path.isfile(file_path_lattices):
         load_saved_data_button.config(state=tk.DISABLED)
-        saved_data_label.config(text="No source data (sourcedata.npy) found in chosen directory. Try loading the data using the button above.", fg="black")
+        saved_data_label.config(text="No source data (sourcedata.npy) found in chosen directory. Try reading in the trajectories.", fg="black")
         plot_button.config(state=tk.DISABLED)  # Disable the plot button
     else:
         load_saved_data_button.config(state=tk.DISABLED)
@@ -135,11 +135,13 @@ def calculate_distances(save_directory):
     index_filename = index_entry.get()
     directory = directory_entry.get()
     file_path = os.path.join(directory_entry.get(), "sourcedata.npy")
+    file_path_lattices = os.path.join(directory_entry.get(), "sourcedata_lattices.npy")
+
     
-    data, numAtoms, centroid_indices_flat, guest_indices, numOfCentroids, lattice_values, centroid_indices = ReaderAndLoader.load_data(directory, index_filename, file_path)  # Call the function to load the saved data
-    distancePlotter = DistancePlotter(merged_df_values=data, numAtoms=numAtoms, centroid_indices_j=centroid_indices, guest_indices=guest_indices, numOfCentroids=numOfCentroids, lattice_values=lattice_values)
+    data, numAtoms, centroid_indices_flat, guest_indices, numOfCentroids, lattice_values, centroid_indices, lat_data = ReaderAndLoader.load_data(directory, index_filename, file_path, file_path_lattices)  # Call the function to load the saved data
+    distancePlotter = DistancePlotter(merged_df_values=data, numAtoms=numAtoms, centroid_indices_j=centroid_indices, guest_indices=guest_indices, numOfCentroids=numOfCentroids, merged_lattice_values=lat_data)
     file_path = distancePlotter.calcAndSaveAllDistancesForNSteps(steps, save_directory)
-    saved_data_label.config(text=f"Distances saved to: {file_path}")
+    saved_distance_data_label.config(text=f"Distances saved to: {file_path}")
     
 
 # Create the main window
@@ -228,6 +230,7 @@ plot_button.pack()
 calc_label = tk.Label(calc_frame, text="Calculate n steps and save results to file for later plotting", fg="green")
 calc_label.pack()
 
+
 # Create the stepstocalc entry
 stepsToCalc_label = tk.Label(calc_frame, text="Steps to calc:")
 stepsToCalc_label.pack()
@@ -237,6 +240,11 @@ stepsToCalc_entry.pack()
 # Create the calculate distances for steps button
 calculate_distances_button = tk.Button(calc_frame, text="Calculate Distances for Steps", command=lambda: ask_directory())
 calculate_distances_button.pack()
+
+# Create the saved distance data label
+saved_distance_data_label = tk.Label(calc_frame, text="", fg="black")
+saved_distance_data_label.pack()
+
 
 # Create a label for the frame
 load_distances_label = tk.Label(load_distances_frame, text="Load precalculated distance file and plot chosen centroids", fg="orange")

@@ -46,7 +46,7 @@ def check_saved_data_distances():
         directory = directory_entry.get()
         index_filename = index_entry.get()
         
-        data, numAtoms, centroid_indices_flat, guest_indices, numOfCentroids, lattice_values, centroid_indices = ReaderAndLoader.load_data(directory, index_filename, file_path)  # Call the function to load the saved data    
+        numOfCentroids = ReaderAndLoader.getNumCentroids(directory, index_filename)
             
         # Create tick boxes for each centroid
         global centroid_vars

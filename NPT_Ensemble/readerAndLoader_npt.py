@@ -100,6 +100,11 @@ class ReaderAndLoader:
 
         return saved_path, saved_path_lattices
 
+
+    def getNumCentroids (self, directory, index_filename):
+        self.numOfCentroids = pd.read_csv(os.path.join(directory, index_filename), delimiter=" ", header=None).index.size
+        return self.numOfCentroids
+
     def load_data(self, directory, index_filename, saved_path, saved_path_lattices):
         # Load the data from the saved file
         data = np.load(saved_path, allow_pickle=True)
