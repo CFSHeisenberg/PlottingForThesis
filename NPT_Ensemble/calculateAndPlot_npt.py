@@ -91,7 +91,7 @@ class DistancePlotter:
         return [distance_to_center[j-1] for j in selected_centroids]
     
     def calcAndSaveAllDistancesForNSteps(self, stepsToCalculate, directory):
-        filename = 'distances_for_' + str(stepsToCalculate) + '_steps.npy'
+        filename = 'distances_for_' + str(stepsToCalculate) + '_steps_NPT.npy'
         # Get the total steps to plot from the entry field
     # Use ThreadPoolExecutor to parallelize the distance calculation
         with futures.ThreadPoolExecutor(1) as executor:
