@@ -146,13 +146,25 @@ def calculate_distances(save_directory):
 window = tk.Tk()
 window.title("Trajectory Analyzer for centroid distances")
 
-scroll_bar = Scrollbar(window)
-
-scroll_bar.pack(side=RIGHT, fill=Y)
-
 # Create a frame for the directory, prefix, and index filename widgets
 input_frame = tk.Frame(window, highlightbackground="red", highlightthickness=4)
-input_frame.pack(pady=20)
+input_frame.pack(side="left", padx=20)
+
+# Create a frame for the load and load saved data buttons
+button_frame = tk.Frame(window, highlightbackground="blue", highlightthickness=4)
+button_frame.pack(side="left", padx=20)
+
+# Create a new frame for the stepstocalc entry and calculate distances button
+calc_frame = tk.Frame(window, highlightbackground="green", highlightthickness=4)
+calc_frame.pack(side="left", padx=20)
+
+# Create a frame for the load precalculated distance file and plot chosen centroids section
+load_distances_frame = tk.Frame(window, highlightbackground="orange", highlightthickness=4)
+load_distances_frame.pack(side="left", padx=20)
+
+# Create a frame for the properties of simulation
+properties_frame = tk.Frame(window, highlightbackground="purple", highlightthickness=4)
+properties_frame.pack(side="left", padx=20)
 
 # Create a label for the frame
 label = tk.Label(input_frame, text="MANDATORY: File locations", fg="red")
@@ -186,12 +198,6 @@ index_entry.insert(tk.END, DEFAULT_INDEX_FILENAME)  # Set default index filename
 index_entry.pack()
 index_entry.config(highlightbackground="red", highlightthickness=1)  # Add red rectangle
 
-
-
-# Create a frame for the load and load saved data buttons
-button_frame = tk.Frame(window, highlightbackground="blue", highlightthickness=4)
-button_frame.pack(pady=20)
-
 # Create a label for the frame
 button_label = tk.Label(button_frame, text="Read and save trajectories or load existing data", fg="blue")
 button_label.pack()
@@ -208,11 +214,6 @@ load_saved_data_button.pack()
 saved_data_label = tk.Label(button_frame, text="", fg="black")
 saved_data_label.pack()
 
-# Create the saved data label
-saved_data_label = tk.Label(button_frame, text="", fg="black")
-saved_data_label.pack()
-
-
 # Create the stepstoplot entry
 stepsToPlot_label = tk.Label(button_frame, text="Steps to plot:")
 stepsToPlot_label.pack()
@@ -220,19 +221,12 @@ stepsToPlot_entry = tk.Entry(button_frame)
 stepsToPlot_entry.pack()
 
 # Create the plot button
-plot_button = tk.Button(button_frame, text="Plot from loaded data", state=tk.DISABLED, command = plot_distances)
+plot_button = tk.Button(button_frame, text="Plot from loaded data", state=tk.DISABLED, command=plot_distances)
 plot_button.pack()
-
-
-
-# Create a new frame for the stepstocalc entry and calculate distances button
-calc_frame = tk.Frame(window, highlightbackground="green", highlightthickness=4)
-calc_frame.pack(pady=20)
 
 # Create a label for the frame
 calc_label = tk.Label(calc_frame, text="Calculate n steps and save results to file for later plotting", fg="green")
 calc_label.pack()
-
 
 # Create the stepstocalc entry
 stepsToCalc_label = tk.Label(calc_frame, text="Steps to calc:")
@@ -243,11 +237,6 @@ stepsToCalc_entry.pack()
 # Create the calculate distances for steps button
 calculate_distances_button = tk.Button(calc_frame, text="Calculate Distances for Steps", command=lambda: ask_directory())
 calculate_distances_button.pack()
-
-
-# Create a frame for the load precalculated distance file and plot chosen centroids section
-load_distances_frame = tk.Frame(window, highlightbackground="orange", highlightthickness=4)
-load_distances_frame.pack(pady=20)
 
 # Create a label for the frame
 load_distances_label = tk.Label(load_distances_frame, text="Load precalculated distance file and plot chosen centroids", fg="orange")
@@ -271,12 +260,6 @@ saved_distance_data_label.pack()
 plotfromdistance_button = tk.Button(load_distances_frame, text="Plot from loaded distances", state=tk.DISABLED, command=plot_from_distances_file)
 plotfromdistance_button.pack()
 
-
-
-# Create a frame for the properties of simulation
-properties_frame = tk.Frame(window, highlightbackground="purple", highlightthickness=4)
-properties_frame.pack(pady=20)
-
 # Create a label for the frame
 properties_label = tk.Label(properties_frame, text="Properties of simulation", fg="purple")
 properties_label.pack()
@@ -287,8 +270,6 @@ num_atoms_label.pack()
 
 num_centroids_label = tk.Label(properties_frame, text="Number of Centroids: ")
 num_centroids_label.pack()
-
-
 
 # Check if the default directory already contains the "sourcedata" file
 check_saved_data()
