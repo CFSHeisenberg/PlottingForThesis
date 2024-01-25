@@ -11,7 +11,10 @@ class ReaderAndLoader:
         self.centroid_indices = None
         self.centroid_indices_flat = None
         self.lattice_values = None
-        self.guest_indices = [685, 686, 687, 688, 689, 690]
+        self.guest_indices_1 = None
+        self.guest_indices_2 = None
+        self.guest_indices_3 = None
+        self.latticefilename = 'MIL68Ga-2ndguest-12.xyz'
 
     def read_and_save_data(self, directory, file_prefix, index_filename):
         
@@ -21,8 +24,7 @@ class ReaderAndLoader:
         dfs = []
 
         # Save lattice parameters in separate dataframe
-        latticefilename = 'MIL68Ga-guest-02.xyz'
-        lattice = pd.read_csv(os.path.join(directory, latticefilename), delimiter='\s+', header=None, skiprows=range(2, 400000), nrows=1)
+        lattice = pd.read_csv(os.path.join(directory, self.latticefilename), delimiter='\s+', header=None, skiprows=range(2, 400000), nrows=1)
         
         # Read the number of atoms from the lattice parameters
         self.numAtoms = lattice[0][0] - 1
@@ -35,7 +37,6 @@ class ReaderAndLoader:
 
         # Loop through xyz files, create dataframes from them, clean them up, add indices and add them to the list of dataframes
         for i, filename in enumerate(sorted(os.listdir(directory))):
-            print("filename before loop" ,filename)
             if filename.endswith('.xyz') and filename.startswith(file_prefix):
                 file_path = os.path.join(directory, filename)
                 df = pd.read_csv(file_path, delimiter='\s+', header=None, skiprows=1)
@@ -78,14 +79,23 @@ class ReaderAndLoader:
     def getNumCentroids (self, directory, index_filename):
         self.numOfCentroids = pd.read_csv(os.path.join(directory, index_filename), delimiter=" ", header=None).index.size
         return self.numOfCentroids
+    
+    def getLatticeValues (self, directory):
+        lattice = pd.read_csv(os.path.join(directory, self.latticefilename), delimiter='\s+', header=None, skiprows=range(2, 400000), nrows=1)
+        self.lattice_values = np.array(lattice.values[0][1:4])
+        return self.lattice_values
+    
+    def getNumAtoms (self, directory):
+        lattice = pd.read_csv(os.path.join(directory, self.latticefilename), delimiter='\s+', header=None, skiprows=range(2, 400000), nrows=1)
+        self.numAtoms = lattice[0][0] - 1
+        return self.numAtoms
 
     def load_data(self, directory, index_filename, saved_path):
         # Load the data from the saved file
         data = np.load(saved_path, allow_pickle=True)
         
         # Save lattice parameters in separate dataframe
-        latticefilename = 'MIL68Ga-guest-02.xyz'
-        lattice = pd.read_csv(os.path.join(directory, latticefilename), delimiter='\s+', header=None, skiprows=range(2, 400000), nrows=1)
+        lattice = pd.read_csv(os.path.join(directory, self.latticefilename), delimiter='\s+', header=None, skiprows=range(2, 400000), nrows=1)
         # Get lattice values
         self.lattice_values = np.array(lattice.values[0][1:4])
         
@@ -100,6 +110,7 @@ class ReaderAndLoader:
         self.numAtoms = np.max(data[:, 5])
         
         self.numSteps = (np.max(data[:, 6]))
-        return data, self.numAtoms, self.centroid_indices_flat, self.guest_indices, self.numOfCentroids, self.lattice_values, self.centroid_indices
+        
+        return data, self.numAtoms, self.centroid_indices_flat, self.numOfCentroids, self.lattice_values, self.centroid_indices
     
     

@@ -6,11 +6,10 @@ import numpy as np
 
 
 class DistancePlotter:
-    def __init__(self, merged_df_values, numAtoms, centroid_indices_j, guest_indices, numOfCentroids, lattice_values):
+    def __init__(self, merged_df_values, numAtoms, centroid_indices_j, numOfCentroids, lattice_values):
         self.merged_df_values = merged_df_values
         self.numAtoms = numAtoms
         self.centroid_indices_j = centroid_indices_j
-        self.guest_indices = guest_indices
         self.numOfCentroids = numOfCentroids
         self.lattice_values = lattice_values
 
@@ -88,8 +87,10 @@ class DistancePlotter:
         # Return the calculated distances for selected centroids
         return [distance_to_center[j-1] for j in selected_centroids]
     
-    def calcAndSaveAllDistancesForNSteps(self, stepsToCalculate, directory):
-        filename = 'distances_for_' + str(stepsToCalculate) + '_steps_NVT.npy'
+    def calcAndSaveAllDistancesForNSteps(self, stepsToCalculate, directory, guest_indices_to_calc, guest_identifier):
+        filename = 'distances_for_guest_' + str(guest_identifier) +'_and_'+ str(stepsToCalculate) + '_steps_NVT.npy'
+        self.guest_indices = guest_indices_to_calc
+        print("indices in function", self.guest_indices)
         # Get the total steps to plot from the entry field
         try:
         # Use ThreadPoolExecutor to parallelize the distance calculation
@@ -112,9 +113,13 @@ class DistancePlotter:
             print("Invalid input. Please enter a valid integer for the total steps.")
                 
 
-    def plot_distances(self, stepsToPlot, centroid_vars):
+    def plot_distances(self, stepsToPlot, centroid_vars, guest_vars):
         # Get the total steps to plot from the entry field
         total_steps = stepsToPlot
+        if guest_vars.get() == 0:
+            self.guest_indices = self.guest_indices_1
+        else:
+            self.guest_indices = self.guest_indices_2
         try:
             # Convert the total steps to an integer
             total_steps = int(total_steps)
@@ -155,7 +160,10 @@ def plotFromSavedDistances(centroid_vars, file_path):
     results = np.load(file_path)
         
     #Get the steps to plot from the name of the file
-    stepsToPlot = int(file_path.split('_')[2])
+    stepsToPlot = int(file_path.split('_')[5])
+    
+    # Get the selected guest
+    guestNumber = int(file_path.split('_')[3])
         
     # Get the selected centroids to plot
     selected_centroids = [var.get() for var in centroid_vars]
@@ -166,6 +174,6 @@ def plotFromSavedDistances(centroid_vars, file_path):
 
     # Edit and show plot
     plt.xlabel('Step Number')
-    plt.ylabel('Distance to Guest Centroid [Å]')
+    plt.ylabel('Distance to Guest ' + str(guestNumber)  + ' [Å]')
     plt.legend()
     plt.show()
