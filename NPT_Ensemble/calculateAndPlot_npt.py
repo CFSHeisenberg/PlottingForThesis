@@ -6,19 +6,16 @@ import numpy as np
 
 
 class DistancePlotter:
-    def __init__(self, merged_df_values, numAtoms, centroid_indices_j, guest_indices, numOfCentroids, merged_lattice_values):
+    def __init__(self, merged_df_values, numAtoms, centroid_indices_j, numOfCentroids, merged_lattice_values):
         self.merged_df_values = merged_df_values
         self.merged_lattice_values = merged_lattice_values
         self.numAtoms = numAtoms
         self.centroid_indices_j = centroid_indices_j
-        self.guest_indices = guest_indices
         self.numOfCentroids = numOfCentroids
 
 #Imaging using the row of lattice values of the current step 
     def imaging(self, coords, previous_coords, i):
         difference = np.array(coords - previous_coords)
-        print("diff" , difference)
-        print("lattice values", self.merged_lattice_values[i-1, 1:4])
         difference_new = difference - np.round(np.divide(difference, self.merged_lattice_values[i-1, 1:4].astype(float)).astype(float)) * self.merged_lattice_values[i-1, 1:4].astype(float) 
         coords_changed = previous_coords + difference_new
         return coords_changed
@@ -90,10 +87,10 @@ class DistancePlotter:
         # Return the calculated distances for selected centroids
         return [distance_to_center[j-1] for j in selected_centroids]
     
-    def calcAndSaveAllDistancesForNSteps(self, stepsToCalculate, directory):
-        filename = 'distances_for_' + str(stepsToCalculate) + '_steps_NPT.npy'
-        # Get the total steps to plot from the entry field
-    # Use ThreadPoolExecutor to parallelize the distance calculation
+    def calcAndSaveAllDistancesForNSteps(self, stepsToCalculate, directory, guest_indices_to_calc, guest_identifier):
+        filename = 'distances_for_guest_' + str(guest_identifier) +'_and_'+ str(stepsToCalculate) + '_steps_NPT.npy'
+        self.guest_indices = guest_indices_to_calc
+        # Use ThreadPoolExecutor to parallelize the distance calculation
         with futures.ThreadPoolExecutor(1) as executor:
             # List to store the future objects
             futures_list = []
@@ -153,7 +150,10 @@ def plotFromSavedDistances(centroid_vars, file_path):
     results = np.load(file_path)
         
     #Get the steps to plot from the name of the file
-    stepsToPlot = int(file_path.split('_')[2])
+    stepsToPlot = int(file_path.split('_')[5])
+    
+    # Get the selected guest
+    guestNumber = int(file_path.split('_')[3])
         
     # Get the selected centroids to plot
     selected_centroids = [var.get() for var in centroid_vars]
@@ -164,6 +164,6 @@ def plotFromSavedDistances(centroid_vars, file_path):
 
     # Edit and show plot
     plt.xlabel('Step Number')
-    plt.ylabel('Distance to Guest Centroid [Å]')
+    plt.ylabel('Distance to Guest ' + str(guestNumber)  + ' [Å]')
     plt.legend()
     plt.show()

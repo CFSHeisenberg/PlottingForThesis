@@ -90,8 +90,6 @@ class DistancePlotter:
     def calcAndSaveAllDistancesForNSteps(self, stepsToCalculate, directory, guest_indices_to_calc, guest_identifier):
         filename = 'distances_for_guest_' + str(guest_identifier) +'_and_'+ str(stepsToCalculate) + '_steps_NVT.npy'
         self.guest_indices = guest_indices_to_calc
-        print("indices in function", self.guest_indices)
-        # Get the total steps to plot from the entry field
         try:
         # Use ThreadPoolExecutor to parallelize the distance calculation
             with futures.ThreadPoolExecutor(1) as executor:

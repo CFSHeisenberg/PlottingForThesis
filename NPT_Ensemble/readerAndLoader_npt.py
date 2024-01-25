@@ -11,7 +11,6 @@ class ReaderAndLoader:
         self.centroid_indices = None
         self.centroid_indices_flat = None
         self.lattice_values = None
-        self.guest_indices = [425, 426, 427, 428, 429, 430]
 
     def read_and_save_data(self, directory, file_prefix, index_filename):
         
@@ -31,8 +30,6 @@ class ReaderAndLoader:
 
         # Get number of centroids from the number of rows in the dataframe
         self.numOfCentroids = self.centroid_indices.index.size
-        
-        print(self.centroid_indices)
         
         # Loop through xyz files, create dataframes from them, clean them up, add indices and add them to the list of dataframes
         for i, filename in enumerate(sorted(os.listdir(directory))):
@@ -125,6 +122,6 @@ class ReaderAndLoader:
         self.numAtoms = np.max(data[:, 5])
         
         self.numSteps = (np.max(data[:, 6]))
-        return data, self.numAtoms, self.centroid_indices_flat, self.guest_indices, self.numOfCentroids, self.lattice_values, self.centroid_indices, data_lat
+        return data, self.numAtoms, self.centroid_indices_flat, self.numOfCentroids, self.lattice_values, self.centroid_indices, data_lat
     
     

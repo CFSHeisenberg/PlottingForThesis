@@ -168,8 +168,6 @@ def calculate_distances(save_directory):
     guest_indices = [int(i) for i in guest_indices_list]
     guest_identifier = guest_identifier_entry.get()
     file_path = os.path.join(directory_entry.get(), "sourcedata.npy")
-    print(guest_indices)
-    print(guest_identifier)
     
     data, numAtoms, centroid_indices_flat, numOfCentroids, lattice_values, centroid_indices = ReaderAndLoader.load_data(directory, index_filename, file_path)  # Call the function to load the saved data
     distancePlotter = DistancePlotter(merged_df_values=data, numAtoms=numAtoms, centroid_indices_j=centroid_indices, numOfCentroids=numOfCentroids, lattice_values=lattice_values)
