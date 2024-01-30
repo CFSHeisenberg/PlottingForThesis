@@ -11,7 +11,7 @@ class ReaderAndLoader:
         self.centroid_indices = None
         self.centroid_indices_flat = None
         self.lattice_values = None
-        self.latticefilename = 'MIL68Ga-2ndguest-12.xyz'
+        self.latticefilename = 'MIL68Ga-2ndguest-08.xyz'
 
     def read_and_save_data(self, directory, file_prefix, index_filename):
         
@@ -34,8 +34,9 @@ class ReaderAndLoader:
 
         # Loop through xyz files, create dataframes from them, clean them up, add indices and add them to the list of dataframes
         for i, filename in enumerate(sorted(os.listdir(directory))):
-            if filename.endswith('.xyz') and filename.startswith(file_prefix):
+            if filename.endswith('08.xyz') and filename.startswith(file_prefix):
                 file_path = os.path.join(directory, filename)
+                print("file_path: ", file_path)
                 df = pd.read_csv(file_path, delimiter='\s+', header=None, skiprows=1)
                 df['run'] = filename
                 # drop all rows that are NaN
