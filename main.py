@@ -11,8 +11,8 @@ import os
 DEFAULT_FILE_PREFIX = "MIL68Ga"
 DEFAULT_DIRECTORY = "/home/mfi/Desktop/mfi/MIL-68Ga-guest/2ndguest/plottesting"
 DEFAULT_INDEX_FILENAME = "indicessorted.dat"  # Set default index filename
-DEFAULT_GUEST_INDICES = [685, 686, 687, 688, 689, 690]
-#DEFAULT_GUEST_INDICES = [723, 724, 722, 721, 725, 725]
+#DEFAULT_GUEST_INDICES = [685, 686, 687, 688, 689, 690]
+DEFAULT_GUEST_INDICES = [723, 724, 722, 721, 725, 726]
 
 ReaderAndLoader = ReaderAndLoader()
 distancePlotter = None
@@ -110,43 +110,6 @@ def check_saved_data():
     else:
         #load_saved_data_button.config(state=tk.DISABLED)
         saved_data_label.config(text="No source data found in chosen directory.", fg="black")
-
-#def plot_distances():
-    #global distancePlotter
-    #global centroid_vars
-    #stepsToPlot = int(stepsToPlot_entry.get())
-    #distancePlotter.plot_distances(stepsToPlot, centroid_vars, guest_var)
-    
-    # Start the main event loop
-#def load_saved_data():
-    #global distancePlotter
-    #directory = directory_entry.get()
-    #index_filename = index_entry.get()
-    #file_path = os.path.join(directory_entry.get(), "sourcedata.npy")
-
-    #data, numAtoms, centroid_indices_flat, guest_indices_1, guest_indices_2, numOfCentroids, lattice_values, centroid_indices = ReaderAndLoader.load_data(directory, index_filename, file_path)  # Call the function to load the saved data
-    #distancePlotter = DistancePlotter(merged_df_values=data, numAtoms=numAtoms, centroid_indices_j=centroid_indices, guest_indices_1=guest_indices_1, guest_indices_2 = guest_indices_2, numOfCentroids=numOfCentroids, lattice_values=lattice_values)
-
-    #num_atoms_label.config(text=f"Number of Atoms: {numAtoms}")
-    #num_centroids_label.config(text=f"Number of Centroids: {numOfCentroids}")
-    #lattice_params_label.config(text=f"Lattice Parameters: {lattice_values}")
-    #plot_button.config(state=tk.NORMAL)  # Enable the plot button
-
-    # Create tick boxes for each centroid
-    #global centroid_vars
-    #centroid_vars = []
-    #for i in range(numOfCentroids):
-        #var = tk.BooleanVar()
-        #centroid_vars.append(var)
-        #centroid_checkbox = tk.Checkbutton(window, text=f"Centroid {i+1}", variable=var)
-        #centroid_checkbox.pack()
-
-    # Create radio buttons for selecting the guest to plot
-    #global guest_var
-    #guest_var = tk.IntVar()
-    #for i in range(2):
-        #guest_radio = tk.Radiobutton(window, text=f"Guest {i+1}", variable=guest_var, value=i)
-        #guest_radio.pack()
         
 # Function to ask for directory
 def ask_directory():
@@ -272,10 +235,6 @@ load_button.pack()
 warning_label = tk.Label(button_frame, text="WARNING: This will overwrite any existing source data in the chosen directory!", fg="red")
 warning_label.pack()
 
-# Create the load saved data button
-#load_saved_data_button = tk.Button(button_frame, text="Load Saved Data", command=load_saved_data, state=tk.DISABLED)
-#load_saved_data_button.pack()
-
 # Create the saved data label
 saved_data_label = tk.Label(button_frame, text="", fg="black")
 saved_data_label.pack()
@@ -283,19 +242,6 @@ saved_data_label.pack()
 # Create the saved data label
 saved_data_label = tk.Label(button_frame, text="", fg="black")
 saved_data_label.pack()
-
-
-# Create the stepstoplot entry
-#stepsToPlot_label = tk.Label(button_frame, text="Steps to plot:")
-#stepsToPlot_label.pack()
-#stepsToPlot_entry = tk.Entry(button_frame)
-#stepsToPlot_entry.pack()
-
-# Create the plot button
-#plot_button = tk.Button(button_frame, text="Plot from loaded data", state=tk.DISABLED, command = plot_distances)
-#plot_button.pack()
-
-
 
 # Create a label for the frame
 calc_label = tk.Label(calc_frame, text="Calculate n steps and save results to file for later plotting", fg="green")
@@ -311,8 +257,6 @@ stepsToCalc_entry.pack()
 # Create the calculate distances for steps button
 calculate_distances_button = tk.Button(calc_frame, text="Calculate Distances for Steps", command=lambda: ask_directory())
 calculate_distances_button.pack()
-
-
 
 # Create a label for the frame
 load_distances_label = tk.Label(load_distances_frame, text="Load precalculated distance file and plot chosen centroids", fg="orange")
@@ -336,8 +280,6 @@ saved_distance_data_label.pack()
 plotfromdistance_button = tk.Button(load_distances_frame, text="Plot from loaded distances", state=tk.DISABLED, command=plot_from_distances_file)
 plotfromdistance_button.pack()
 
-
-
 # Create a label for the frame
 properties_label = tk.Label(properties_frame, text="Properties of simulation", fg="purple")
 properties_label.pack()
@@ -351,8 +293,6 @@ num_centroids_label.pack()
 
 lattice_params_label = tk.Label(properties_frame, text="Lattice Parameters: ")
 lattice_params_label.pack()
-
-
 
 # Check if the default directory already contains the "sourcedata" file
 check_saved_data()

@@ -3,6 +3,7 @@ import os
 from tkinter import Entry
 from matplotlib import pyplot as plt
 import numpy as np
+from tqdm import tqdm
 
 
 class DistancePlotter:
@@ -87,26 +88,45 @@ class DistancePlotter:
         # Return the calculated distances for selected centroids
         return [distance_to_center[j-1] for j in selected_centroids]
     
+
     def calcAndSaveAllDistancesForNSteps(self, stepsToCalculate, directory, guest_indices_to_calc, guest_identifier):
         filename = 'distances_for_guest_' + str(guest_identifier) +'_and_'+ str(stepsToCalculate) + '_steps_NVT.npy'
         self.guest_indices = guest_indices_to_calc
         try:
-        # Use ThreadPoolExecutor to parallelize the distance calculation
+           # Set the batch size for distance calculations
+            batch_size = 1000
+
+            # Use ThreadPoolExecutor to parallelize the distance calculation
             with futures.ThreadPoolExecutor(1) as executor:
                 # List to store the future objects
                 futures_list = []
 
-                # Loop over the specified steps
-                for i in range(1, stepsToCalculate + 1):
-                    # Submit the distance calculation task to the executor
-                    future = executor.submit(self.calculate_distance, i, np.arange(1, self.numOfCentroids + 1))
-                    futures_list.append(future)
+                # List to store all the results
+                all_results = []
 
-                # Wait for all the tasks to complete and retrieve the results
-                results = [future.result() for future in futures_list]
+                # Loop over the specified steps in batches
+                for start_step in tqdm(range(1, stepsToCalculate + 1, batch_size), desc="Calculating distances"):
+                    end_step = min(start_step + batch_size - 1, stepsToCalculate)
+
+                    # Submit the distance calculation tasks to the executor
+                    for i in range(start_step, end_step + 1):
+                        future = executor.submit(self.calculate_distance, i, np.arange(1, self.numOfCentroids + 1))
+                        futures_list.append(future)
+
+                    # Wait for all the tasks to complete and retrieve the results
+                    results = [future.result() for future in futures_list]
+
+                    # Add the results to the list of all results
+                    all_results.extend(results)
+
+                    # Clear the futures list to free up memory
+                    futures_list.clear()
+
+                # Save all the results to file
                 savepath = os.path.join(directory, filename)
-                np.save(savepath, results)
-                return savepath
+                np.save(savepath, all_results)
+
+            return savepath
         except ValueError:
             print("Invalid input. Please enter a valid integer for the total steps.")
                 
@@ -154,10 +174,10 @@ class DistancePlotter:
             
 def plotFromSavedDistances(centroid_vars, file_path):
         
-    #Open numpy array from file
+    # Open numpy array from file
     results = np.load(file_path)
         
-    #Get the steps to plot from the name of the file
+    # Get the steps to plot from the name of the file
     stepsToPlot = int(file_path.split('_')[5])
     
     # Get the selected guest
@@ -166,12 +186,24 @@ def plotFromSavedDistances(centroid_vars, file_path):
     # Get the selected centroids to plot
     selected_centroids = [var.get() for var in centroid_vars]
     selected_centroids = [i+1 for i, val in enumerate(selected_centroids) if val == 1]
-            
+
+    # Define a color palette for the centroids
+    colors = plt.get_cmap('Set1').colors
+
     # Plot the distances for each selected centroid to the guest centroid
-    for j, centroid in enumerate(selected_centroids):            plt.plot(range(1, stepsToPlot + 1), [result[j] for result in results], label=f'Centroid {centroid}')
+    for j, centroid in enumerate(selected_centroids):
+
+        # Plot the actual data with a different color for each centroid
+        plt.plot([i * 4 / 1_000_000 for i in range(1, stepsToPlot + 1)], [result[j] for result in results], color=colors[j % len(colors)], alpha=0.3, label=f'Centroid {centroid}')
+
+        # Calculate the running average
+        running_avg = np.convolve([result[j] for result in results], np.ones(500)/500, mode='valid')
+
+        # Plot the running average with the same color as the source data
+        plt.plot([i * 4 / 1_000_000 for i in range(250, stepsToPlot - 249)], running_avg, color=colors[j % len(colors)], label=f'Centroid {centroid} (Running Avg)')
 
     # Edit and show plot
-    plt.xlabel('Step Number')
+    plt.xlabel('Simulation Time [ns]')
     plt.ylabel('Distance to Guest ' + str(guestNumber)  + ' [Å]')
     plt.legend()
     plt.show()
