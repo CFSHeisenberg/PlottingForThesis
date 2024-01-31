@@ -34,7 +34,7 @@ class ReaderAndLoader:
 
         # Loop through xyz files, create dataframes from them, clean them up, add indices and add them to the list of dataframes
         for i, filename in enumerate(sorted(os.listdir(directory))):
-            if filename.endswith('08.xyz') and filename.startswith(file_prefix):
+            if filename.endswith('.xyz') and filename.startswith(file_prefix):
                 file_path = os.path.join(directory, filename)
                 print("file_path: ", file_path)
                 df = pd.read_csv(file_path, delimiter='\s+', header=None, skiprows=1)

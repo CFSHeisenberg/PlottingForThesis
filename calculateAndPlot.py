@@ -28,21 +28,39 @@ class DistancePlotter:
         # Add the imaged distance to the guest coordinates
         host_coords_imaged_temp = guest_coords_imaged + distance_to_image
         # Get cartesian distance between guest and imaged host centroids
-        distance_to_center = np.linalg.norm((host_coords_imaged_temp - guest_coords_imaged).astype(float), axis=1)
+        distance_to_center = np.linalg.norm((distance_to_image).astype(float), axis=1)
         return distance_to_center
         
 
-    def imageCentroid(self, centroid_coords):
+    def imageGuestCentroid(self, guest_centroid_coords):
         # Save the first centroid coordinates as a starting point
-        centroid_coords_origin = centroid_coords[0]
+        centroid_coords_origin = guest_centroid_coords[0]
         
         # Get the difference between the other centroid coordinates and the first centroid coordinates
-        centroid_coords_difference = centroid_coords - centroid_coords_origin
+        centroid_coords_difference = guest_centroid_coords - centroid_coords_origin
         
         # Image the centroid coordinates
         centroid_coords_imaged = centroid_coords_origin + centroid_coords_difference - np.round(np.divide(centroid_coords_difference, self.lattice_values).astype(float)) * self.lattice_values
         
         return centroid_coords_imaged
+    
+    def imageHostCentroids(self, host_centroid_coords):
+        splitted_host_centroid_coords = np.split(host_centroid_coords, self.numOfCentroids)
+        imaged_centroids = []
+        # Save the first centroid coordinates as a starting point
+        for centroid in splitted_host_centroid_coords:
+            centroid_coords_origin = centroid[0]
+
+            # Get the difference between the other centroid coordinates and the first centroid coordinates
+            centroid_coords_difference = centroid - centroid_coords_origin
+        
+            # Image the centroid coordinates
+            centroid_coords_imaged = centroid_coords_origin + centroid_coords_difference - np.round(np.divide(centroid_coords_difference, self.lattice_values).astype(float)) * self.lattice_values
+            
+            imaged_centroids.append(centroid_coords_imaged)
+        
+        return imaged_centroids
+        
 
     def calculate_distance(self, i, selected_centroids):
         # Get partial numpy array of current step. Takes only the rows of the current step
@@ -60,7 +78,7 @@ class DistancePlotter:
         # Get coordinates of the atoms making up centroids in current step
         centroid_coords = stepframe_j_values[:, 1:4]
         #print("stepframe_j_values", stepframe_j_values)
-        centroid_coords = self.imageCentroid(centroid_coords)
+        centroid_coords = self.imageHostCentroids(centroid_coords)
         # Get coordinates of the atoms making up centroids in previous step
         #centroid_coords_previous = stepframe_j_values_previous[:, 1:4]
 
@@ -69,7 +87,7 @@ class DistancePlotter:
 
         # Get coordinates of the relevant guest atoms in current step
         guest_coords = stepframe_g_values[:, 1:4]
-        guest_coords = self.imageCentroid(guest_coords)
+        guest_coords = self.imageGuestCentroid(guest_coords)
 
         # Compare centroid coordinates in next step to centroid coordinates in current step, image them if necessary
         #centroid_coords_imaged = self.imaging(centroid_coords, centroid_coords_previous, i)
@@ -79,7 +97,7 @@ class DistancePlotter:
 
         # Get coordinates of cartesian centroids for both host and guest centroids via the mean of their coordinates
         center_guest_coords = np.mean(guest_coords, axis=0)
-        center_host_coords = np.mean(np.split(centroid_coords, self.numOfCentroids), axis=1)
+        center_host_coords = np.mean(centroid_coords, axis=1)
 
         # Calculate distance between each centroid to the guest centroid
         #distance_to_center = np.linalg.norm((center_guest_coords - center_host_coords).astype(float), axis=1)
@@ -171,7 +189,7 @@ class DistancePlotter:
             
 def plotFromSavedDistances(centroid_vars, file_path):
         
-    window_size = 500    
+    window_size = 1000    
         
     # Open numpy array from file
     results = np.load(file_path)
