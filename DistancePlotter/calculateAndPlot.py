@@ -220,7 +220,7 @@ def plotFromSavedDistances(centroid_vars, file_path):
         running_avg = np.convolve([result[centroid_index] for result in results], np.ones(window_size)/window_size, mode='valid')
 
         # Plot the running average with the same color as the source data
-        plt.plot([i * 4 / 1_000_000 for i in range(window_size//2, stepsToPlot - window_size//2 + 1)], running_avg, color=colors[j % len(colors)], label=f'Centroid {centroid} (Running Avg)')
+        plt.plot([i * 4 / 1_000_000 for i in range(window_size//2, stepsToPlot - window_size//2 + 1)], running_avg, color=colors[j % len(colors)])
 
     # Edit and show plot
     plt.xlabel('Simulation Time [ns]')

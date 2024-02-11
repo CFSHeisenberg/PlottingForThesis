@@ -11,7 +11,7 @@ class ReaderAndLoader:
         self.centroid_indices = None
         self.centroid_indices_flat = None
         self.lattice_values = None
-        self.latticefilename = 'MIL68Ga-2ndguest-08.xyz'
+        self.latticefilename = 'MIL68Ga-guest-06.xyz'
 
     def read_and_save_data(self, directory, file_prefix, index_filename):
         

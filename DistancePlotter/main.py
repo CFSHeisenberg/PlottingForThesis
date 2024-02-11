@@ -11,8 +11,8 @@ import os
 DEFAULT_FILE_PREFIX = "MIL68Ga"
 DEFAULT_DIRECTORY = "/home/mfi/Desktop/mfi/MIL-68Ga-guest/2ndguest/plottesting"
 DEFAULT_INDEX_FILENAME = "indicessorted.dat"  # Set default index filename
-#DEFAULT_GUEST_INDICES = [685, 686, 687, 688, 689, 690]
-DEFAULT_GUEST_INDICES = [723, 724, 722, 721, 725, 726]
+DEFAULT_GUEST_INDICES = [685, 686, 687, 688, 689, 690]
+#DEFAULT_GUEST_INDICES = [723, 724, 722, 721, 725, 726]
 
 ReaderAndLoader = ReaderAndLoader()
 distancePlotter = None
