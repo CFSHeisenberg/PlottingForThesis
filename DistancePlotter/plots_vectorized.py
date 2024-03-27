@@ -20,7 +20,7 @@ directory = '/home/mfi/Desktop/mfi/MIL-68Ga-guest'
 dfs = []
 
 # Save lattice parameters in separate dataframe
-latticefilename = 'MIL68Ga-guest-02.xyz'
+latticefilename = 'MIL68Ga-2ndguest-06.xyz'
 lattice = pd.read_csv(os.path.join(directory, latticefilename), delimiter='\s+', header=None, skiprows=range(2, 400000), nrows=1)
 # Read the number of atoms from the lattice parameters
 numAtoms = lattice[0][0] - 1

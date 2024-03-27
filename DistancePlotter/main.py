@@ -9,8 +9,8 @@ from tkinter import *
 import os
 
 DEFAULT_FILE_PREFIX = "MIL68Ga"
-DEFAULT_DIRECTORY = "/home/mfi/Desktop/mfi/MIL-68Ga-guest/2ndguest/plottesting"
-DEFAULT_INDEX_FILENAME = "indicessorted.dat"  # Set default index filename
+DEFAULT_DIRECTORY = "/home/mfi/Desktop/mfi/MIL-68Ga-guest/2ndguest/2GuestData/heidi"
+DEFAULT_INDEX_FILENAME = "indicessortedModded2.dat"  # Set default index filename
 DEFAULT_GUEST_INDICES = [685, 686, 687, 688, 689, 690]
 #DEFAULT_GUEST_INDICES = [723, 724, 722, 721, 725, 726]
 
@@ -132,8 +132,8 @@ def calculate_distances(save_directory):
     guest_identifier = guest_identifier_entry.get()
     file_path = os.path.join(directory_entry.get(), "sourcedata.npy")
     
-    data, numAtoms, centroid_indices_flat, numOfCentroids, lattice_values, centroid_indices = ReaderAndLoader.load_data(directory, index_filename, file_path)  # Call the function to load the saved data
-    distancePlotter = DistancePlotter(merged_df_values=data, numAtoms=numAtoms, centroid_indices_j=centroid_indices, numOfCentroids=numOfCentroids, lattice_values=lattice_values)
+    data, numAtoms, centroid_indices_flat, numOfCentroids, lattice_values, centroid_indices, numRelevantAtoms = ReaderAndLoader.load_data(directory, index_filename, file_path)  # Call the function to load the saved data
+    distancePlotter = DistancePlotter(merged_df_values=data, numAtoms=numAtoms, centroid_indices_j=centroid_indices, numOfCentroids=numOfCentroids, lattice_values=lattice_values, numRelevantAtoms=numRelevantAtoms)
     file_path_distance_guest = distancePlotter.calcAndSaveAllDistancesForNSteps(steps, save_directory, guest_indices, guest_identifier)
     saved_data_label.config(text=f"Distances saved to: {file_path_distance_guest}")
 

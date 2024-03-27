@@ -1,54 +1,132 @@
-\documentclass{report}
+%Preamble
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{setspace}
+\setstretch{1.5}
+\usepackage{geometry}
+\geometry{a4paper, portrait, margin=30mm, bmargin=30mm, tmargin=30mm}
+\usepackage{amsmath}
 
-% Title page
-\title{Master Thesis}
-\author{Your Name}
-\date{\today}
+%Bibliography
+%\usepackage[backend = biber, style = alphabetic, sorting = ynt]{biblatex}
+%\addbibresource{thesis.bib}
+\bibliographystyle{unsrt}
+
+%Patch abstract command to make it normal size
+\makeatletter
+\renewenvironment{abstract}{%
+    \if@twocolumn
+      \section*{\abstractname}%
+    \else %% <- here I've removed \small
+      \begin{center}%
+        {\bfseries \Large\abstractname\vspace{\z@}}%  %% <- here I've added \Large
+      \end{center}%
+      \quotation
+    \fi}
+    {\if@twocolumn\else\endquotation\fi}
+\makeatother
+
 
 \begin{document}
+\begin{center}
+\thispagestyle{empty}
+\large{\textbf{Univserity of Innsbruck}}\\[-0.9ex]
+\large{Department of General, Inorganic and Theoretical Chemistry}\\
+\vspace{0.3cm}
+\begin{center}
+\includegraphics[width=7cm]{Images/Logo.jpg}\\
+\vspace{0.9cm}
+\textbf{\LARGE{Master Thesis}}
+\medskip\par
+\vspace{1.2cm}
+\Large{\textbf{Structure and Thermodynamics of \\ Guest@MOF Material}}\\[-0.5ex]
+\vspace*{1.5cm}
+\large{Investigating GUEST in MIL-68Ga via a Molecular Dynamics Simulation Approach}\\[-1.5ex]
+\vspace*{1.5cm}
+\bigskip\par
+\textbf{Michael Helmut Fill, BSc. }\\[-1ex]
+\medskip
+\textbf{Supervisor:} Assoc. Prof. Dr. Thomas Hofer\\
+Hier Datum einfügen
+\end{center}
+\end{center}
 
-\maketitle
+\newpage
 
-% Abstract
 \begin{abstract}
-This is the abstract of your thesis.
+  This thesis is dedicated to the brave Mujahideen fighters of Afghanistan.
 \end{abstract}
 
-% Table of contents
+\newpage
+
 \tableofcontents
 
-% Chapters
-\chapter{Introduction}
-\section{Background}
-\section{Problem Statement}
-\section{Objectives}
-\section{Scope}
-\section{Methodology}
+\newpage
 
-\chapter{Literature Review}
-\section{Topic 1}
-\section{Topic 2}
-\section{Topic 3}
+\section{Introduction}
 
-\chapter{Methodology}
-\section{Data Collection}
-\section{Data Analysis}
-\section{Experimental Setup}
+\section{Theory}
+\subsection{Quantum Chemistry}
+At the dawn of the 20th century, general consensus among many physicists versed in classical mechanics was that the
+fundamental laws of nature had been solved, and that the by then still unsolved problems of e.g.~black body radiation
+would be resolved in due time. However, when Max Planck published his ideas on the quantization of energy in 1900~\cite{Planck1901}, and especially
+after Albert Einstein realistically explained the photoelectric effect using Plancks' hypothesis in 1905~\cite{Einstein1905}, it became clear that the classical laws of physics were 
+inadequate at explaining the behavior of matter on the atomic scale.
+The field of quantum mechanics was born, and together with further groundbreaking contributions by, among others, Niels Bohr~\cite{Bohr1913}, Werner Heisenberg~\cite{Heisenberg1927} and Louis de Broglie~\cite{Broglie1924},
+paved the way for Erwin Schrödinger to lay the groundwork for quantum chemistry with his wave equation in 1926~\cite{Schrdinger1926}\cite{Schrdinger1926-2}.
+\subsubsection{The Schrödinger Equation}
+Starting from the initial assumption that all properties of a given system could be described by a wave function $\Psi$, Schrödinger derived his now well-known
+time-independant~(\ref{eq:schrodingerIndependant}) and, more general, time-dependant~(\ref{eq:schrodingerDependant}) equations.
 
-\chapter{Results and Discussion}
-\section{Result 1}
-\section{Result 2}
-\section{Discussion}
 
-\chapter{Conclusion}
-\section{Summary}
-\section{Contributions}
-\section{Future Work}
+\begin{equation}
+  \hat{H}\Psi = E\Psi
+  \label{eq:schrodingerIndependant}
+\end{equation}
+\begin{equation}
+  i\hbar\frac{\partial}{\partial t}\Psi = \hat{H}\Psi
+  \label{eq:schrodingerDependant}
+\end{equation}
 
-% References
-\begin{thebibliography}{9}
-\bibitem{ref1} Author1, Title1, Year1.
-\bibitem{ref2} Author2, Title2, Year2.
-\end{thebibliography}
+\noindent With $\Psi$ being the eigenfunction of the system, $\hbar$ the reduced Planck constant, $\hat{H}$ the Hamiltonian operator, $t$ the time and $E$ the energy of the system, or eigenvalue of the Hamiltonian operator.
+The Hamiltonian operator~(\ref{eq:hamiltonian}) is defined as the sum of the kinetic and potential energy operators, which, when applied to a state function $\Psi$, yields the total energy of the system as its eigenvalue to the eigenfunction $\Psi$.
+
+\begin{equation}
+  \hat{H} = -\frac{\hbar^2}{2m}\nabla^2 + E_{pot}
+  \label{eq:hamiltonian}
+\end{equation}
+
+\bigskip
+
+\noindent Here, $\nabla^2$ is the Laplace operator, $m$ the mass of the particle and $E_{pot}$ the potential energy of the system.
+For a single particle with mass $m$ moving in three-dimensional space, the time independant Schrödinger equation can then be written as~(\ref{eq:differential}).
+
+\begin{equation}
+  -\frac{\hbar^2}{2m}\nabla^2\Psi + E_{pot}\Psi = E\Psi
+  \label{eq:differential}
+\end{equation}
+
+\begin{equation*}
+  \nabla^2 = \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2} + \frac{\partial^2}{\partial z^2}
+\end{equation*}
+
+\bigskip
+
+\noindent This linear differential equation~(\ref{eq:differential}) forms the basis for determining the wave function of a given system. 
+A wavefunction $\Psi$ that satisfies the Schrödinger equation and results in its respective eigenvalue $E$ must therefore be an eigenfunction to the Hamiltonian operator.
+It is due to this that finding the correct wave function $\Psi$ for a system is referred to as an eigenvalue problem.\\
+Hereby, it is important to note that a wavefunction is not directly observable and therefore no meaning can be attributed to its values.
+However, the square modulus of the wavefunction $|\Psi|^2$, as interpreted by Max Born~\cite{Born1926}, is proportional to the observable probability density of an electron in the given system.
+
+\subsection{Molecular Dynamics Simulations}
+Alongside advancements in the field of digital electronics came the possibilities of simulating chemical 
+systems on ever larger scales. Where practical experiments are limited by equipment, time, resources and safety regulations, 
+simulations can be conducted cost effectively and with an ever increasing level of precision.
+Simulating a chemical system to receive an ensemble of configurations starts with choosing the most viable
+theoretical framework. Molecular Dynamics (MD), utilizing the DFTB method, is one of those frameworks particularly well suited for  
+the theoretical time-dependant analysis of periodic chemical systems. 
+
+\bibliography{thesis}
 
 \end{document}

@@ -4,15 +4,17 @@ from tkinter import Entry
 from matplotlib import pyplot as plt
 import numpy as np
 from tqdm import tqdm
+import matplotlib.ticker as ticker
 
 
 class DistancePlotter:
-    def __init__(self, merged_df_values, numAtoms, centroid_indices_j, numOfCentroids, lattice_values):
+    def __init__(self, merged_df_values, numAtoms, centroid_indices_j, numOfCentroids, lattice_values, numRelevantAtoms):
         self.merged_df_values = merged_df_values
         self.numAtoms = numAtoms
         self.centroid_indices_j = centroid_indices_j
         self.numOfCentroids = numOfCentroids
         self.lattice_values = lattice_values
+        self.numRelevantAtoms = numRelevantAtoms
 
     def imaging(self, coords, previous_coords, i):
         difference = np.array(coords - previous_coords)
@@ -64,29 +66,30 @@ class DistancePlotter:
 
     def calculate_distance(self, i, selected_centroids):
         # Get partial numpy array of current step. Takes only the rows of the current step
-        stepframe_values = self.merged_df_values[(i-1)*self.numAtoms:i*self.numAtoms, :]
+        stepframe_values = self.merged_df_values[(i-1)*self.numRelevantAtoms:i*self.numRelevantAtoms, :]
+        #print(i, stepframe_values)
 
         # Get partial numpy array of previous step. Takes only the rows of the previous step
         #stepframe_values_previous = self.merged_df_values[(i-2)*self.numAtoms:(i-1)*self.numAtoms, :]
 
         # Get partial numpy array of shape (108,7) of the current step only containing those entries of stepframe_values whose fifth element, i.e. the cleanedIndex are in centroid_indices_j
-        stepframe_j_values = np.array([stepframe_values[stepframe_values[:, 5] == index] for index in self.centroid_indices_j.values.ravel()])
+        stepframe_j_values = np.array([stepframe_values[stepframe_values[:, 3] == index] for index in self.centroid_indices_j.values.ravel()])
         #print("centroid_indies_j: ", self.centroid_indices_j)
         # Get partial numpy array of shape (108,7) of the previous step only containing those entries of stepframe_values_next whose fifth element, i.e. the cleanedIndex are in centroid_indices_j
         #stepframe_j_values_previous = stepframe_values_previous[np.isin(stepframe_values_previous[:, 5], self.centroid_indices_j)]       
         stepframe_j_values = stepframe_j_values.reshape(-1, stepframe_j_values.shape[-1])
         # Get coordinates of the atoms making up centroids in current step
-        centroid_coords = stepframe_j_values[:, 1:4]
+        centroid_coords = stepframe_j_values[:, 0:3]
         #print("stepframe_j_values", stepframe_j_values)
         centroid_coords = self.imageHostCentroids(centroid_coords)
         # Get coordinates of the atoms making up centroids in previous step
         #centroid_coords_previous = stepframe_j_values_previous[:, 1:4]
 
         # Get partial numpy array of shape (6, 7) only containing those entries of stepframe_values whose fifth element, i.e. the cleanedIndex are in guest_indices
-        stepframe_g_values = stepframe_values[np.isin(stepframe_values[:, 5], self.guest_indices)]
+        stepframe_g_values = stepframe_values[np.isin(stepframe_values[:, 3], self.guest_indices)]
 
         # Get coordinates of the relevant guest atoms in current step
-        guest_coords = stepframe_g_values[:, 1:4]
+        guest_coords = stepframe_g_values[:, 0:3]
         guest_coords = self.imageGuestCentroid(guest_coords)
 
         # Compare centroid coordinates in next step to centroid coordinates in current step, image them if necessary
@@ -214,7 +217,7 @@ def plotFromSavedDistances(centroid_vars, file_path):
         centroid_index = centroid - 1
 
         # Plot the actual data with a different color for each centroid
-        plt.plot([i * 4 / 1_000_000 for i in range(1, stepsToPlot + 1)], [result[centroid_index] for result in results], color=colors[j % len(colors)], alpha=0.3, label=f'Centroid {centroid}')
+        plt.plot([i * 4 / 1_000_000 for i in range(1, stepsToPlot + 1)], [result[centroid_index] for result in results], color=colors[j % len(colors)], alpha=0.3)
 
         # Calculate the running average
         running_avg = np.convolve([result[centroid_index] for result in results], np.ones(window_size)/window_size, mode='valid')
@@ -223,7 +226,55 @@ def plotFromSavedDistances(centroid_vars, file_path):
         plt.plot([i * 4 / 1_000_000 for i in range(window_size//2, stepsToPlot - window_size//2 + 1)], running_avg, color=colors[j % len(colors)])
 
     # Edit and show plot
-    plt.xlabel('Simulation Time [ns]')
-    plt.ylabel('Distance to Guest ' + str(guestNumber)  + ' [Å]')
+    
+    min_x = min([i * 4 / 1_000_000 for i in range(1, stepsToPlot + 1)])
+    max_x = max([i * 4 / 1_000_000 for i in range(1, stepsToPlot + 1)])
+    
+    #plt.axvline(x = 0.032, color = 'k', linestyle = '--')
+    #plt.axvline(x = 0.112, color = 'k', linestyle = '--')
+    #plt.axvline(x = 0.168, color = 'k', linestyle = '--')
+    #plt.axvline(x = 0.24, color = 'k', linestyle = '--')
+    #plt.axvline(x = 0.25, color = 'k', linestyle = '--')
+
+    #labels for vertical lines
+    #labels = ['S1', 'S2', 'S3', 'S4']
+    #labels = ['S1']
+
+    #label positions
+    #label_positions = [0.032, 0.112, 0.168, 0.24]
+    #label_positions = [0.25]
+
+    #Place labels above figure
+    #fig = plt.gcf()
+    #ax = plt.gca()
+
+    # Get the current y-axis limits
+    #y_lim = ax.get_ylim()
+
+    # Loop through each label and use ax.text()
+    #for x_pos, label in zip(label_positions, labels):
+        #ax.text(x_pos, y_lim[1], label, horizontalalignment='center', verticalalignment='bottom', fontsize=20)
+
+
+    
+    # Set y-axis ticks and labels
+    ticks = np.arange(4, 8.5, 1)
+    plt.yticks(ticks)
+    plt.gca().yaxis.set_major_locator(ticker.FixedLocator(ticks))
+    
+    # Format y-axis labels to have no decimal point
+    formatter = ticker.FuncFormatter(lambda x, pos: '{:,.0f}'.format(x))
+    plt.gca().yaxis.set_major_formatter(formatter)
+
+    plt.yticks(ticks = plt.yticks()[0], labels = plt.yticks()[0].astype(int))
+
+    
+    plt.xlim(min_x, max_x)
+    plt.xlabel('Simulation Time / ns', fontsize=30)
+    plt.yticks(fontsize=20)
+    plt.xticks(fontsize=20)
+    plt.ylabel('Distance / Å', fontsize=30)
+
+    #plt.axvline(x = 0.25, color = 'k', linestyle = '--')
     plt.legend()
     plt.show()
