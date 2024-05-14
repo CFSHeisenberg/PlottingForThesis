@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{Planck1901}
 Max Planck.
@@ -43,5 +43,76 @@ E.~Schr\"{o}dinger.
 Max Born.
 \newblock Zur quantenmechanik der stoßvorgänge.
 \newblock {\em Zeitschrift für Physik}, 37(12):863–867, December 1926.
+
+\bibitem{Toli2019}
+Ilia Toli and Shengli Zou.
+\newblock Schr\"{o}dinger equation with coulomb potential admits no exact
+  solutions.
+\newblock {\em Chemical Physics Letters}, 737:100021, 2019.
+
+\bibitem{Dirac1939}
+P.~A.~M. Dirac.
+\newblock A new notation for quantum mechanics.
+\newblock {\em Mathematical Proceedings of the Cambridge Philosophical
+  Society}, 35(3):416–418, July 1939.
+
+\bibitem{Griffiths2017}
+David~J. Griffiths.
+\newblock {\em Introduction to Quantum Mechanics -}.
+\newblock Cambridge University Press, Cambridge, 2017.
+
+\bibitem{Born1927}
+M.~Born and R.~Oppenheimer.
+\newblock Zur quantentheorie der molekeln.
+\newblock {\em Annalen der Physik}, 389(20):457–484, January 1927.
+
+\bibitem{Hartree1928}
+D.~R. Hartree.
+\newblock The wave mechanics of an atom with a non-coulomb central field. part
+  i. theory and methods.
+\newblock {\em Mathematical Proceedings of the Cambridge Philosophical
+  Society}, 24(1):89–110, January 1928.
+
+\bibitem{Pauli1925}
+W.~Pauli.
+\newblock \"{U}ber den zusammenhang des abschlusses der elektronengruppen im
+  atom mit der komplexstruktur der spektren.
+\newblock {\em Zeitschrift f\"{u}r Physik}, 31(1):765–783, February 1925.
+
+\bibitem{Slater1929}
+J.~C. Slater.
+\newblock The theory of complex spectra.
+\newblock {\em Physical Review}, 34(10):1293–1322, November 1929.
+
+\bibitem{Slater1954}
+J.~C. Slater and G.~F. Koster.
+\newblock Simplified lcao method for the periodic potential problem.
+\newblock {\em Physical Review}, 94(6):1498–1524, June 1954.
+
+\bibitem{sherrill2000introduction}
+C~David Sherrill.
+\newblock An introduction to hartree-fock molecular orbital theory.
+\newblock {\em School of Chemistry and Biochemistry Georgia Institute of
+  Technology}, 2000.
+
+\bibitem{Boys1950}
+S.~F. Boys.
+\newblock {\em Proceedings of the Royal Society of London. Series A.
+  Mathematical and Physical Sciences}, 200(1063):542–554, February 1950.
+
+\bibitem{Huzinaga1985}
+Sigeru Huzinaga.
+\newblock Basis sets for molecular calculations.
+\newblock {\em Computer Physics Reports}, 2(6):281–339, May 1985.
+
+\bibitem{Bloch1929}
+Felix Bloch.
+\newblock Ueber die quantenmechanik der elektronen in kristallgittern.
+\newblock {\em Zeitschrift fuer Physik}, 52(7–8):555–600, July 1929.
+
+\bibitem{Ashcroft1976-ra}
+Neil~W Ashcroft and N~Mermin.
+\newblock {\em Solid State Physics}.
+\newblock Brooks/Cole, Florence, KY, January 1976.
 
 \end{thebibliography}

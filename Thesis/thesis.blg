@@ -3,44 +3,46 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: thesis.aux
 The style file: unsrt.bst
 Database file #1: thesis.bib
-You've used 8 entries,
+Warning--empty title in Boys1950
+You've used 21 entries,
             1791 wiz_defined-function locations,
-            511 strings with 4607 characters,
-and the built_in function-call counts, 1870 in all, are:
-= -- 170
-> -- 32
+            609 strings with 6349 characters,
+and the built_in function-call counts, 4653 in all, are:
+= -- 419
+> -- 100
 < -- 0
-+ -- 16
-- -- 8
-* -- 164
-:= -- 291
-add.period$ -- 24
-call.type$ -- 8
-change.case$ -- 8
++ -- 46
+- -- 25
+* -- 383
+:= -- 725
+add.period$ -- 62
+call.type$ -- 21
+change.case$ -- 18
 chr.to.int$ -- 0
-cite$ -- 8
-duplicate$ -- 72
-empty$ -- 211
-format.name$ -- 8
-if$ -- 405
+cite$ -- 22
+duplicate$ -- 190
+empty$ -- 522
+format.name$ -- 25
+if$ -- 1018
 int.to.chr$ -- 0
-int.to.str$ -- 8
-missing$ -- 8
-newline$ -- 43
-num.names$ -- 8
-pop$ -- 8
+int.to.str$ -- 21
+missing$ -- 23
+newline$ -- 107
+num.names$ -- 21
+pop$ -- 34
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 24
+skip$ -- 64
 stack$ -- 0
-substring$ -- 222
-swap$ -- 8
+substring$ -- 492
+swap$ -- 21
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 0
-while$ -- 16
-width$ -- 9
-write$ -- 90
+warning$ -- 1
+while$ -- 39
+width$ -- 23
+write$ -- 230
+(There was 1 warning)

@@ -235,41 +235,50 @@ def plotFromSavedDistances(centroid_vars, file_path):
     #plt.axvline(x = 0.168, color = 'k', linestyle = '--')
     #plt.axvline(x = 0.24, color = 'k', linestyle = '--')
     #plt.axvline(x = 0.25, color = 'k', linestyle = '--')
+    plt.axvline(x = 0.10, color = 'k', linestyle = '--')
+    plt.axvline(x = 0.17, color = 'k', linestyle = '--')
+    plt.axvline(x = 0.46, color = 'k', linestyle = '--')
+
 
     #labels for vertical lines
     #labels = ['S1', 'S2', 'S3', 'S4']
     #labels = ['S1']
+    labels = ['S1', 'S2', 'S3']
 
     #label positions
     #label_positions = [0.032, 0.112, 0.168, 0.24]
     #label_positions = [0.25]
+    label_positions = [0.10, 0.17, 0.46]
 
     #Place labels above figure
-    #fig = plt.gcf()
-    #ax = plt.gca()
+    fig = plt.gcf()
+    ax = plt.gca()
 
     # Get the current y-axis limits
-    #y_lim = ax.get_ylim()
+    y_lim = ax.get_ylim()
 
-    # Loop through each label and use ax.text()
-    #for x_pos, label in zip(label_positions, labels):
-        #ax.text(x_pos, y_lim[1], label, horizontalalignment='center', verticalalignment='bottom', fontsize=20)
+    #Loop through each label and use ax.text()
+    for x_pos, label in zip(label_positions, labels):
+        ax.text(x_pos, y_lim[1], label, horizontalalignment='center', verticalalignment='bottom', fontsize=14)
 
 
     
     # Set y-axis ticks and labels
-    ticks = np.arange(4, 8.5, 1)
-    plt.yticks(ticks)
-    plt.gca().yaxis.set_major_locator(ticker.FixedLocator(ticks))
+        #ticks = np.arange(4, 8.5, 1)
+    #plt.yticks(ticks)
+    #plt.gca().yaxis.set_major_locator(ticker.FixedLocator(ticks))
     
+    # Get current y-ticks and remove duplicates
+    #yticks = np.unique(plt.yticks()[0])
+
+    #plt.yticks(ticks=yticks, labels=yticks.astype(int))
+
     # Format y-axis labels to have no decimal point
-    formatter = ticker.FuncFormatter(lambda x, pos: '{:,.0f}'.format(x))
-    plt.gca().yaxis.set_major_formatter(formatter)
-
-    plt.yticks(ticks = plt.yticks()[0], labels = plt.yticks()[0].astype(int))
+    #formatter = ticker.FuncFormatter(lambda x, pos: '{:,.0f}'.format(x))
+    #plt.gca().yaxis.set_major_formatter(formatter)
 
     
-    plt.xlim(min_x, max_x)
+    plt.xlim(0.0, max_x)
     plt.xlabel('Simulation Time / ns', fontsize=30)
     plt.yticks(fontsize=20)
     plt.xticks(fontsize=20)

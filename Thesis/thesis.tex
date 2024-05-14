@@ -89,17 +89,19 @@ time-independant~(\ref{eq:schrodingerIndependant}) and, more general, time-depen
   \label{eq:schrodingerDependant}
 \end{equation}
 
+\bigskip
+
 \noindent With $\Psi$ being the eigenfunction of the system, $\hbar$ the reduced Planck constant, $\hat{H}$ the Hamiltonian operator, $t$ the time and $E$ the energy of the system, or eigenvalue of the Hamiltonian operator.
 The Hamiltonian operator~(\ref{eq:hamiltonian}) is defined as the sum of the kinetic and potential energy operators, which, when applied to a state function $\Psi$, yields the total energy of the system as its eigenvalue to the eigenfunction $\Psi$.
 
 \begin{equation}
-  \hat{H} = -\frac{\hbar^2}{2m}\nabla^2 + E_{pot}
+  \hat{H} = -\frac{\hbar^2}{2m}\nabla^2 + E_{pot} = \hat{T} + \hat{V}
   \label{eq:hamiltonian}
 \end{equation}
 
 \bigskip
 
-\noindent Here, $\nabla^2$ is the Laplace operator, $m$ the mass of the particle and $E_{pot}$ the potential energy of the system.
+\noindent Here, $\nabla^2$ is the Laplace operator, $m$ the mass of the particle and $E_{pot}$ the potential energy of the system, with the kinetic energy and potential energy operators historically referred to as $\hat{T}$ and $\hat{V}$ respectively.
 For a single particle with mass $m$ moving in three-dimensional space, the time independant Schrödinger equation can then be written as~(\ref{eq:differential}).
 
 \begin{equation}
@@ -118,6 +120,231 @@ A wavefunction $\Psi$ that satisfies the Schrödinger equation and results in it
 It is due to this that finding the correct wave function $\Psi$ for a system is referred to as an eigenvalue problem.\\
 Hereby, it is important to note that a wavefunction is not directly observable and therefore no meaning can be attributed to its values.
 However, the square modulus of the wavefunction $|\Psi|^2$, as interpreted by Max Born~\cite{Born1926}, is proportional to the observable probability density of an electron in the given system.
+
+\subsubsection{Hamiltonian Operator}
+As previously mentioned, the Hamiltonian operator is defined as the sum of kinetic and potential energies in a given system. 
+The notation given in equation~\ref{eq:hamiltonian} is a simplification of the actual Hamiltonian operator, which can be written as in equation~\ref{eq:hamiltonian3} and~\ref{eq:hamiltonian2} as them sum of its individual terms, being the kinetic energy of the nuclei $\hat{T}_N$, the kinetic energy of the electrons $\hat{T}_e$, the potential energy of the nuclei $\hat{V}_{NN}$, the potential energy of the nuclei and electrons $\hat{V}_{Ne}$ and the potential energy of the electrons $\hat{V}_{ee}$.
+
+\begin{equation}
+  \hat{H} = \hat{T}_N + \hat{T}_e + \hat{V}_{NN} + \hat{V}_{Ne} + \hat{V}_{ee}
+  \label{eq:hamiltonian3}
+\end{equation}
+
+\begin{equation}
+  \begin{aligned}
+    \hat{H} = & -\sum_{I=1}^{N}\frac{\hbar^2}{2m_I}\nabla_I^2 -\sum_{i=1}^{n}\frac{\hbar^2}{2m_e}\nabla_i^2 + \frac{1}{2} \sum_{I\neq J}^{N} \frac{q_{e}^2}{4\pi \epsilon_0}\frac{Z_I Z_J}{|r_I - r_J|} \\
+    & - \sum_{I=1}^{N}\sum_{i=1}^{n}\frac{q_{e}^2}{4\pi \epsilon_0}\frac{Z_I}{|r_I - r_i|} + \frac{1}{2}\sum_{i\neq j}^{n}\frac{q_{e}^2}{4\pi \epsilon_0}\frac{1}{|r_i - r_j|}
+  \end{aligned}
+  \label{eq:hamiltonian2}
+\end{equation}
+
+\bigskip
+
+\noindent With $N$ being the number of nuclei, $n$ the number of electrons, $m_I$ the mass of the $I$-th nucleus, $m_e$ the mass of the electron, $Z_I$ the charge of the $I$-th nucleus, $r_I$ the position of the $I$-th nucleus, $r_i$ the position of the $i$-th electron, $q_e$ the elementary charge and $\epsilon_0$ the vacuum permittivity.
+To simplify this expression, atomic units are introduced, leading to the Hamiltonian as shown in equation~\ref{eq:hamiltonianAtomic}.
+
+\bigskip
+
+\begin{equation}
+  \begin{aligned}
+    \hat{H} = & -\sum_{I=1}^{N}\frac{1}{2m_I}\nabla_I^2 -\sum_{i=1}^{n}\frac{1}{2}\nabla_i^2 + \frac{1}{2} \sum_{I\neq J}^{N} \frac{Z_I Z_J}{|r_I - r_J|} \\
+    & - \sum_{I=1}^{N}\sum_{i=1}^{n}\frac{Z_I}{|r_I - r_i|} + \frac{1}{2}\sum_{i\neq j}^{n}\frac{1}{|r_i - r_j|}
+  \end{aligned}
+  \label{eq:hamiltonianAtomic}
+\end{equation}
+
+\bigskip
+
+\subsubsection{Dirac Notation}
+Since it is not feasible and often impossible to solve the Schrödinger equation for systems of 3 or more unconstrained particles, should a coulombic potential be employed~\cite{Toli2019}, a number of approximations are made, some of which will be discussed in the following sections. 
+To work with these approximated wave functions, the expressions for the Schrödinger equation must be adjusted as in~\ref{eq:dirac}. 
+
+\begin{equation}
+  \hat{H}\Psi = E\Psi
+  \label{eq:dirac}
+\end{equation}
+\begin{equation*}
+  \Psi^{*}\hat{H}\Psi = \Psi^{*}E\Psi
+\end{equation*}
+\begin{equation*}
+  \int_{-\infty}^{\infty}\Psi^{*}\hat{H}\Psi d\tau = \int_{-\infty}^{\infty}\Psi^{*}E\Psi d\tau
+\end{equation*}
+
+\bigskip
+
+\noindent With $\tau$ being the volume element of the system and $\Psi^{*}$ the complex conjugate of the wave function $\Psi$.
+The received energy, granted that $\Psi$ is an approximated wave function, is now an estimate of the actual analytical energy.
+To simplify these integral expressions the \textit{bra-ket} notation, also known as \textit{Dirac} notation~\cite{Dirac1939}, is employed as shown in equation~\ref{eq:dirac2}.
+
+\begin{equation}
+  \langle\Psi|\hat{H}|\Psi\rangle = \langle\Psi|E|\Psi\rangle
+  \label{eq:dirac2}
+\end{equation}
+
+\bigskip
+
+\subsubsection{Variational Principle}
+With the framework for utilizing approximated wave functions in place, the next step is to qualify a chosen wave function according to its accurary as an approximation to the analytical wave function.
+Since the energy of a system is constant, it can be taken out of the integral expression, leaving the remaining normalized integral yielding 1.
+Choosing now a trial wave function $\Psi_{Trial}$ and applying the Hamiltonian operator to it, the resulting energy expectation value is always greater or equal to the ground state energy of the system, as shown in equation~\ref{eq:variational}.
+This method of finding parametres to construct the best possible approximated wave function is called the variational method and sits at the heart of many quantum mechanical approaches~\cite{Griffiths2017}.
+
+\begin{equation}
+  \langle\Psi_{Trial}|\hat{H}|\Psi_{Trial}\rangle = \langle E\rangle \geq E_0
+  \label{eq:variational}
+\end{equation}
+
+\bigskip
+
+\subsection{Hartree-Fock Theory}
+As previously mentioned, the exact solution to the Schrödinger equation for systems containing more than 2 unconstrained particles is analytically not feasible.
+To this end, several approximations are employed to simplify the eigenvalue problem down to an analytically solvable form.
+The Hartree-Fock method employs such approximations and provides a fundamental framework for the analysis of many-electron systems.
+
+\subsubsection{Non-relativistic stationary systems}
+An important assumption not exclusive to Hartree-Fock Theory is the non-relativistic nature of the analysed system, 
+implying stationary systems with velocities much smaller than the speed of light.
+This assumption allows one to employ only the much simpler time-independant Schrödinger equation, with the trade-off being that effects arising from special relativity, e.g.~spatial contraction or time dilation in heavy atoms, are not accounted for.
+Additionally, since only stationary states are computed, the analysis of time-dependant processes require specific simulation frameworks, one of which will be discussed at a later point.
+
+\subsubsection{Born-Oppenheimer Approximation}
+The Hartree-Fock method inherently assumes the Born-Oppenheimer approximation, which states that the wave functions of nuclei and electrons of a given system may be decoupled~\cite{Born1927}.
+This seperation is justified via the large mass difference of a factor of 1836 between electrons and protons, and allows for the assumption that nuclei may be considered stationary during the calculation of the electronic wave functions.
+
+\begin{equation}
+  |\Psi^{n, N}\rangle = |\Psi^{n}\rangle|\Psi^{N}\rangle 
+\end{equation}
+
+\bigskip
+
+\noindent With $n$ and $N$ denoting the electronic and nuclear wave functions respectively. As a result of this approximation,
+the term for the kinetic energy of the nuclei in the Hamiltonian is omitted, while the coulombic repulsion between different nuclei becomes a constant term, further simplifying calculations.
+An eigenfunction to this electric Hamiltonian, as shown in~\ref{eq:electricHamiltonian},  is now referred to as an electronic eigenfunction to the Schrödinger equation.
+
+\begin{equation}
+  \hat{H} = -\sum_{i=1}^{n}\frac{1}{2}\nabla_i^2 -\sum_{I=1}^{N}\sum_{i=1}^{n}\frac{Z_I}{|r_I - r_i|} + \frac{1}{2}\sum_{i\neq j}^{n}\frac{1}{|r_i - r_j|}  \label{eq:electricHamiltonian}
+\end{equation}
+
+\bigskip
+
+\noindent Neglecting the quantum character of nuclei in this way renders the electronic Hamiltonian useless for describing quantum mechanical phenomena involving nuclei, yet allows for vastly increased computational efficiency.
+
+\subsubsection{Independant Particle approximation}
+Douglas R. Hartree provided a further approximation to n-electron wave functions in 1928 in the form of a product of independant one-electron functions, referred to as \textit{Hartree product}~\cite{Hartree1928}.
+Equation~\ref{eq:hartreeProduct} shows this formalism, where each independant electrons $i$ interaction with all other $n-1$ electrons of the system is averaged out, referred to as a \textit{mean field approximation}.
+
+\begin{equation}
+  |\Psi^{n}\rangle = \prod_{i=1}^{n}|\psi_i\rangle
+  \label{eq:hartreeProduct}
+\end{equation}
+
+\subsubsection{Slater Determinant}
+While providing a good approximation to n-electron wavefunctions, the Hartree product does not account for the antisymmetrical nature of fermions due to their half-integer spin resulting from the Pauli exclusion principle~\cite{Pauli1925}.
+In essence, this means that transposing any two, by definition indistinguishable, electrons in a wave function must result in a sign change. For a two particle system with coordinates $r_1$ and $r_2$, this may be written as seen in~\ref{eq:antisymmetry}.
+
+\begin{equation}
+  \Psi(r_1, r_2) = -\Psi(r_2, r_1)
+  \label{eq:antisymmetry}
+\end{equation}
+
+\bigskip
+
+\noindent To account both for antisymmetry and indistinguishability, John C. Slater considered all possible distributions of electrons in the one-electron wave functions, conveniently expressed via a determinant, the \textit{Slater determinant}~\cite{Slater1929}, as shown in~\ref{eq:slaterDeterminant}.
+
+\begin{equation}
+  |\Psi^{n}\rangle \approx \frac{1}{\sqrt{n!}}\begin{vmatrix}
+    \psi_1(r_1) & \psi_2(r_1) & \cdots & \psi_n(r_1) \\
+    \psi_1(r_2) & \psi_2(r_2) & \cdots & \psi_n(r_2) \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \psi_1(r_n) & \psi_2(r_n) & \cdots & \psi_n(r_n) \\
+  \end{vmatrix}
+  \label{eq:slaterDeterminant}
+\end{equation}
+
+\bigskip
+
+\noindent Where the factorial term accounts for normalization and each entry in the determinant represents a one electron wave function, with an electron at position $r_i$.
+This determinant represents a superposition of all possible Hartree products and, due to the nature of determinants, inherently accounts for sign-changes upon transposition of electrons, i.e.~antisymmetry.
+Further, as one-electron functions must remain orthonormal, the Kronecker delta function $\delta_{ij}$ is employed as in~\ref{eq:kronecker}, ensuring orthogonality and further simplifying calculations by reducing the number of non-zero integrals to be computed.
+
+
+
+\begin{equation}
+  \langle\psi_i|\psi_j\rangle = \delta_{ij}\begin{cases}
+    1 & \text{if } i = j \\
+    0 & \text{if } i \neq j
+  \end{cases} 
+  \label{eq:kronecker}
+\end{equation}
+
+\bigskip
+
+\subsubsection{LCAO-Approach}
+Molecular orbitals, as they are employed in Slater determinants, are usually constructed via the \textit{Linear Combination of Atomic Orbitals} (LCAO) approach~\cite{Slater1954}.
+In this approach, n atomic orbitals, ideally analytical eigensolutions of hydrogen-like systems, are combined linearly to n molecular orbitals as in~\ref{eq:lcao}, which in turn make up the Slater determinant.
+
+\begin{equation}
+  |\psi_i\rangle = \sum_{r}^{}c_{r i}|\phi_{r}\rangle
+  \label{eq:lcao}
+\end{equation}
+
+\bigskip
+
+\noindent Where $|\phi_{r}\rangle$ are the atomic orbitals, $c_{r i}$ the expansion coefficients and $|\psi_i\rangle$ the molecular orbitals.
+During energy optimization according to the variational principle, these coefficients $c_{r i}$ are adjusted to achieve plausible approximations while using Lagrange multipliers to ensure orthonormality of the resulting molecular orbitals~\cite{sherrill2000introduction}.
+Due to their computational effort, albeit high accuracy, the analytical Slater type orbitals (STO) of hydrogen are often foregone in favor of simpler Gaussian type orbitals (GTO), several of which may be contracted (CGTO) to approximate a single Slater orbital~\cite{Boys1950}. 
+The level of contraction, number of CGTOs per atomic orbital as well as parametres like zeta-factors, are collected in basis sets, highly varied in their complexity and accuracy~\cite{Huzinaga1985}.
+
+\subsubsection{Bloch's Theorem}
+In periodic systems, defined by a unit cell, both the potential energies and wave functions at any given point are subject to periodicity.
+As per \textit{Bloch's theorem}, utilizing this periodicity, one may express wave functions via periodically modulated plane waves to good effect~\cite{Bloch1929}.
+This theorem is particularly useful when analyzing periodic systems, e.g.~crystals, allowing to construct wave functions or electronic states via Bloch functions, as in equation~\ref{eq:bloch}.
+
+\begin{equation}
+  \psi_{k}(r) = e^{ikr}u_{k}(r)
+  \label{eq:bloch}
+\end{equation}
+
+\bigskip
+
+\noindent Where $k$ is the wave vector, $r$ the position and $u_{k}(r)$ a periodic function mirroring the periodicity of the unit cell.
+Since the wave vector $k$ is not uniquely defined, it is usually restricted to the first Brillouin zone, the smallest unit cell in reciprocal space, avoiding redundancy~\cite{Ashcroft1976-ra}.
+
+\subsubsection{Self-Consistent Field Method}
+With approximations and formalisms in place, a suitable Slater determinant may now be constructed by way of adjusting the expansion coefficients $c_{r i}$ in the LCAO approach.
+To this end, an operator $\hat{F}$ is introduced, the \textit{Fock operator}, describing the kinetic energy of an electron as well as its interaction with all other electrons in the system in a mean field approximation.
+This formalism is shown in equation~\ref{eq:fockOperator}, with the molecular orbitals shown in their linearly decomposed form.
+
+\begin{equation}
+  \hat{F}\sum_{r}^{}c_{r i}|\phi_{r}\rangle = \epsilon_i\sum_{r}^{}c_{r i}|\phi_{r}\rangle
+  \label{eq:fockOperator}
+\end{equation}
+
+\bigskip
+
+\noindent Where $\epsilon_i$ is the energy eigenvalue of the $i$-th molecular orbital. Utilizing vector notation, this expression may be written as in~\ref{eq:fockOperator2}, resulting in what is known as the \textit{Roothan-Hall equation}.
+
+
+\begin{equation}
+  \mathbf{Fc} = \mathbf{Sc}\mathbf{E}
+  \label{eq:fockOperator2}
+\end{equation}
+
+\noindent Where $\mathbf{F}$ is the Fock matrix containing all possible Fock operators, $\mathbf{c}$ the coefficent matrix $\mathbf{S}$ the overlap matrix and $\mathbf{E}$ the orbital energy matrix.
+Should the basis sets used be orthonormal, as enforced by the minimization constraints, the overlap matrix $\mathbf{S}$ reduces to the identity matrix, simplifying the Roothan-Hall equation to~\ref{eq:fockOperator3}.
+
+\begin{equation}
+  \mathbf{Fc} = \mathbf{Ec}
+  \label{eq:fockOperator3}
+\end{equation}
+
+\bigskip
+
+\noindent Due to the Fock operator containing the molecular orbitals, which themselves depend on the chosen coefficients, the Roothan-Hall equation is solved via an iterative prodecure, where an initial set of coefficients is chosen before the first iteration.
+Then, the Fock matrix is constructed and diagonalized, yielding a new set of coefficients as well as energy eigenvalues.
+The latter then serve as criteria for convergence, with iterations being carried out until the difference in energy is below a predefined threshold.
+The so received approximated wavefunction may then be used for further analysis of the system, e.g.~calculating forces or charges acting upon atoms.
+
 
 \subsection{Molecular Dynamics Simulations}
 Alongside advancements in the field of digital electronics came the possibilities of simulating chemical 
