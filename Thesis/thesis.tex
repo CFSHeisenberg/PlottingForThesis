@@ -345,6 +345,56 @@ Then, the Fock matrix is constructed and diagonalized, yielding a new set of coe
 The latter then serve as criteria for convergence, with iterations being carried out until the difference in energy is below a predefined threshold.
 The so received approximated wavefunction may then be used for further analysis of the system, e.g.~calculating forces or charges acting upon atoms.
 
+\subsubsection{Post Hartree-Fock Methods}
+Hartree-Fock, mainly due to employing only a single Slater determinant, neglects part of electron correlation, i.e.~how electrons in movement are affected by the presence of other electrons.
+While some correlation is included in the exchange terms of the Fock operator, neglecting other forms of correlation causes the method to be limited to a theoretical \textit{Hartree-Fock limit}, the lowest energy achievable.
+Over the years, many methods were developed to account for said correlation, congregating under the term \textit{Post Hartree-Fock methods}.
+One such method is \textit{Configuration Interaction} (CI), where the HF wave function is expanded to include excited determinants, which are then combined linearly to approximate a correlated wave function. Just like in base HF, the vartiational principle is applied when weighing the contribution of excited states.
+Including all possible excited states, referred to as \textit{Full Configuration Interaction} (Full-CI), while providing the most accurate results, is computationally unfeasible for most molecules, which is why truncation is usually applied.
+
+\subsection{Density Functional Theory}
+Spawning from the field of solid-state physics, \textit{Density Functional Theory} (DFT) is a quantum mechanical method utilizing an alternative approach to many-electron systems with the aim of addressing the inaccuracies of HF and the high computational cost of post-HF methods.
+Where wave-functions depend on 3N spatial coordinates, excluding spin, DFT instead focuses on the electron density $\rho(r)$ of a system, a property defined by only 3 spatial coordinates, theoretically decreasing computational demand drastically~\cite{Orio2009}.
+
+\subsubsection{Hohenberg-Kohn Theorems}
+At the heart of DFT lie two theorems, formulated by Pierre Hohenberg and Walter Kohn in 1964~\cite{Hohenberg1964}.
+First, the ground-state of a many electron system, and by extension its properties, are uniquely determined by its electron density $\rho(r)$. In short, the external potential of a system is a unique functional of the electron density.
+Secondly, such a functional, if applied to the ground-state density, will yield the lowest possible energy of the system and this ground-state density corresponds to the exact solution of the Schrödinger equation. 
+This, in essence, is the variational principle applied to the electron density functionals, as shown in equation~\ref{eq:hohenbergKohn}.
+
+\begin{equation}
+  E[\rho_{Trial}(r)] \geq E[\rho_{0}(r)]
+\end{equation}
+
+\subsubsection{Kohn-Sham Equations}
+
+The \textit{Kohn-Sham} approach (KS), as derived by Kohn and Sham in 1965~\cite{Kohn1965}, forms the basis of current DFT approaches. 
+In this approach, a system of non-interacting electrons yielding the electron density of the original problem is constructed. 
+Ironically, the wavefunction of this non-interacting system is represented by a Slater determinant, referred to as a Kohn-Sham determinant in the context of DFT~.
+While the kinetic energy is easy to solve, the exchange-correlation functionals for such a system are unknown, leading to many DFT approaches with the sole purpose of defining increasingly accurate functionals.
+
+\subsubsection{Local Density Approximation}
+Among the simplest methods in DFT, \textit{Local (Spin) Density Approximation (L(S)DA)} employs the electron density as a homogenous electron gas.
+While effective in describing the solid metals and alloys it was designed for, LDA and its open-shell variant LSDA are consider not inadequate for systems involving variable electron densities like MOFs~\cite{Perdew1981}.
+In practice, to simplify calculations, the exchange and correlation functionals applied onto the electron density, as shown in equation~\ref{eq:lda}, are considered seperable.
+
+\begin{equation}
+  E_{XC}^{LDA}[\rho(r)] = \int_{-\infty}^{\infty} \epsilon_{XC}[\rho(r)]\rho(r)dr = \int_{-\infty}^{\infty} \epsilon_{X}[\rho(r)]\rho(r)dr + \int_{-\infty}^{\infty} \epsilon_{C}[\rho(r)]\rho(r)dr
+  \label{eq:lda}
+\end{equation}
+
+\bigskip
+
+\noindent Since the exchange-energy density of a homogenous electron gas is known analytically, derived by bloch and Dirach as early as 1929~\cite{Bloch1929,Dirac1930} , LDA approaches apply this result pointwise to a non-homogenous density to calculate exchange-energy as in equation~\ref{eq:lda2}~\cite{parr1994density}.
+
+\begin{equation}
+  E_X^{LDA}[\rho(r)] = -\frac{3}{4}\left(\frac{3}{\pi}\right)^{1/3}\int_{-\infty}^{\infty}\rho(r)^{4/3}dr
+  \label{eq:lda2}
+\end{equation}
+
+\bigskip
+
+\noindent While exchange-energy may be explicit, the correlation-energy of a homogeneous electron gas is not, leading to various expressions being derived over time, with e.g~\textit{Monte Carlo} approaches providing accurate results~\cite{Ceperley1980}.
 
 \subsection{Molecular Dynamics Simulations}
 Alongside advancements in the field of digital electronics came the possibilities of simulating chemical 

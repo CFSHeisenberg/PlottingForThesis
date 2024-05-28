@@ -4,45 +4,45 @@ The top-level auxiliary file: thesis.aux
 The style file: unsrt.bst
 Database file #1: thesis.bib
 Warning--empty title in Boys1950
-You've used 21 entries,
+You've used 28 entries,
             1791 wiz_defined-function locations,
-            609 strings with 6349 characters,
-and the built_in function-call counts, 4653 in all, are:
-= -- 419
-> -- 100
+            662 strings with 7273 characters,
+and the built_in function-call counts, 6378 in all, are:
+= -- 575
+> -- 155
 < -- 0
-+ -- 46
-- -- 25
-* -- 383
-:= -- 725
-add.period$ -- 62
-call.type$ -- 21
-change.case$ -- 18
++ -- 67
+- -- 39
+* -- 530
+:= -- 990
+add.period$ -- 84
+call.type$ -- 28
+change.case$ -- 24
 chr.to.int$ -- 0
-cite$ -- 22
-duplicate$ -- 190
-empty$ -- 522
-format.name$ -- 25
-if$ -- 1018
+cite$ -- 29
+duplicate$ -- 254
+empty$ -- 705
+format.name$ -- 39
+if$ -- 1399
 int.to.chr$ -- 0
-int.to.str$ -- 21
-missing$ -- 23
-newline$ -- 107
-num.names$ -- 21
-pop$ -- 34
+int.to.str$ -- 28
+missing$ -- 31
+newline$ -- 142
+num.names$ -- 28
+pop$ -- 45
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 64
+skip$ -- 89
 stack$ -- 0
-substring$ -- 492
-swap$ -- 21
+substring$ -- 678
+swap$ -- 28
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 1
-while$ -- 39
-width$ -- 23
-write$ -- 230
+while$ -- 52
+width$ -- 30
+write$ -- 307
 (There was 1 warning)

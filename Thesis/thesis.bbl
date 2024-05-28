@@ -115,4 +115,42 @@ Neil~W Ashcroft and N~Mermin.
 \newblock {\em Solid State Physics}.
 \newblock Brooks/Cole, Florence, KY, January 1976.
 
+\bibitem{Orio2009}
+Maylis Orio, Dimitrios~A. Pantazis, and Frank Neese.
+\newblock Density functional theory.
+\newblock {\em Photosynthesis Research}, 102(2–3):443–453, February 2009.
+
+\bibitem{Hohenberg1964}
+P.~Hohenberg and W.~Kohn.
+\newblock Inhomogeneous electron gas.
+\newblock {\em Physical Review}, 136(3B):B864–B871, November 1964.
+
+\bibitem{Kohn1965}
+W.~Kohn and L.~J. Sham.
+\newblock Quantum density oscillations in an inhomogeneous electron gas.
+\newblock {\em Physical Review}, 137(6A):A1697–A1705, March 1965.
+
+\bibitem{Perdew1981}
+J.~P. Perdew and Alex Zunger.
+\newblock Self-interaction correction to density-functional approximations for
+  many-electron systems.
+\newblock {\em Physical Review B}, 23(10):5048–5079, May 1981.
+
+\bibitem{Dirac1930}
+P.~A.~M. Dirac.
+\newblock Note on exchange phenomena in the thomas atom.
+\newblock {\em Mathematical Proceedings of the Cambridge Philosophical
+  Society}, 26(3):376–385, July 1930.
+
+\bibitem{parr1994density}
+R.G. Parr and Y.~Weitao.
+\newblock {\em Density-Functional Theory of Atoms and Molecules}.
+\newblock International Series of Monographs on Chemistry. Oxford University
+  Press, 1994.
+
+\bibitem{Ceperley1980}
+D.~M. Ceperley and B.~J. Alder.
+\newblock Ground state of the electron gas by a stochastic method.
+\newblock {\em Physical Review Letters}, 45(7):566–569, August 1980.
+
 \end{thebibliography}
