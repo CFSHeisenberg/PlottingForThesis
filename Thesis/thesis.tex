@@ -354,24 +354,45 @@ Including all possible excited states, referred to as \textit{Full Configuration
 
 \subsection{Density Functional Theory}
 Spawning from the field of solid-state physics, \textit{Density Functional Theory} (DFT) is a quantum mechanical method utilizing an alternative approach to many-electron systems with the aim of addressing the inaccuracies of HF and the high computational cost of post-HF methods.
-Where wave-functions depend on 3N spatial coordinates, excluding spin, DFT instead focuses on the electron density $\rho(r)$ of a system, a property defined by only 3 spatial coordinates, theoretically decreasing computational demand drastically~\cite{Orio2009}.
+Where wave-functions depend on 3N spatial coordinates, excluding spin, DFT instead focuses on the electron density $\rho(\vec{r})$ of a system, a property defined by only 3 spatial coordinates, theoretically decreasing computational demand drastically~\cite{Orio2009}.
+The formalisms and qualitative discussions in this chapter are based on \textit{A Chemists's Guide to Density Functional Theory} by Koch and Holthausen~\cite{Koch2001-yq}.
 
 \subsubsection{Hohenberg-Kohn Theorems}
 At the heart of DFT lie two theorems, formulated by Pierre Hohenberg and Walter Kohn in 1964~\cite{Hohenberg1964}.
-First, the ground-state of a many electron system, and by extension its properties, are uniquely determined by its electron density $\rho(r)$. In short, the external potential of a system is a unique functional of the electron density.
+First, the ground-state of a many electron system, and by extension its properties, are uniquely determined by its electron density $\rho(\vec{r})$. In short, the external potential of a system is a unique functional of the electron density.
 Secondly, such a functional, if applied to the ground-state density, will yield the lowest possible energy of the system and this ground-state density corresponds to the exact solution of the Schrödinger equation. 
 This, in essence, is the variational principle applied to the electron density functionals, as shown in equation~\ref{eq:hohenbergKohn}.
 
 \begin{equation}
-  E[\rho_{Trial}(r)] \geq E[\rho_{0}(r)]
+  E[\rho_{Trial}(\vec{r})] \geq E[\rho_{0}(\vec{r})]
+  \label{eq:hohenbergKohn}
 \end{equation}
 
 \subsubsection{Kohn-Sham Equations}
 
 The \textit{Kohn-Sham} approach (KS), as derived by Kohn and Sham in 1965~\cite{Kohn1965}, forms the basis of current DFT approaches. 
-In this approach, a system of non-interacting electrons yielding the electron density of the original problem is constructed. 
-Ironically, the wavefunction of this non-interacting system is represented by a Slater determinant, referred to as a Kohn-Sham determinant in the context of DFT.
-While the kinetic energy is easy to solve, the exchange-correlation functionals for such a system are unknown, leading to many DFT approaches with the sole purpose of defining increasingly accurate functionals.
+In this approach, a system of non-interacting electrons yielding the electron density of the original problem is constructed as seen in equation~\ref{eq:kohnSham}.
+
+\begin{equation}
+  \rho_0(\vec{r}) = \sum_{i}^{N}|\phi_i(\vec{r})|^2
+  \label{eq:kohnSham}
+\end{equation}
+
+\bigskip
+
+\noindent Ironically, the wavefunction of this non-interacting system is represented by a Slater determinant, referred to as a Kohn-Sham determinant in the context of DFT.
+The total energy of the system is then expressed as shown in equation~\ref{eq:kohnSham2}.
+
+\begin{equation}
+  E[\rho(\vec{r})] = T_s[\rho(\vec{r})] + J[\rho(\vec{r})] + E_{XC}[\rho(\vec{r})]
+  \label{eq:kohnSham2}
+\end{equation}
+
+\bigskip
+
+\noindent With $T_s$ being the kinetic energy of the non-interacting system, $J$ the Coulomb energy and $E_{XC}$ the exchange-correlation energy.
+While the kinetic energy is for the most part comparatively easy to solve, the exchange-correlation functionals, which also include a "true" part of the kinetic energy, for such a system are unknown, leading to many DFT approaches with the sole purpose of defining increasingly accurate functionals.
+Should such an explicit and exact form of the exchange-correlation functional $E_{XC}[\rho(\vec{r})]$ and its corresponding potential $V_{XC}[\rho(\vec{r})]$ be found, the Kohn-Sham equations would, in principal, be exact solutions to many body problems.
 
 \subsubsection{Local Density Approximation}
 Among the simplest methods in DFT, \textit{Local (Spin) Density Approximation (L(S)DA)} employs the electron density as a homogenous electron gas.
@@ -379,22 +400,170 @@ While effective in describing the solid metals and alloys it was designed for, L
 In practice, to simplify calculations, the exchange and correlation functionals applied onto the electron density, as shown in equation~\ref{eq:lda}, are considered seperable.
 
 \begin{equation}
-  E_{XC}^{LDA}[\rho(r)] = \int_{-\infty}^{\infty} \epsilon_{XC}[\rho(r)]\rho(r)dr = \int_{-\infty}^{\infty} \epsilon_{X}[\rho(r)]\rho(r)dr + \int_{-\infty}^{\infty} \epsilon_{C}[\rho(r)]\rho(r)dr
+  E_{XC}^{LDA}[\rho(\vec{r})] = \int_{-\infty}^{\infty} \epsilon_{XC}[\rho(\vec{r})]\rho(\vec{r})d\vec{r} = \int_{-\infty}^{\infty} \epsilon_{X}[\rho(\vec{r})]\rho(\vec{r})d\vec{r} + \int_{-\infty}^{\infty} \epsilon_{C}[\rho(\vec{r})]\rho(\vec{r})d\vec{r}
   \label{eq:lda}
 \end{equation}
 
 \bigskip
 
-\noindent Since the exchange-energy density of a homogenous electron gas is known analytically, derived by bloch and Dirach as early as 1929~\cite{Bloch1929,Dirac1930} , LDA approaches apply this result pointwise to a non-homogenous density to calculate exchange-energy as in equation~\ref{eq:lda2}~\cite{parr1994density}.
+\noindent Where $\epsilon_{XC}[\rho(\vec{r})]$ is the exchange-correlation energy per particle and $\rho(\vec{r})$ the electron density, with square brackets denoting a functional dependence.
+Since the exchange-energy density of a homogenous electron gas is known analytically, derived by Bloch and Dirach as early as 1929~\cite{Bloch1929}\cite{Dirac1930}, LDA approaches apply this result pointwise to a non-homogenous density to calculate exchange-energy as in equation~\ref{eq:lda2}~\cite{parr1994density}.
 
 \begin{equation}
-  E_X^{LDA}[\rho(r)] = -\frac{3}{4}\left(\frac{3}{\pi}\right)^{1/3}\int_{-\infty}^{\infty}\rho(r)^{4/3}dr
+  E_X^{LDA}[\rho(\vec{r})] = -\frac{3}{4}\left(\frac{3}{\pi}\right)^{1/3}\int_{-\infty}^{\infty}\rho(\vec{r})^{4/3}d\vec{r}
   \label{eq:lda2}
 \end{equation}
 
 \bigskip
 
 \noindent While exchange-energy may be explicit, the correlation-energy of a homogeneous electron gas is not, leading to various expressions being derived over time, with e.g~\textit{Monte Carlo} approaches providing accurate results~\cite{Ceperley1980}.
+
+\subsubsection{Generalized Gradient Approximation}
+The \textit{Generalized Gradient Approximation} (GGA) differs from LDA by employing not only the electron density $\rho(\vec{r})$, but also its gradient $\nabla\rho(\vec{r})$ with respect to spatial coordinates as in equation~\ref{eq:gga2}.
+Functionals utilizing both the electron density and its gradient once more assume a seperation of the exchange and correlation functionals, as shown in equation~\ref{eq:gga1}.
+
+\begin{equation}
+  E_{XC}^{GGA}[\rho(\vec{r}), \nabla\rho(\vec{r})] = \int_{-\infty}^{\infty} \epsilon_{XC}[\rho(\vec{r}), \nabla\rho(\vec{r})]\rho(\vec{r})d\vec{r} \\
+\label{eq:gga2}
+\end{equation}
+
+
+\begin{equation}
+  E_{XC}^{GGA} = E_X^{GGA} + E_C^{GGA}
+  \label{eq:gga1}
+\end{equation}
+
+\bigskip
+
+\noindent The gradient corrected exchange functional of this approach may be written as in equation~\ref{eq:gga3}.
+
+\begin{equation}
+  E_X^{GGA} = E_X^{LDA} - \int_{-\infty}^{\infty} F(s_{\sigma}) \rho_{\sigma}^{4/3}(\vec{r})d\vec{r}
+  \label{eq:gga3}
+\end{equation}
+
+\bigskip
+
+\noindent Where the argument for the function F is the reduced gradient $s_{\sigma}$ for spin $\sigma$, understood as a local inhomogenity parameter and calculated as in equation~\ref{eq:inhomogenity}.
+The value of $s_{\sigma}$ is large for regions of small densities such as those far from the nuclei and small for bonding regions or regions of large density.
+For the function F, two main realizations are employed. The first one, based on a GGA functional developed by Becke in 1988~\cite{Becke1988}, approaches inhomogenity as in equation~\ref{eq:gga4}.
+
+\begin{equation}
+  s_{\sigma} = \frac{|\nabla\rho_{\sigma}(\vec{r})|}{\rho_{\sigma}^{4/3}(\vec{r})}
+  \label{eq:inhomogenity}
+\end{equation}
+
+\begin{equation}
+  F^{B} = \frac{\beta s^2_{\sigma}}{1 + 6\beta s_{\sigma} \sinh^{-1}s_{\sigma}}
+  \label{eq:gga4}
+\end{equation}
+
+\bigskip
+
+\noindent In this functional, abbreviated simply as B or B88, the parameter $\beta$ has been empirically determined to a value of 0.0042 by fitting to known exchange energies.
+The second class of functionals laying much of the groundwork for modern approaches employ F as a rational function of $s_{\sigma}$, as examplified \textit{via} Perdews's exchange functional P86 in equation~\ref{eq:gga5}~\cite{Perdew1986}.
+
+\begin{equation}
+  F^{P86} = \Biggl(1+1.296\biggl(\frac{s_{\sigma}}{(24\pi^2)^{1/3}}\biggl)^2 + 14\biggl(\frac{s_{\sigma}}{(24\pi^2)^{1/3}}\biggl)^4 + 0.2\biggl(\frac{s_{\sigma}}{(24\pi^2)^{1/3}}\biggl)^6 \Biggl)^{1/15}
+  \label{eq:gga5}
+\end{equation}
+
+\bigskip
+
+\noindent Here, as opposed to the Becke functional, no empirical parameters are present.
+With exchange functionals established, gradient-corrected correlation functionals are a different beast entirely when it comes to analytical complexity.
+One widely used functional is the P or P86 correlation functional, a counterpart to the 1986 Perdew exchange functional discussed previously, employing an empirical parameter fitted to the correlation energy of a neon atom~\cite{Perdew1986_2}.
+Functionals free of empirical parameters have also been developed, such as \textit{PW91} by Perdew and Wang in 1991~\cite{Burke1998}.
+Finally and most notably, Lee, Yang and Parr formulated their \textit{LYP} functional in 1988, derived from the \textit{Colle-Salvetti} correlation energy expression~\cite{Lee1988}, in which the correlation energy density is expressed in terms of the electron density as well as a Laplacian of the second-order HF density matrix~\cite{Colle1975}.
+While freely combining different exchange and correlation functionals is generally possible, only a small subset of pairings is seeing much use in modern theoretical chemistry, with the combination of Becke's exchange functional and LYP correlation functional, known as BLYP, being one of the most widely used frameworks.
+
+
+\subsubsection{Hybrid Functionals}
+
+In an attempt to further improve the accuracy of DFT calculations, \textit{Hybrid Functionals} utilize a combination of the exact Hartree-Fock exchange energies and approximated correlation functionals, as shown in equation~\ref{eq:hybrid}.
+
+\begin{equation}
+  E_{XC} = E_X^{HF} + E_C^{KS}
+  \label{eq:hybrid}
+\end{equation}
+
+\bigskip
+
+\noindent However, attempting to exploit the strengths of both HF and DFT using reckless combination provided no benefit over previously established approaches, with inaccuracies ranging in the high two-digit $kcal/mol$ range especially when applie to molecules and chemical bonding.
+The first succesful hybrid functional was derived by Becke in 1993~\cite{Becke1993_hybrid}, employing a combination of HF exchange and DFT correlation in the `\textit{half-and-half}' approach with already promisingly low average errors.
+In the next iteration, ultimately leading to arguably the most widely used hybrid functional, Becke introduced semiempirical coefficients to weigh the various hybrid components~\cite{Becke1993a}. 
+This combination of HF exchange with local and gradient-corrected correlation and exchange terms is shown in equation~\ref{eq:becke1}, with the semiempirical parameters $a=0.20$, $b=0.72$ and $c=0.81$ fitted to optimally reproduce previous experimental results. 
+
+\begin{equation}
+  E_{XC}^{B3} = E_{XC}^{LSD}+a(E_{XC}^{\lambda = 0}-E_{X}^{LSD})+bE_{X}^{B}+cE_{C}^{PW91}
+  \label{eq:becke1}
+\end{equation}
+
+\bigskip
+
+\noindent Where $\lambda=0$ denotes an interaction free system and $\lambda=1$ a fully interacting system.
+Suggested by Stephens et al.~in 1994, replacing the PW91 correlation functional in equation~\ref{eq:becke1} with a LYP functional, the B3LYP exchange-correlation functional was born~\cite{stephens_ab_1994}, as seen in equation~\ref{eq:b3lyp}.
+
+\begin{equation}
+  E_{XC}^{B3LYP} = (1-a) E_{X}^{LSD}+aE_{XC}^{\lambda = 0}+bE_{X}^{B88}+cE_{C}^{LYP}+(1-c)E_C^{LSD}
+  \label{eq:b3lyp}
+\end{equation}
+
+\bigskip
+
+\noindent Where the values for the parameters a, b and c are directly taken from Becke's original functional.
+The B3LYP functional showed promising results, with unsigned errors of only slightly above 2 $kcal/mol$ in respect to a Gaussian-2 reference set, comprised of corrected MP2 calculations~\cite{Curtiss1991}.
+Although B3LYP remained a pillar of density functional theory, hybrid functionals saw many more iterations and improvements over the years, with notable examples being the PBE0 model by Adamo and Barone in 1999~\cite{Adamo1999} or the M06 family of functionals by Truhlar and Zhao in 2007~\cite{Zhao2007}.
+
+\subsubsection{Dispersion Corrections}
+The following discussions are sourced from a review by Klimeš and Michaelides, published in 2012~\cite{Klime2012}.
+\\ \par \noindent One of the main shortcomings of DFT is inherent to the approximations made for XC functionals, namely the inability of most standard functionals to properly describe long-range electron correlation, colloquially referred to as \textit{van der Waals} forces.
+Dispersion, in essence the attractive interaction between instantaneous dipoles, is well described as decaying with the sixth power of the distance between two particles.
+However, most standard exchange-correlation functionals do not accurately describe this dispersion because instantaneous fluctuations in density are not considered and because only local properties are considered for calculating most XC energies.
+These functionals only model binding or repulsion when there is an overlap of the electron densities between two atoms, and since this overlap decreases exponentially with distance, the $-1/r^6$ decay is not accurately modelled.
+\\ \par \noindent To counteract this deficit, a number of dispersion correction schemes with varying levels of complexity have been developed, two of which will be discussed in detail.
+Among the simplest schemes are density functionals that are specifically fitted in such a way as to reproduce weak interaction around minima, like the \textit{Minnesota functionals} by Zhao and Truhlar~\cite{Zhao2007-oa}.
+While still suffering from incorrect asymptotic behaviour, owing to the reference data used for fitting, these functionals can also represent other properties than weak interaction like e.g.~reaction barriers, making them at least somewhat accurate for a wide range of generic problems.
+At around the same level of complexity, one may include pseudopotential projection to model dispersion.
+While laborious to fit for each element, methods such as the \textit{dispersion corrected atom-centered potentials} (DCACP)~\cite{vonLilienfeld2004} or \textit{local atomic potentials} (LAP)~\cite{Sun2008} have shown promising results.
+\\ \par \noindent At the next level of complexity, an additional energy term is added to the DFT energy, accounting for missing long range interaction as in equation~\ref{eq:disp1}, with the dispersion interaction calculated as in equation~\ref{eq:disp2}.
+
+\begin{equation}
+  E_{Tot} = E_{DFT} + E_{disp}
+  \label{eq:disp1}
+\end{equation}
+
+\begin{equation}
+  E_{disp} = - \sum_{A,B}\frac{C_{6}^{AB}}{r^6_{AB}}
+  \label{eq:disp2}
+\end{equation}
+
+\bigskip
+
+\noindent Where $C_{6}^{AB}$ is the dispersion coefficient between atoms A and B and $r_{AB}$ the distance between them.
+Generally referred to as \textit{DFT-D}, these methods assume dispersion to be pairwise additive over all elemental pairs A and B.
+While computationally inexpensive and therefore widely used, DFT-D methods are limited by their disregard for many-body dispersion as well as the influence of chemical environments and different states, since the coefficents $C_{6}^{AB}$ are kept constant.
+Additionally, calculating these constant coefficients often requires experimental input, limiting the number of treatable elements.
+Presented by Grimme in 2006, the \textit{DFT-D2} schemes employ a formula coupling ionization potentials with static polarizabilities to calculate dispersion coefficients for many common elements~\cite{Grimme2006}.
+Despite their shortcomings, especially for alkali and alkali earth atoms, DFT-D2 methods are among the most widely used dispersion corrections in modern DFT usage.
+\\ \par \noindent Generally, DFT-D correction schemes diverge at short distances and must therefore be `damped', as in equation~\ref{eq:disp3}.
+
+\begin{equation}
+  E_{disp} = - \sum_{A,B}\frac{C_{6}^{AB}}{r^6_{AB}}f(r_{AB},A,B)
+  \label{eq:disp3}
+\end{equation}
+
+\bigskip
+
+\noindent Where $f(r_{AB},A,B)$ is a damping function equaling to one for large distances and decreasing the dispersive energy to zero or a constant for small distances.
+To avoid causing additional divergence, these damping functions must be carefully adjusted to the chosen XC functional.
+\\ \par \noindent Moving further up the `stairway' of complexity, one may employ so called \textit{non-local} correlation functionals, which add non-local correlations to local correlation functionals and do not rely on external experimental data, with e.g.~the \textit{non-local van der Waals density functional} (vdW-DF)~promising high accuracies~\cite{Klime2009_vdW-DF}.
+Going beyond even these methods, the assumption of pairwise additivity must be left behind and many-body dispersion considered, though these methods would be too complex to elaborate on in the scope of this thesis.
+
+\subsubsection{Density Functional Tight Binding}
+Despite the many advancements in DFT and every increasing chemical accuracy, faster and computationally less demanding methods are always subject of research with the goal of reaching longer timeframes of simulation or upscale the size of studied systems.
+Building on the principles of \textit{tight-binding} theories,  \textit{Density Functional Tight Binding} (DFTB) is one such method.
+
 
 \subsection{Molecular Dynamics Simulations}
 Alongside advancements in the field of digital electronics came the possibilities of simulating chemical 

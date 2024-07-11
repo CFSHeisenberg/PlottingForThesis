@@ -18,4 +18,8 @@
 \contentsline {subsubsection}{\numberline {2.3.1}Hohenberg-Kohn Theorems}{13}{}%
 \contentsline {subsubsection}{\numberline {2.3.2}Kohn-Sham Equations}{13}{}%
 \contentsline {subsubsection}{\numberline {2.3.3}Local Density Approximation}{14}{}%
-\contentsline {subsection}{\numberline {2.4}Molecular Dynamics Simulations}{14}{}%
+\contentsline {subsubsection}{\numberline {2.3.4}Generalized Gradient Approximation}{15}{}%
+\contentsline {subsubsection}{\numberline {2.3.5}Hybrid Functionals}{17}{}%
+\contentsline {subsubsection}{\numberline {2.3.6}Dispersion Corrections}{18}{}%
+\contentsline {subsubsection}{\numberline {2.3.7}Density Functional Tight Binding}{20}{}%
+\contentsline {subsection}{\numberline {2.4}Molecular Dynamics Simulations}{21}{}%

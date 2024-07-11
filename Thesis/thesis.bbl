@@ -120,6 +120,11 @@ Maylis Orio, Dimitrios~A. Pantazis, and Frank Neese.
 \newblock Density functional theory.
 \newblock {\em Photosynthesis Research}, 102(2–3):443–453, February 2009.
 
+\bibitem{Koch2001-yq}
+Wolfram Koch and Max~C Holthausen.
+\newblock {\em A chemist's guide to density functional theory}.
+\newblock Wiley-VCH Verlag, Weinheim, Germany, 2 edition, July 2001.
+
 \bibitem{Hohenberg1964}
 P.~Hohenberg and W.~Kohn.
 \newblock Inhomogeneous electron gas.
@@ -152,5 +157,120 @@ R.G. Parr and Y.~Weitao.
 D.~M. Ceperley and B.~J. Alder.
 \newblock Ground state of the electron gas by a stochastic method.
 \newblock {\em Physical Review Letters}, 45(7):566–569, August 1980.
+
+\bibitem{Becke1988}
+A.~D. Becke.
+\newblock Density-functional exchange-energy approximation with correct
+  asymptotic behavior.
+\newblock {\em Physical Review A}, 38(6):3098–3100, September 1988.
+
+\bibitem{Perdew1986}
+John~P. Perdew and Wang Yue.
+\newblock Accurate and simple density functional for the electronic exchange
+  energy: Generalized gradient approximation.
+\newblock {\em Physical Review B}, 33(12):8800–8802, June 1986.
+
+\bibitem{Perdew1986_2}
+John~P. Perdew.
+\newblock Density-functional approximation for the correlation energy of the
+  inhomogeneous electron gas.
+\newblock {\em Physical Review B}, 33(12):8822–8824, June 1986.
+
+\bibitem{Burke1998}
+Kieron Burke, John~P. Perdew, and Yue Wang.
+\newblock {\em Derivation of a Generalized Gradient Approximation: The PW91
+  Density Functional}, page 81–111.
+\newblock Springer US, 1998.
+
+\bibitem{Lee1988}
+Chengteh Lee, Weitao Yang, and Robert~G. Parr.
+\newblock Development of the colle-salvetti correlation-energy formula into a
+  functional of the electron density.
+\newblock {\em Physical Review B}, 37(2):785–789, January 1988.
+
+\bibitem{Colle1975}
+Renato Colle and Oriano Salvetti.
+\newblock Approximate calculation of the correlation energy for the closed
+  shells.
+\newblock {\em Theoretica Chimica Acta}, 37(4):329–334, 1975.
+
+\bibitem{Becke1993_hybrid}
+Axel~D. Becke.
+\newblock A new mixing of hartree–fock and local density-functional theories.
+\newblock {\em The Journal of Chemical Physics}, 98(2):1372–1377, January
+  1993.
+
+\bibitem{Becke1993a}
+Axel~D. Becke.
+\newblock Density-functional thermochemistry. iii. the role of exact exchange.
+\newblock {\em The Journal of Chemical Physics}, 98(7):5648–5652, April 1993.
+
+\bibitem{stephens_ab_1994}
+P.~J. Stephens, F.~J. Devlin, C.~F. Chabalowski, and M.~J. Frisch.
+\newblock Ab {Initio} {Calculation} of {Vibrational} {Absorption} and
+  {Circular} {Dichroism} {Spectra} {Using} {Density} {Functional} {Force}
+  {Fields}.
+\newblock {\em The Journal of Physical Chemistry}, 98(45):11623--11627,
+  November 1994.
+
+\bibitem{Curtiss1991}
+Larry~A. Curtiss, Krishnan Raghavachari, Gary~W. Trucks, and John~A. Pople.
+\newblock Gaussian-2 theory for molecular energies of first- and second-row
+  compounds.
+\newblock {\em The Journal of Chemical Physics}, 94(11):7221–7230, June 1991.
+
+\bibitem{Adamo1999}
+Carlo Adamo and Vincenzo Barone.
+\newblock Toward reliable density functional methods without adjustable
+  parameters: The pbe0 model.
+\newblock {\em The Journal of Chemical Physics}, 110(13):6158–6170, April
+  1999.
+
+\bibitem{Zhao2007}
+Yan Zhao and Donald~G. Truhlar.
+\newblock The m06 suite of density functionals for main group thermochemistry,
+  thermochemical kinetics, noncovalent interactions, excited states, and
+  transition elements: two new functionals and systematic testing of four
+  m06-class functionals and 12 other functionals.
+\newblock {\em Theoretical Chemistry Accounts}, 120(1–3):215–241, July
+  2007.
+
+\bibitem{Klime2012}
+Jiří Klimeš and Angelos Michaelides.
+\newblock Perspective: Advances and challenges in treating van der waals
+  dispersion forces in density functional theory.
+\newblock {\em The Journal of Chemical Physics}, 137(12), September 2012.
+
+\bibitem{Zhao2007-oa}
+Yan Zhao and Donald~G Truhlar.
+\newblock Density functionals for noncovalent interaction energies of
+  biological importance.
+\newblock {\em J. Chem. Theory Comput.}, 3(1):289--300, January 2007.
+
+\bibitem{vonLilienfeld2004}
+O.~Anatole von Lilienfeld, Ivano Tavernelli, Ursula Rothlisberger, and Daniel
+  Sebastiani.
+\newblock Optimization of effective atom centered potentials for london
+  dispersion forces in density functional theory.
+\newblock {\em Physical Review Letters}, 93(15), October 2004.
+
+\bibitem{Sun2008}
+Y.~Y. Sun, Yong-Hyun Kim, Kyuho Lee, and S.~B. Zhang.
+\newblock Accurate and efficient calculation of van der waals interactions
+  within density functional theory by local atomic potential approach.
+\newblock {\em The Journal of Chemical Physics}, 129(15), October 2008.
+
+\bibitem{Grimme2006}
+Stefan Grimme.
+\newblock Semiempirical gga‐type density functional constructed with a
+  long‐range dispersion correction.
+\newblock {\em Journal of Computational Chemistry}, 27(15):1787–1799,
+  September 2006.
+
+\bibitem{Klime2009_vdW-DF}
+Jiří Klimeš, David~R Bowler, and Angelos Michaelides.
+\newblock Chemical accuracy for the van der waals density functional.
+\newblock {\em Journal of Physics: Condensed Matter}, 22(2):022201, December
+  2009.
 
 \end{thebibliography}
