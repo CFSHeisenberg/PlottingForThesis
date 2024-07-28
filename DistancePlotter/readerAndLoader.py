@@ -11,7 +11,7 @@ class ReaderAndLoader:
         self.centroid_indices = None
         self.centroid_indices_flat = None
         self.lattice_values = None
-        self.latticefilename = 'MIL68Ga-3rdguest-06.xyz'
+        self.latticefilename = 'MIL68Ga-3rdguest-09.xyz'
         self.numRelevantAtoms = None
 
     def read_and_save_data(self, directory, file_prefix, index_filename):
@@ -23,6 +23,7 @@ class ReaderAndLoader:
 
         # Save lattice parameters in separate dataframe
         lattice = pd.read_csv(os.path.join(directory, self.latticefilename), delimiter='\s+', header=None, skiprows=range(2, 400000), nrows=1)
+        #[21.83310074,  37.48633426,  20.12196487]
         
         # Read the number of atoms from the lattice parameters
         self.numAtoms = lattice[0][0] - 1

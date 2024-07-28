@@ -7,6 +7,9 @@
 \usepackage{geometry}
 \geometry{a4paper, portrait, margin=30mm, bmargin=30mm, tmargin=30mm}
 \usepackage{amsmath}
+\usepackage{esvect}
+
+\newcommand{\pvec}[1]{\vec{#1}\mkern2mu\vphantom{#1}}
 
 %Bibliography
 %\usepackage[backend = biber, style = alphabetic, sorting = ynt]{biblatex}
@@ -355,9 +358,9 @@ Including all possible excited states, referred to as \textit{Full Configuration
 \subsection{Density Functional Theory}
 Spawning from the field of solid-state physics, \textit{Density Functional Theory} (DFT) is a quantum mechanical method utilizing an alternative approach to many-electron systems with the aim of addressing the inaccuracies of HF and the high computational cost of post-HF methods.
 Where wave-functions depend on 3N spatial coordinates, excluding spin, DFT instead focuses on the electron density $\rho(\vec{r})$ of a system, a property defined by only 3 spatial coordinates, theoretically decreasing computational demand drastically~\cite{Orio2009}.
-The formalisms and qualitative discussions in this chapter are based on \textit{A Chemists's Guide to Density Functional Theory} by Koch and Holthausen~\cite{Koch2001-yq}.
+The formalisms and qualitative discussions in the following subsections~\ref{hohenbergKohn} trough~\ref{hybrid} are based on \textit{A Chemists's Guide to Density Functional Theory} by Koch and Holthausen~\cite{Koch2001-yq}.
 
-\subsubsection{Hohenberg-Kohn Theorems}
+\subsubsection{Hohenberg-Kohn Theorems}\label{hohenbergKohn}
 At the heart of DFT lie two theorems, formulated by Pierre Hohenberg and Walter Kohn in 1964~\cite{Hohenberg1964}.
 First, the ground-state of a many electron system, and by extension its properties, are uniquely determined by its electron density $\rho(\vec{r})$. In short, the external potential of a system is a unique functional of the electron density.
 Secondly, such a functional, if applied to the ground-state density, will yield the lowest possible energy of the system and this ground-state density corresponds to the exact solution of the Schrödinger equation. 
@@ -368,7 +371,9 @@ This, in essence, is the variational principle applied to the electron density f
   \label{eq:hohenbergKohn}
 \end{equation}
 
-\subsubsection{Kohn-Sham Equations}
+
+
+\subsubsection{Kohn-Sham Equations}\label{kohnSham}
 
 The \textit{Kohn-Sham} approach (KS), as derived by Kohn and Sham in 1965~\cite{Kohn1965}, forms the basis of current DFT approaches. 
 In this approach, a system of non-interacting electrons yielding the electron density of the original problem is constructed as seen in equation~\ref{eq:kohnSham}.
@@ -478,7 +483,7 @@ Finally and most notably, Lee, Yang and Parr formulated their \textit{LYP} funct
 While freely combining different exchange and correlation functionals is generally possible, only a small subset of pairings is seeing much use in modern theoretical chemistry, with the combination of Becke's exchange functional and LYP correlation functional, known as BLYP, being one of the most widely used frameworks.
 
 
-\subsubsection{Hybrid Functionals}
+\subsubsection{Hybrid Functionals}\label{hybrid}
 
 In an attempt to further improve the accuracy of DFT calculations, \textit{Hybrid Functionals} utilize a combination of the exact Hartree-Fock exchange energies and approximated correlation functionals, as shown in equation~\ref{eq:hybrid}.
 
@@ -561,8 +566,57 @@ To avoid causing additional divergence, these damping functions must be carefull
 Going beyond even these methods, the assumption of pairwise additivity must be left behind and many-body dispersion considered, though these methods would be too complex to elaborate on in the scope of this thesis.
 
 \subsubsection{Density Functional Tight Binding}
-Despite the many advancements in DFT and every increasing chemical accuracy, faster and computationally less demanding methods are always subject of research with the goal of reaching longer timeframes of simulation or upscale the size of studied systems.
-Building on the principles of \textit{tight-binding} theories,  \textit{Density Functional Tight Binding} (DFTB) is one such method.
+The following derivations are based on a review by Elstner et al.~titled \textit{Density functional tight binding} and published in 2014~\cite{Elstner2014-zp}.
+\\ \par \noindent Despite the many advancements in DFT and every increasing chemical accuracy, faster and computationally less demanding methods are always subject of research with the goal of reaching longer timeframes of simulation or upscale the size of studied systems.
+Building on the principles of \textit{tight-binding} theories~\cite{Goringe1997},  \textit{Density Functional Tight Binding} (DFTB) is one such method.
+DFTB may be understood as a Taylor series expansion of the Kohn-Sham density functional total energy, as previously shown in its contracted form in equation~\ref{eq:kohnSham} of chapter~\ref{kohnSham}, around a reference density $\rho_0(\vec{r})$.
+To forego finding the electron density $\rho(\vec{r})$ that minimizes the energy expectation value, this reference density is perturbed by a density fluctuation as described in equation~\ref{eq:dftb1}.
+
+\begin{equation}
+  \rho(\vec{r}) = \rho_0(\vec{r}) + \delta\rho(\vec{r})
+  \label{eq:dftb1}
+\end{equation}
+
+\bigskip
+
+\noindent Expanding the exchange-correlation energy part of the KS energy in a Taylor series up to the third order leads to the different terms shown in equations~\ref{eq:term1},~\ref{eq:term2},~\ref{eq:term3} and~\ref{eq:term4}.
+
+\begin{equation}
+  E^{0}[\rho_0] = \frac{1}{2}\sum_{ab}^{}\frac{Z_a Z_b}{R_{ab}} - \frac{1}{2} \int\int \frac{\rho_0(\vec{r})\rho_0(\pvec{r}')}{|\vec{r}-\pvec{r}'|}d\vec{r}d\pvec{r}' - \int V^{XC}[\rho_0]\rho_0(\vec{r})d\vec{r}+E^{XC}[\rho_0] \\
+  \label{eq:term1}
+\end{equation}
+\begin{equation}
+  E^1[\rho_0, \delta\rho] = \sum_{i}^{}n_i \langle\psi_i|\hat{H}[\rho_0]|\psi_i\rangle
+  \label{eq:term2}
+\end{equation}
+\begin{equation}
+  E^2[\rho_0, (\delta\rho)^2] = \frac{1}{2}\int\int\Biggl(\frac{1}{|\vec{r}-\pvec{r}'|}+\frac{\delta^2E^{XC}[\rho]}{\delta\rho(\vec{r})\delta\rho(\pvec{r}')}\Biggr|_{\rho_0}\Biggr)\delta\rho(\vec{r})\delta\rho(\pvec{r}')d\vec{r}d\pvec{r}'
+  \label{eq:term3}
+\end{equation}
+\begin{equation}
+  E^3[\rho_0, (\delta\rho)^3] = \frac{1}{6}\int\int\int\frac{\delta^3E^{XC}[\rho]}{\delta\rho(\vec{r})\delta\rho(\pvec{r}')\delta\rho(\pvec{r}'')}\Biggr|_{\rho_0}\delta\rho(\vec{r})\delta\rho(\pvec{r}')\delta\rho(\pvec{r}'')d\vec{r}d\pvec{r}'d\pvec{r}''
+  \label{eq:term4}
+\end{equation}
+
+\bigskip
+
+The entire third order expansion may then be written as in equation~\ref{eq:taylor}
+
+\begin{equation}
+  E[\rho] = E^{0}[\rho_0] + E^1[\rho_0, \delta\rho] + E^2[\rho_0, (\delta\rho)^2] + E^3[\rho_0, (\delta\rho)^3]
+  \label{eq:taylor}
+\end{equation}
+
+\bigskip
+
+\noindent In DFTB, the zeroeth order energy term $E^0$ is determined only for the reference system, allowing transferability to different chemical environments.
+It is approximated by a sum of pair potentials referred to as the repulsive energy term, as shown in equation~\ref{eq:repulsive}, and either fitted to DFT calculations or to emprical data.
+
+\begin{equation}
+  E^{0}[\rho_0] \approx E_{rep} = \frac{1}{2} \sum_{ab}^{}V_{rep}^{ab}
+  \label{eq:repulsive}
+\end{equation}
+
 
 
 \subsection{Molecular Dynamics Simulations}

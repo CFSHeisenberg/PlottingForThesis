@@ -198,10 +198,10 @@ def plotFromSavedDistances(centroid_vars, file_path):
     results = np.load(file_path)
         
     # Get the steps to plot from the name of the file
-    stepsToPlot = int(file_path.split('_')[5])
+    stepsToPlot = int(file_path.split('_')[7])
     
     # Get the selected guest
-    guestNumber = int(file_path.split('_')[3])
+    guestNumber = int(file_path.split('_')[5])
         
     # Get the selected centroids to plot
     selected_centroids = [var.get() for var in centroid_vars]
@@ -235,20 +235,25 @@ def plotFromSavedDistances(centroid_vars, file_path):
     #plt.axvline(x = 0.168, color = 'k', linestyle = '--')
     #plt.axvline(x = 0.24, color = 'k', linestyle = '--')
     #plt.axvline(x = 0.25, color = 'k', linestyle = '--')
-    plt.axvline(x = 0.10, color = 'k', linestyle = '--')
-    plt.axvline(x = 0.17, color = 'k', linestyle = '--')
-    plt.axvline(x = 0.46, color = 'k', linestyle = '--')
+    #plt.axvline(x = 0.10, color = 'k', linestyle = '--')
+    #plt.axvline(x = 0.17, color = 'k', linestyle = '--')
+    #plt.axvline(x = 0.46, color = 'k', linestyle = '--')
+    #plt.axvline(x = 0.40, color = 'k', linestyle = '--')
+    #plt.axvline(x = 0.503, color = 'k', linestyle = '--')
+    #plt.axvline(x = 0.6272, color = 'k', linestyle = '--')
+    plt.axvline(x = 0.28, color = 'k', linestyle = '--')
+    plt.axvline(x = 0.4, color = 'k', linestyle = '--')
 
 
     #labels for vertical lines
     #labels = ['S1', 'S2', 'S3', 'S4']
     #labels = ['S1']
-    labels = ['S1', 'S2', 'S3']
+    labels = ['S1', 'S2']
 
     #label positions
     #label_positions = [0.032, 0.112, 0.168, 0.24]
     #label_positions = [0.25]
-    label_positions = [0.10, 0.17, 0.46]
+    label_positions = [0.28, 0.4]
 
     #Place labels above figure
     fig = plt.gcf()
@@ -259,7 +264,7 @@ def plotFromSavedDistances(centroid_vars, file_path):
 
     #Loop through each label and use ax.text()
     for x_pos, label in zip(label_positions, labels):
-        ax.text(x_pos, y_lim[1], label, horizontalalignment='center', verticalalignment='bottom', fontsize=14)
+        ax.text(x_pos, y_lim[1], label, horizontalalignment='center', verticalalignment='bottom', fontsize=30)
 
 
     
@@ -279,10 +284,10 @@ def plotFromSavedDistances(centroid_vars, file_path):
 
     
     plt.xlim(0.0, max_x)
-    plt.xlabel('Simulation Time / ns', fontsize=30)
+    plt.xlabel('Simulation Time in ns', fontsize=30)
     plt.yticks(fontsize=20)
     plt.xticks(fontsize=20)
-    plt.ylabel('Distance / Å', fontsize=30)
+    plt.ylabel('Distance in Å', fontsize=30)
 
     #plt.axvline(x = 0.25, color = 'k', linestyle = '--')
     plt.legend()

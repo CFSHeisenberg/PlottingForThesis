@@ -9,11 +9,11 @@ from tkinter import *
 import os
 
 DEFAULT_FILE_PREFIX = "MIL68Ga"
-DEFAULT_DIRECTORY = "/home/mfi/Desktop/mfi/MIL-68Ga-guest/2ndguest/3rdguest/3GuestData/heidi"
+DEFAULT_DIRECTORY = "/home/mfi/Desktop/mfi/full_simulations/3_Guest"
 DEFAULT_INDEX_FILENAME = "indicessorted.dat"  # Set default index filename
-#DEFAULT_GUEST_INDICES = [685, 686, 687, 688, 689, 690]
-#DEFAULT_GUEST_INDICES = [723, 724, 722, 721, 725, 726]
-DEFAULT_GUEST_INDICES = [757, 762, 758, 759, 760, 761]
+#DEFAULT_GUEST_INDICES = [685, 686, 687, 688, 689, 690]#1
+#DEFAULT_GUEST_INDICES = [723, 724, 722, 721, 725, 726]#2
+DEFAULT_GUEST_INDICES = [757, 762, 758, 759, 760, 761]#3
 
 ReaderAndLoader = ReaderAndLoader()
 distancePlotter = None
