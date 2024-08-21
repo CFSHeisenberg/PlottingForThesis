@@ -4,45 +4,46 @@ The top-level auxiliary file: thesis.aux
 The style file: unsrt.bst
 Database file #1: thesis.bib
 Warning--empty title in Boys1950
-You've used 49 entries,
+Warning--empty publisher in Gupta1990-au
+You've used 60 entries,
             1791 wiz_defined-function locations,
-            809 strings with 11198 characters,
-and the built_in function-call counts, 11551 in all, are:
-= -- 1037
-> -- 339
-< -- 1
-+ -- 137
-- -- 88
-* -- 969
-:= -- 1785
-add.period$ -- 147
-call.type$ -- 49
-change.case$ -- 44
+            878 strings with 13660 characters,
+and the built_in function-call counts, 14534 in all, are:
+= -- 1285
+> -- 488
+< -- 2
++ -- 191
+- -- 131
+* -- 1224
+:= -- 2248
+add.period$ -- 180
+call.type$ -- 60
+change.case$ -- 52
 chr.to.int$ -- 0
-cite$ -- 50
-duplicate$ -- 460
-empty$ -- 1230
-format.name$ -- 88
-if$ -- 2539
+cite$ -- 62
+duplicate$ -- 578
+empty$ -- 1512
+format.name$ -- 131
+if$ -- 3192
 int.to.chr$ -- 0
-int.to.str$ -- 49
-missing$ -- 54
-newline$ -- 247
-num.names$ -- 49
-pop$ -- 77
+int.to.str$ -- 60
+missing$ -- 68
+newline$ -- 302
+num.names$ -- 60
+pop$ -- 108
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 185
+skip$ -- 238
 stack$ -- 0
-substring$ -- 1176
-swap$ -- 66
-text.length$ -- 1
+substring$ -- 1432
+swap$ -- 92
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 1
-while$ -- 92
-width$ -- 51
-write$ -- 539
-(There was 1 warning)
+warning$ -- 2
+while$ -- 114
+width$ -- 62
+write$ -- 657
+(There were 2 warnings)

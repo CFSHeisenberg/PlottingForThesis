@@ -21,5 +21,9 @@
 \contentsline {subsubsection}{\numberline {2.3.4}Generalized Gradient Approximation}{15}{}%
 \contentsline {subsubsection}{\numberline {2.3.5}Hybrid Functionals}{17}{}%
 \contentsline {subsubsection}{\numberline {2.3.6}Dispersion Corrections}{18}{}%
-\contentsline {subsubsection}{\numberline {2.3.7}Density Functional Tight Binding}{20}{}%
-\contentsline {subsection}{\numberline {2.4}Molecular Dynamics Simulations}{22}{}%
+\contentsline {subsubsection}{\numberline {2.3.7}Density Functional Tight Binding1}{20}{}%
+\contentsline {subsection}{\numberline {2.4}Molecular Dynamics Simulations}{26}{}%
+\contentsline {subsubsection}{\numberline {2.4.1}Statistical Mechanics - Ensembles}{26}{}%
+\contentsline {subsubsection}{\numberline {2.4.2}The Canonical Ensemble}{28}{}%
+\contentsline {subsubsection}{\numberline {2.4.3}Equations of Motion}{29}{}%
+\contentsline {subsubsection}{\numberline {2.4.4}The Louiville Formalism}{31}{}%

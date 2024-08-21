@@ -395,7 +395,7 @@ The total energy of the system is then expressed as shown in equation~\ref{eq:ko
 
 \bigskip
 
-\noindent With $T_s$ being the kinetic energy of the non-interacting system, $J$ the Coulomb energy and $E_{XC}$ the exchange-correlation energy.
+\noindent With $T_s$ being the non-interacting kinetic energy of the system, $J$ the Coulomb energy and $E_{XC}$ the exchange-correlation energy.
 While the kinetic energy is for the most part comparatively easy to solve, the exchange-correlation functionals, which also include a "true" part of the kinetic energy, for such a system are unknown, leading to many DFT approaches with the sole purpose of defining increasingly accurate functionals.
 Should such an explicit and exact form of the exchange-correlation functional $E_{XC}[\rho(\vec{r})]$ and its corresponding potential $V_{XC}[\rho(\vec{r})]$ be found, the Kohn-Sham equations would, in principal, be exact solutions to many body problems.
 
@@ -565,67 +565,475 @@ To avoid causing additional divergence, these damping functions must be carefull
 \\ \par \noindent Moving further up the `stairway' of complexity, one may employ so called \textit{non-local} correlation functionals, which add non-local correlations to local correlation functionals and do not rely on external experimental data, with e.g.~the \textit{non-local van der Waals density functional} (vdW-DF)~promising high accuracies~\cite{Klime2009_vdW-DF}.
 Going beyond even these methods, the assumption of pairwise additivity must be left behind and many-body dispersion considered, though these methods would be too complex to elaborate on in the scope of this thesis.
 
-\subsubsection{Density Functional Tight Binding}
-The following derivations are based on a review by Elstner et al.~titled \textit{Density functional tight binding} and published in 2014~\cite{Elstner2014-zp}.
+\subsubsection{Density Functional Tight Binding1}
+The following derivations are functionally based on an article by Koskinen and Mäkinen titled \textit{Density-functional tight-binding for beginners}, published in 2009~\cite{Koskinen2009}, albeit with stylistic alterations to keep the overall thesis consistent.
+The penultimate section regarding DFTB3 is sourced from an article by Gaus \textit{et al.}~titled \textit{DFTB3: Extension of the Self-Consistent-Charge Density-Functional Tight-Binding Method}, published in 2011~\cite{Gaus2011}.
 \\ \par \noindent Despite the many advancements in DFT and every increasing chemical accuracy, faster and computationally less demanding methods are always subject of research with the goal of reaching longer timeframes of simulation or upscale the size of studied systems.
-Building on the principles of \textit{tight-binding} theories~\cite{Goringe1997},  \textit{Density Functional Tight Binding} (DFTB) is one such method.
-DFTB may be understood as a Taylor series expansion of the Kohn-Sham density functional total energy, as previously shown in its contracted form in equation~\ref{eq:kohnSham} of chapter~\ref{kohnSham}, around a reference density $\rho_0(\vec{r})$.
-To forego finding the electron density $\rho(\vec{r})$ that minimizes the energy expectation value, this reference density is perturbed by a density fluctuation as described in equation~\ref{eq:dftb1}.
+Building on the principles of \textit{tight-binding} theories~\cite{Goringe1997},  \textit{Density Functional Tight Binding} (DFTB) is one such method particularly useful for total energy calculations.
+To start, the Kohn-Sham energy already presented in a more compact formalism in equation~\ref{eq:kohnSham2} is expanded upon and written as in equation~\ref{eq:dftb2}.
+
+\begin{equation}
+  E[\rho(\vec{r})] = T_s + E_{ext} + E_{H} + E_{XC} + E_{II}
+  \label{eq:dftb2}
+\end{equation}
+
+\bigskip
+
+\noindent Where $T_s$ is, again, the non-interacting kinetic energy, $E_{ext}$ the external potential energy, $E_{H}$ the Hartree energy, $E_{XC}$ the exchange-correlation energy and $E_{II}$ the ion-ion interaction energy.
+The exchange energy may be expressed as in equation~\ref{eq:dftb3}, showing how it contains all `leftover' many-body effects.
+
+\begin{equation}
+  E_{XC} = (T-T_s) + (E_{ee} - E_{H})
+  \label{eq:dftb3}
+\end{equation}
+
+\bigskip
+
+\noindent Where $T$ is the total kinetic energy and $E_{ee}$ the total electron-electron interaction energy.
+More explicitly, equation~\ref{eq:dftb2} may be written as in equation~\ref{eq:dftb4}.
+
+
+\begin{equation}
+  E[\rho] = \sum_{a}^{} f_a \langle\phi_a|(-\frac{1}{2}\nabla^2 + \int V_{ext}(\vec{r})\rho(\vec{r})d\vec{r})|\phi_a\rangle + \frac{1}{2}\int\int \frac{\rho(\vec{r})\rho(\pvec{r}')}{|\vec{r}-\pvec{r}'|}d\vec{r}d\pvec{r}' + E_{XC}[\rho] + E_{II}
+  \label{eq:dftb4}
+\end{equation}
+
+\bigskip
+
+\noindent Where a indexes electronic eigenstates $\phi$ and $f_a \in [0,2]$ is the occupation number of such a single-particle state with energy $\epsilon_a$.
+In the next step, one considers a reference density $\rho_0(\vec{r})$ composed of atomic densities that does not minimize equation~\ref{eq:dftb4} but is assumed to neighbour the true minimal density as in equation~\ref{eq:dftb5}.
 
 \begin{equation}
   \rho(\vec{r}) = \rho_0(\vec{r}) + \delta\rho(\vec{r})
-  \label{eq:dftb1}
+  \label{eq:dftb5}
 \end{equation}
 
 \bigskip
 
-\noindent Expanding the exchange-correlation energy part of the KS energy in a Taylor series up to the third order leads to the different terms shown in equations~\ref{eq:term1},~\ref{eq:term2},~\ref{eq:term3} and~\ref{eq:term4}.
+\noindent Where $\delta\rho(\vec{r})$ is a small fluctuation of the electron density. Expanding the Energy at $\rho_0(\vec{r})$ to the second order in fluctuations then leads to equation~\ref{eq:dftb6}.
+
+\begin{align}\label{eq:dftb6}
+    E[\delta\rho] \approx &\sum_{a}^{} f_a \langle\psi_a|-\frac{1}{2}\nabla^2+V_{ext} + V_H[\rho_0] + V_{XC}[\rho_0]|\psi_a\rangle \\
+    &+ \frac{1}{2}\int\int \Biggl(\frac{\delta^2E_{XC}[\rho_0]}{\delta\rho(\vec{r})\delta\rho(\pvec{r}')}\Biggr)\delta\rho(\vec{r})\delta\rho(\pvec{r}')d\vec{r}d\pvec{r} \notag \\
+    &-\frac{1}{2}\int V_H[\rho_0]\delta\rho(\vec{r})d\vec{r} + E_{XC}[\rho_0] + E_{II} - \int V_{XC}[\rho_0](\vec{r})\rho_0(\vec{r})d\vec{r} \notag
+\end{align}
+
+\bigskip
+
+\noindent The first line in the above equation~\ref{eq:dftb6} is the band-structure energy of the system as in equation~\ref{eq:dftb7}.
 
 \begin{equation}
-  E^{0}[\rho_0] = \frac{1}{2}\sum_{ab}^{}\frac{Z_a Z_b}{R_{ab}} - \frac{1}{2} \int\int \frac{\rho_0(\vec{r})\rho_0(\pvec{r}')}{|\vec{r}-\pvec{r}'|}d\vec{r}d\pvec{r}' - \int V^{XC}[\rho_0]\rho_0(\vec{r})d\vec{r}+E^{XC}[\rho_0] \\
-  \label{eq:term1}
-\end{equation}
-\begin{equation}
-  E^1[\rho_0, \delta\rho] = \sum_{i}^{}n_i \langle\psi_i|\hat{H}[\rho_0]|\psi_i\rangle
-  \label{eq:term2}
-\end{equation}
-\begin{equation}
-  E^2[\rho_0, (\delta\rho)^2] = \frac{1}{2}\int\int\Biggl(\frac{1}{|\vec{r}-\pvec{r}'|}+\frac{\delta^2E^{XC}[\rho]}{\delta\rho(\vec{r})\delta\rho(\pvec{r}')}\Biggr|_{\rho_0}\Biggr)\delta\rho(\vec{r})\delta\rho(\pvec{r}')d\vec{r}d\pvec{r}'
-  \label{eq:term3}
-\end{equation}
-\begin{equation}
-  E^3[\rho_0, (\delta\rho)^3] = \frac{1}{6}\int\int\int\frac{\delta^3E^{XC}[\rho]}{\delta\rho(\vec{r})\delta\rho(\pvec{r}')\delta\rho(\pvec{r}'')}\Biggr|_{\rho_0}\delta\rho(\vec{r})\delta\rho(\pvec{r}')\delta\rho(\pvec{r}'')d\vec{r}d\pvec{r}'d\pvec{r}''
-  \label{eq:term4}
+  E_{BS} = \sum_{a}^{} f_a \langle\psi_a|H[\rho_0]|\psi_a\rangle
+  \label{eq:dftb7}
 \end{equation}
 
 \bigskip
 
-The entire third order expansion may then be written as in equation~\ref{eq:taylor}
+\noindent The second line is energy stemming from charge fluctuations composed of coulombic and exchange-interaction contributions, shortened to $E_{coul}$. 
+Lastly, the four terms in the third line are collectively called repulsive energy, referred to as $E_{rep}$, due to the ion-ion repulsion term being present.
+Contracting equation~\ref{eq:dftb6} using this formalism leads to equation~\ref{eq:dftb8}.
 
 \begin{equation}
-  E[\rho] = E^{0}[\rho_0] + E^1[\rho_0, \delta\rho] + E^2[\rho_0, (\delta\rho)^2] + E^3[\rho_0, (\delta\rho)^3]
-  \label{eq:taylor}
+  E[\delta\rho] \approx E_{BS} + E_{coul} + E_{rep}
+  \label{eq:dftb8}
 \end{equation}
 
 \bigskip
 
-\noindent In DFTB, the zeroeth order energy term $E^0$ is determined only for the reference system, allowing transferability to different chemical environments.
-It is approximated by a sum of pair potentials referred to as the repulsive energy term, as shown in equation~\ref{eq:repulsive}, and either fitted to DFT calculations or to emprical data.
+\noindent The tight-binding approach is mainly concerned with valence electrons, as core electrons are contained in the repulsive energy term.
+Additionally, tight-binding assumes, as the name implies, tightly bound electrons.
+As such, the atomic orbitals $\phi_a$ are approximated as in equation~\ref{eq:dftb9} via a minimal local basis, i.e.~only one radial function per angular momentum state.
 
 \begin{equation}
-  E^{0}[\rho_0] \approx E_{rep} = \frac{1}{2} \sum_{ab}^{}V_{rep}^{ab}
-  \label{eq:repulsive}
+  \psi_a(\vec{r}) = \sum_{\mu}^{}c_{\mu}^a\phi_{\mu}(\vec{r})
+  \label{eq:dftb9}
 \end{equation}
 
+\bigskip
 
+\noindent With $\mu$ indexing the pseudo-atomic basis states $\phi$ and $\psi_a$ being an electronic eigenstate.
+Applying this expansion to equation~\ref{eq:dftb7} leads to equation~\ref{eq:dftb10}.
+
+\begin{equation}
+  E_{BS} = \sum_{a}^{} f_a \sum_{\mu\nu}^{}c_{\mu}^{a'} c_{\nu}^a H_{\mu\nu}^0
+  \label{eq:dftb10}
+\end{equation}
+\begin{equation*}
+  H^0_{\mu\nu} = \langle\phi_{\mu}|H^0|\phi_{\nu}\rangle
+\end{equation*}
+
+\bigskip
+
+\noindent With $H^0_{\mu\nu}$ being the Hamiltonian matrix elements of the reference system.
+The values of these matrix elements are pre-computed and stored, leading to a significant increase in computational efficiency and forming the core of the tight-binding approach.
+In addition, one must look at atomic populations utilizing an overlap of orbitals, as in equation~\ref{eq:dftb11}.
+
+
+
+\begin{equation}
+  q_I = \sum_{a}^{}f_a\sum_{\mu \in I}^{}\sum_{\nu}^{}\frac{1}{2}(c_{\mu}^{a*}c_{\nu}^a + c_{\nu}^{a*}c_{\mu}^a)S_{\mu\nu}
+  \label{eq:dftb11}
+\end{equation}
+\begin{equation*}
+  S_{\mu\nu} = \langle\psi_{\mu}|\psi_{\nu}\rangle
+\end{equation*}
+
+\bigskip
+
+\noindent Where $q_I$ is the population or charge of atom I, S the overlap matrix, $\mu$ and $\nu$ again indexing the atomic basis states and $a$ denoting electronic eigenstates.
+The difference in charge to a neutral atom $\Delta q_I$ is then calculated as in equation~\ref{eq:dftb12}.
+
+\begin{equation}
+  \Delta q_I = q_I - q_I^{0}
+  \label{eq:dftb12}
+\end{equation}
+
+\bigskip
+
+\noindent With $q_I^{0}$ being the number of valence electrons in the neutral atom.
+Applying undetermined Lagrane multipliers to constrain the wave function norms, one arrives at the Kohn-Sham equation-equivalent of DFTB, as shown in equation~\ref{eq:dftb13}.
+
+\begin{equation}
+  H_{\mu\nu} = H_{\mu\nu}^0 + \frac{1}{2}S_{\mu\nu}\sum_{K}^{}(\gamma_{IK} + \gamma_{JK})\Delta q_K  \quad \mu \in I, \nu \in J
+  \label{eq:dftb13}
+\end{equation}
+
+\bigskip
+
+\noindent Writing the electrostatic potential on atom I due to charge fluctuations as in equation~\ref{eq:dftb14} and $h_{\mu\nu}^1$ as in equation~\ref{eq:dftb15}, one may contract the above equation~\ref{eq:dftb13} to equation~\ref{eq:dftb16}.
+
+\begin{equation}
+  \epsilon_I = \sum_{K}^{}\gamma_{IK}\Delta q_K
+  \label{eq:dftb14}
+\end{equation}
+\begin{equation}
+  h_{\mu\nu}^1 = \frac{1}{2}(\epsilon_I + \epsilon_J) \quad \mu \in I, \nu \in J
+  \label{eq:dftb15}
+\end{equation}
+\begin{equation}
+  H_{\mu\nu} = H_{\mu\nu}^0 + h_{\mu\nu}^1S_{\mu\nu}
+  \label{eq:dftb16}
+\end{equation}
+
+\bigskip
+
+\noindent As in the DFT equivalent, equation~\ref{eq:dftb16} is solved iteratively until convergence is reached.
+This, while suffering from many of the same convergence issues as DFT, is usually notably faster and more efficient than its parent methods~\cite{Elstner2014-zp}.
+\\ \par \noindent Apart from the tight-binding formalism, DFTB also approaches the collected term referred to as repulsive energy as well as the coulombic term defined in equation~\ref{eq:dftb8} via semi-empirical approximations.
+Firstly, for the repulsive term containing complicated exchange interactions, a repulsive function depending only on atomic numbers, as in equation~\ref{eq:dftb17}, is fitted to higher-level theoretical calculations \textit{via}, mostly cubic, splining.
+
+\begin{equation}
+  E_{rep} = \sum_{I<J}^{}V_{rep}^{IJ}(R_{IJ})
+  \label{eq:dftb17}
+\end{equation}
+
+\bigskip
+
+\noindent Where $V_{rep}^{IJ}$ is the repulsive potential between atoms I and J at a distance $R_{IJ}$.
+\\ \par \noindent A final approximation in the DFTB formalism happens at the coulombic term, where the charge fluctuation is written as in equation~\ref{eq:dftb18}.
+
+\begin{equation}
+  E_{coul} = \frac{1}{2}\sum_{IJ}^{}\gamma_{IJ}(R_{IJ})\Delta q_I \Delta q_J
+  \label{eq:dftb18}
+\end{equation}
+\begin{equation*}
+  \gamma_{IJ}(R_{IJ}) = \begin{cases}
+    U_I & \text{for } I = J \\
+    \frac{erf(C_{IJ}R_{IJ})}{R_{IJ}} & \text{for } I \neq J
+  \end{cases}
+\end{equation*}
+
+\bigskip
+
+\noindent Where $\gamma_{IJ}$ is a Coulomb-like function with dampening applied at small atomic distances $R_{IJ}$.
+This function $\gamma$ is equal to the so-called Hubbard parameter $U_I$ when $I=J$, which itself is twice the chemical hardness of an atom.
+In short, one estimates the size of the charge distribution from absolute hardness, which in turn is used to estimate Coloumb interactions between the atoms.
+In this case, the Hubbard parameter $U_I$ for each element is taken from standard tables to determine charge transfer.
+\\ \par \noindent 
+With all previously mentioned approximations in place, one finally arrives at the DFTB2 formalism, named so since the Kohn-Sham energy is expanded up to the second order. 
+These semi-empirical parametres discussed above are stored in so called \textit{Slater-Koster} files, one for each distinct permutation of atom-atom interaction. In summary, these contain Hamiltonian matrix elements and overlap integrals for all relevant orbital interactions, fitted repulsive potentials as well as Hubbar-parameters for each element.
+Mainly due to this parametrisation, DFTB2 displays faster convergence than popular DFT methods as well as high transferability, making it a popular choice for large-scale simulations~\cite{Hofer2023}.
+\\ \par \noindent
+On a final note, the problem of chemical hardness being a constant irrespective of charge state as well as atoms being restricted to fixed shapes via their initial reference densities in DFTB2 is adressed by including the third order expansion of the Kohn-Sham energy, as seen in equation~\ref{eq:dftb19}.
+
+\begin{equation}
+  E^{3rd} \approx \frac{1}{6}\sum_{a}^{}\delta q_a^3\frac{\delta\gamma_{aa}}{\delta q_a}\Biggr|_{q_a^0} + \frac{1}{6}\sum_{a \neq b}^{}\Delta q_a \Delta q_b \Biggl( \Delta q_a \frac{\delta \gamma_{ab}}{\delta q_a}\Biggr|_{q_a^0} + \Delta q_b \frac{\delta \gamma_{ab}}{\delta q_b}\Biggr|_{q_b^0} \Biggr)
+    \label{eq:dftb19}
+\end{equation}
+
+\bigskip
+
+\noindent Where $\frac{\delta\gamma}{\delta q}$ describes the charge dependancy of the Hubbard parameter $U$ as in equation~\ref{eq:dftb20}.
+
+\begin{equation}
+  \frac{\delta\gamma_{ab}}{\delta q_a}\Biggr|_{q_a^0} = \frac{\delta\gamma_{ab}\delta U_a}{\delta U_a\delta q_a}\Biggr|_{q_a^0} \quad with \quad a\neq b
+  \label{eq:dftb20}
+\end{equation}
+
+\bigskip 
+
+\noindent Including this third order expansion leads to the DFTB3 formalism, shown to allow for more flexible description of interatomic electrostatics and charge transfer, as well as a more accurate description of chemical hardness~\cite{yangsource}. In addition to the parametres above, Slater-Koster files for DFTB3 based calculations also contain these Hubbard derivatives, a very popular variant of which is the 3ob parameter set particularly useful for organic systems~\cite{Gaus2012}.
 
 \subsection{Molecular Dynamics Simulations}
 Alongside advancements in the field of digital electronics came the possibilities of simulating chemical 
 systems on ever larger scales. Where practical experiments are limited by equipment, time, resources and safety regulations, 
 simulations can be conducted cost effectively and with an ever increasing level of precision.
-Simulating a chemical system to receive an ensemble of configurations starts with choosing the most viable
-theoretical framework. Molecular Dynamics (MD), utilizing the DFTB method, is one of those frameworks particularly well suited for  
-the theoretical time-dependant analysis of periodic chemical systems. 
+Simulating a chemical system to receive meaningful information starts with choosing the most viable
+theoretical framework. \textit{Molecular Dynamics} (MD), utilizing the DFTB method, is one of those frameworks particularly well suited for  the theoretical time-dependant analysis of periodic chemical systems. From the output of such a framework, macroscopic properties and structural information of a given system may be inferred using the principles of statistical mechanics.
+In this chapter, the most relevant aspects of MD simulations fore the scope of this thesis will be discussed, mostly based on \textit{Computer Simulation of Liquids} by Allen and Tildesley unless cited otherwise, again with stylistic changes for the sake of consistency~\cite{Allen2017}.
+
+\subsubsection{Statistical Mechanics - Ensembles}
+Unless calculating a system with no kinetic energy, i.e.~at absolute zero and at a state of least entropy, the various states of a chemical system during a simulation will cover a variety of conformations and, therefore, potential and kinetic energies. The potential energy of such a system is a function of the positions of all individual atoms, leading to what is called a potential energy surface (PES), in essence a 3N-dimensional function where N is the number of atoms in the system. To extract macroscopic properties from such a system, however, one must also consider the velocities each atom has at specific points in time, as the total energy of a closed system is the sum of kinetic and potential energies as in equation~\ref{eq:total}
+
+\begin{equation}
+  E_{tot}(\textbf{Q}, \textbf{P}) = K(\textbf{P}) + V(\textbf{Q})
+  \label{eq:total}
+\end{equation}
+
+\bigskip
+
+\noindent Where $\textbf{Q}$ and $\textbf{P}$ are the position and momenta vectors respectively.
+The positions and momenta of all atoms are thought of as coordinates in a multidimensional space with 6N dimensions, the \textit{phase space}. Over the course of a simulation, many different phase space vectors are sampled, leading to what is referred to as an \textit{ensemble} of configurations weighted by their probability of occuring. Such an ensemble may be regarded as a collection of all accessible points $\Gamma$ in phase space, with different ensembles defined by which macroscopic parametres (volume, pressure, temperature,  ...) are fixed.
+\\ \par \noindent
+Given a particular point in phase space, one may simply calculate the microscopic value of some property as a function of the phase space vector. According to the principles of the \textit{Ergodic Hypothesis}, a central approximation in statistical analysis, the time average of a process parameter equals the observable equilibrium value of said property on a macroscopic scale as desribed in equation~\ref{eq:ergoden}, so long as sufficiently long sampling times are employed. This assumption must be made as MD simulations, limited by computational resources, cannot sample system sizes even close to real world scales and is key to extracting macroscopic properties. In such an \textit{ergodic system}, an equal amount of time is spent in each possible phase state~\cite{Gupta1990-au}.
+
+\begin{equation}
+  A_{obs} = \langle A  \rangle_{time} = \bigl\langle A \bigl(\mathbf{\Gamma}(t)\bigr) \bigl\rangle_{time} = \lim_{t_{obs} \to \infty} \frac{1}{t_{obs}}\int_{0}^{t_{obs}}A\bigl(\mathbf{\Gamma}(t)\bigr)dt
+  \label{eq:ergoden}
+\end{equation}
+
+\bigskip
+
+\noindent Where $A_{obs}$ is the observable macroscopic value of a property, $A$ the property itself at a given phase space vector $\mathbf{\Gamma}(t)$ at time $t$ and $t_{obs}$ the observation time. As it is impossible to extend the observation time to infinity, equations of motions are usually solved over a large but finite number of equally long timesteps, as in equation~\ref{eq:ergoden2}.
+
+\begin{equation}
+  A_{obs} = \langle A  \rangle_{time} = \frac{1}{\tau_{obs}}\sum_{\tau=1}^{\tau_{obs}}A\bigl(\mathbf{\Gamma}(t)\bigr)
+  \label{eq:ergoden2}
+\end{equation}
+\begin{equation*}
+  \delta t = \frac{t_{obs}}{\tau_{obs}}
+\end{equation*}
+
+\bigskip
+
+\noindent Where $\tau_{obs}$ is the number of timesteps each with length $\delta t$.
+
+\subsubsection{The Canonical Ensemble}
+While the usual choice for conducting MD simulations of metal-organic frameworks might be the \textit{istothermic-isobaric} conditions in the NPT ensemble, the employed parametrization of nitrogen interactions in the DFTB framework has been shown to lead to high instability and often times full system collapse of the porous structure under these conditions. For this reason, simulations in this thesis are treated under constant volume conditions, equating a \textit{canonical} (NVT) ensemble which has previously been employed to good effect in similar studies~\cite{Fischereder2023}\cite{Purtscher2023}.
+\\ \par \noindent
+Such a canonical ensemble is defined by a fixed number of particles, volume and temperature, which may be understood as coupling a system to an external heat bath to allow energy exchange. The partition function $Q_{NVT}$ in this ensemble is the sum of probability densities for all possible microstates $\Gamma$ as in equation~\ref{eq:partition}.
+
+
+\begin{equation}
+  Q_{NVT} = \sum_{\mathbf{\Gamma}}^{}\exp\Bigl(-\frac{H(\mathbf{\Gamma})}{k_BT}\Bigl)
+  \label{eq:partition}
+\end{equation}
+
+\bigskip
+
+\noindent Where $H(\Gamma)$ is the Hamiltonian of the system in a given microstate $\Gamma$ and $k_B$ the \textit{Helmholtz constant}. Since energy fluctuations are non-zero and the energy is comprised of kinetic and potential components, the partition function can be further factorized into kinetic and potential parts as in equation~\ref{eq:partition2}, with $h$ being the \textit{Planck} constant.
+
+\begin{equation}
+  Q_{NVT} = \frac{1}{N!}\frac{1}{h^{3N}}\int \exp\Bigl(-\frac{K(\textbf{\textit{P}})}{k_BT}\Bigl)d\textbf{\textit{p}}\int \exp\Bigl(-\frac{V(\textbf{\textit{Q}})}{k_BT}\Bigl)d\textbf{\textit{q}}
+  \label{eq:partition2}
+\end{equation}
+
+\bigskip
+
+\noindent The relevant thermodynamic function for this ensemble is the \textit{Helmholtz free energy} A, defined as in equation~\ref{eq:helmholtz}.
+
+\begin{equation}
+  A=-k_BT \ln Q_{NVT}
+  \label{eq:helmholtz}
+\end{equation}
+
+\bigskip
+
+\subsubsection{Equations of Motion}
+As molecular dynamics simulation aim to describe the time-dependant behaviour of an N particle system interacting through a potential $V$, equations of motion must be solved. In MD theory, this is done classically as described in this chapter, starting at the pillar of classical mechanics, \textit{Isaac Newton's} laws of motion. Most importantly for MD simulations, the second law of motion states that acceleration, i.e.~the derivative of momentun with respect to time, is proportional and parallel to the net force and inversely proportional to the mass of an object, as in equation~\ref{eq:newton}~\cite{Alrasheed2019}.
+
+\begin{equation}
+  \textbf{a} = \frac{\partial\textbf{p}}{\partial t} = \frac{\textbf{F}}{m}
+  \label{eq:newton}
+\end{equation}
+
+\bigskip
+
+\noindent Classical mechanics are insufficient at describing relativistic or quantum mechanical systems, but are however suited for the masses and velocities of atoms in typical systems.  As such, the mass of particles can be considered constant and, with the fact that Force is defined as the negative potential gradient as in~\ref{eq:newton3}, equation~\ref{eq:newton} can be rewritten as in equation~\ref{eq:newton2}.
+
+\begin{equation}
+  \textbf{F} = -\frac{\partial V}{\partial\textbf{q}}
+  \label{eq:newton3}
+\end{equation}
+
+\begin{equation}
+  \textbf{a} = \frac{d^2\textbf{q}}{d t^2} = \frac{\textbf{F}}{m}
+  \label{eq:newton2}
+\end{equation}
+
+\bigskip
+
+\noindent The combination of~\ref{eq:newton2} and~\ref{eq:newton3} finally leads to equation~\ref{eq:newton4}, revealing the Newtonian EOM as a differential equation of second order.
+
+\begin{equation}
+  \mathbf{F} = m\frac{d^2\mathbf{q}}{d t^2} = -\frac{\partial V}{\partial\textbf{q}}
+  \label{eq:newton4}
+\end{equation}
+
+\bigskip
+
+\noindent Solving such a differential equation for N particles to obtain their position vectors $\textbf{q}$ at time $t$ is, even numerically, completely unfeasible for most system sizes.
+\\ \par \noindent A solution to this problem starts at a different framework, namely \textit{Lagrangian} equation sof motion as in~\ref{eq:lagrange1}. Here, the Lagrangian function $L(\textbf{q}, \dot{\textbf{q}})$, dependant on spatial coordinates and their time derivatives, is defined as seen in equation~\ref{eq:lagrange2} as the difference between kinetic and potential energy.
+
+\begin{equation}
+  \frac{d}{dt}\Biggl(\frac{\partial L}{\partial \dot{\textbf{q}}_k}\Biggr) - \frac{\partial L}{\partial \textbf{q}_k} = 0
+  \label{eq:lagrange1}
+\end{equation}
+
+\begin{equation}
+  L = K - V
+  \label{eq:lagrange2}
+\end{equation}
+
+\bigskip
+
+\noindent Where $\textbf{q}_k$ and $\dot{\textbf{q}}_k$ are the k-th generalized coordinates and their time derivatives respectively. In combination with the definitions of kinetic energy as in~\ref{eq:kinetic} and potential energies as summations over all individual atoms, pairs, triplets, etc., as in equation~\ref{eq:potential}, the Lagrange equation of motion can be rewritten as in equation~\ref{eq:lagrange3} using Cartesian coordinates $\textbf{r}_i$.
+
+\begin{equation}
+  K = \sum_{i = 1}^{N}\sum_{\alpha}^{}p_{i\alpha}^2/2m_i \quad \text{with}\quad \alpha \in x, y, z
+  \label{eq:kinetic}
+\end{equation}
+
+\begin{equation}
+  V = \sum_{i=1}^{N}V_i + \sum_{i = 1}^{N}\sum_{j = i+1}^{N}V_{ij} + \sum_{i = 1}^{N}\sum_{j = i+1}^{N}\sum_{k = j+1}^{N}V_{ijk} + ...
+  \label{eq:potential}
+\end{equation}
+
+\begin{equation}
+  m_i \ddot{\textbf{q}}_i = \textbf{F}_i = -\mathbf{\nabla}_{\textbf{q}_i} V = \mathbf{\nabla}_{\textbf{q}_i} L
+  \label{eq:lagrange3}
+\end{equation}
+\bigskip
+
+\noindent Where $\textbf{F}_i$ is the total force acting on molecule i. The generalized momenta $p_k$ are defined as in equation~\ref{eq:momentum}.
+
+\begin{equation}
+  p_k = \frac{\partial L}{\partial \dot{q}_k}
+  \label{eq:momentum}
+\end{equation}
+
+\bigskip
+
+
+\noindent Finally, the Hamiltonian equations of motion utilizes the Lagrangian definition of the generalized momentum $p_k$ as in equations~\ref{eq:hamilton1} and~\ref{eq:hamilton2}, with the classical Hamiltonian strictly defined as in equation~\ref{eq:hamilton3}.
+
+\begin{equation}
+  H(\mathbf{\Theta}) = H(\textbf{p}, \textbf{q}) = \sum_{k}^{}p_k\dot{q}_k - L(\textbf{q}, \dot{\textbf{q}})
+  \label{eq:hamilton3}
+\end{equation}
+
+\begin{equation}
+  \dot{q}_k = \frac{\partial H}{\partial p_k}
+  \label{eq:hamilton1}
+\end{equation}
+
+\begin{equation}
+  \dot{p}_k = -\frac{\partial H}{\partial q_k}
+  \label{eq:hamilton2}
+\end{equation}
+
+
+
+\bigskip
+
+\noindent Switching to phase-space coordinates, with $i$ indexing individual atoms, Hamiltons equations of motion can be written as in equations~\ref{eq:hamilton4} and~\ref{eq:hamilton5}.
+
+\begin{equation}
+  \frac{d\textbf{q}_i}{dt} =\frac{\partial H}{\partial \textbf{p}_i} = \frac{\partial E_{kin}}{\partial \textbf{p}_i} =\frac{\textbf{p}_i}{m_i} = \textbf{v}_i
+  \label{eq:hamilton4}
+\end{equation}
+
+\begin{equation}
+  \frac{d\textbf{p}_i}{dt} = \frac{\partial H}{\partial \textbf{q}_i}= - \frac{\partial V}{\partial \textbf{q}_i}= \textbf{F}_i
+  \label{eq:hamilton5}
+\end{equation}
+
+\bigskip
+
+\noindent In contrast to Newton's equations of motion, Hamilton's equations require solving N less complex first order differential equations for momenta $\mathbf{p}(t)$ and position $\mathbf{q}(t)$ vectors each.
+
+\subsubsection{The Louiville Formalism}
+
+\noindent Provided that Hamltons's equations of motion are satisfied, the total time derivative of the Hamiltonian is given in equation~\ref{eq:hamilton6} following simple chain rules.
+
+\begin{equation}
+  \frac{dH}{dt} = \frac{\partial H}{\partial \textbf{q}} \frac{\partial \textbf{q}}{\partial t} + \frac{\partial H}{\partial \textbf{p}} \frac{\partial \textbf{p}}{\partial t}
+  \label{eq:hamilton6}
+\end{equation}
+
+\bigskip
+
+\noindent With the total energy $H$ being conserved in an isolated system and equations of motion~\ref{eq:hamilton4} and~\ref{eq:hamilton5} established above, equation~\ref{eq:hamilton6} can be rewritten as in equation~\ref{eq:hamilton7}.
+
+\begin{equation}
+  \frac{dH}{dt} = \frac{\partial H}{\partial \textbf{q}} \frac{\partial H}{\partial \textbf{p}} - \frac{\partial H}{\partial \textbf{p}} \frac{\partial H}{\partial \textbf{q}} = 0
+  \label{eq:hamilton7}
+\end{equation}
+
+\bigskip
+
+\noindent To abbreviate the above expression, the bilinear \textit{Poisson bracket} operator is introduced as in equation~\ref{eq:hamilton8} for a general function $G(\textbf{q}, \textbf{p})$ dependant on phase space vectors $\textbf{q}$ and $\textbf{p}$.
+
+\begin{equation}
+  \frac{dG}{dt} = \frac{\partial G}{\partial \textbf{q}} \frac{\partial H}{\partial \textbf{p}} - \frac{\partial G}{\partial \textbf{p}} \frac{\partial H}{\partial \textbf{q}} = \{G, H\}
+  \label{eq:hamilton8}
+\end{equation}
+
+\bigskip
+
+\noindent Using this notation, equation~\ref{eq:hamilton7} may be simply expressed as $\{H, H\} = 0$. Alternatively, the \textit{Liouville operator} $iL$ may be used for classical time propagation as a shorthand for the Poisson bracket as in equation~\ref{eq:hamilton9}, again for a general property G~\cite{Frenkel1997}.
+
+\begin{equation}
+  \frac{dG}{dt} = \{G, H\} = iLG
+  \label{eq:hamilton9}
+\end{equation}
+
+\bigskip
+
+\noindent With the Liouville operator defined as in equation~\ref{eq:hamilton10}.
+
+\begin{equation}
+  \frac{d}{dt} = iL = \frac{\partial \textbf{q}}{\partial t} \frac{\partial}{\partial \textbf{q}} + \frac{\partial \textbf{p}}{\partial t} \frac{\partial}{\partial \textbf{p} } = \frac{\partial H}{\partial t} \frac{\partial}{\partial \textbf{q}} + \frac{\partial H}{\partial t} \frac{\partial}{\partial \textbf{p} } = \{, H\}
+  \label{eq:hamilton10}
+\end{equation}
+
+\bigskip
+
+\noindent Applying this operator to the phase space vector $\mathbf{\Gamma}$ allows time evolution, with the solution to the Liouville equation being the phase space vector at a later time $t$ as in equation~\ref{eq:hamilton11}.
+
+\begin{equation}
+  \mathbf{\Theta}(t) = e^{iLt}\mathbf{\Theta}(0)
+  \label{eq:hamilton11}
+\end{equation}
+
+\bigskip
+
+\noindent Where $\mathbf{\Theta}(0)$ is the phase space vector at time $t=0$. Splitting the Liouville operator into a configurational part and a momentum part leads to  equation~\ref{eq:hamilton12}.
+
+
+\begin{equation}
+  iL = iL_{\textbf{q}} + iL_{\textbf{p}}
+  \label{eq:hamilton12}
+\end{equation}
+
+\bigskip
+
+\noindent It is important to note that the Liouville operators do not commute and the exponentials may not be simply split, since order of application is not arbitrary, as shown in equation~\ref{eq:hamilton13}.
+
+\begin{equation}
+  e^{iLt} = e^{iL_{\textbf{q}}t + iL_{\textbf{p}}t} \neq e^{iL_{\textbf{p}}t}e^{iL_{\textbf{q}}t}
+  \label{eq:hamilton13}
+\end{equation}
 
 \bibliography{thesis}
 

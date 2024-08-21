@@ -273,16 +273,90 @@ Jiří Klimeš, David~R Bowler, and Angelos Michaelides.
 \newblock {\em Journal of Physics: Condensed Matter}, 22(2):022201, December
   2009.
 
-\bibitem{Elstner2014-zp}
-Marcus Elstner and Gotthard Seifert.
-\newblock Density functional tight binding.
-\newblock {\em Philos. Trans. A Math. Phys. Eng. Sci.}, 372(2011):20120483,
-  March 2014.
+\bibitem{Koskinen2009}
+Pekka Koskinen and Ville M\"{a}kinen.
+\newblock Density-functional tight-binding for beginners.
+\newblock {\em Computational Materials Science}, 47(1):237–253, November
+  2009.
+
+\bibitem{Gaus2011}
+Michael Gaus, Qiang Cui, and Marcus Elstner.
+\newblock Dftb3: Extension of the self-consistent-charge density-functional
+  tight-binding method (scc-dftb).
+\newblock {\em Journal of Chemical Theory and Computation}, 7(4):931–948,
+  March 2011.
 
 \bibitem{Goringe1997}
 C~M Goringe, D~R Bowler, and E~Hernández.
 \newblock Tight-binding modelling of materials.
 \newblock {\em Reports on Progress in Physics}, 60(12):1447–1512, December
   1997.
+
+\bibitem{Elstner2014-zp}
+Marcus Elstner and Gotthard Seifert.
+\newblock Density functional tight binding.
+\newblock {\em Philos. Trans. A Math. Phys. Eng. Sci.}, 372(2011):20120483,
+  March 2014.
+
+\bibitem{Hofer2023}
+Thomas~S. Hofer, Risnita~Vicky Listyarini, Emir Hajdarevic, Lukas Maier, Felix
+  R.~S. Purtscher, Jakob Gamper, and Friedrich Hanser.
+\newblock Beyond the status quo: Density functional tight binding and neural
+  network potentials as a versatile simulation strategy to characterize
+  host–guest interactions in metal- and covalent organic frameworks.
+\newblock {\em The Journal of Physical Chemistry Letters}, 14(26):6018--6027,
+  June 2023.
+
+\bibitem{yangsource}
+Yang Yang, Haibo Yu, Darrin York, Qiang Cui, and Marcus Elstner.
+\newblock Extension of the self-consistent-charge density-functional
+  tight-binding method: Third-order expansion of the density functional theory
+  total energy and introduction of a modified effective coulomb interaction.
+\newblock {\em The Journal of Physical Chemistry A}, 111(42):10861--10873,
+  October 2007.
+
+\bibitem{Gaus2012}
+Michael Gaus, Albrecht Goez, and Marcus Elstner.
+\newblock Parametrization and benchmark of dftb3 for organic molecules.
+\newblock {\em Journal of Chemical Theory and Computation}, 9(1):338–354,
+  November 2012.
+
+\bibitem{Allen2017}
+Michael~P. Allen and Dominic~J. Tildesley.
+\newblock {\em Computer Simulation of Liquids}.
+\newblock Oxford University PressOxford, June 2017.
+
+\bibitem{Gupta1990-au}
+Mool~C Gupta.
+\newblock {\em Statistical thermodynamics}.
+\newblock 1990.
+
+\bibitem{Fischereder2023}
+Alexander Fischereder, Markus R\"{o}dl, Markus Suta, Thomas~S. Hofer, and
+  Heidi~A. Schwartz.
+\newblock From blue jeans to luminescent materials: Designing thioindigo-based
+  red-fluorescent hybrid systems.
+\newblock {\em The Journal of Physical Chemistry C}, 127(31):15657–15668,
+  July 2023.
+
+\bibitem{Purtscher2023}
+Felix R.~S. Purtscher, Leo Christanell, Moritz Schulte, Stefan Seiwald, Markus
+  R\"{o}dl, Isabell Ober, Leah~K. Maruschka, Hassan Khoder, Heidi~A. Schwartz,
+  El-Eulmi Bendeif, and Thomas~S. Hofer.
+\newblock Structural properties of metal–organic frameworks at elevated
+  thermal conditions via a combined density functional tight binding molecular
+  dynamics (dftb md) approach.
+\newblock {\em The Journal of Physical Chemistry C}, 127(3):1560–1575,
+  January 2023.
+
+\bibitem{Alrasheed2019}
+Salma Alrasheed.
+\newblock {\em Newton’s Laws}, page 37–51.
+\newblock Springer International Publishing, 2019.
+
+\bibitem{Frenkel1997}
+Daan Frenkel, Berend Smit, and Mark~A. Ratner.
+\newblock Understanding molecular simulation: From algorithms to applications.
+\newblock {\em Physics Today}, 50(7):66–66, July 1997.
 
 \end{thebibliography}
