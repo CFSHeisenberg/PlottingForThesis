@@ -1,5 +1,5 @@
 %Preamble
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{setspace}
@@ -8,6 +8,7 @@
 \geometry{a4paper, portrait, margin=30mm, bmargin=30mm, tmargin=30mm}
 \usepackage{amsmath}
 \usepackage{esvect}
+\usepackage[hidelinks]{hyperref}
 
 \newcommand{\pvec}[1]{\vec{#1}\mkern2mu\vphantom{#1}}
 
@@ -964,7 +965,7 @@ As molecular dynamics simulation aim to describe the time-dependant behaviour of
 
 \subsubsection{The Louiville Formalism}
 
-\noindent Provided that Hamltons's equations of motion are satisfied, the total time derivative of the Hamiltonian is given in equation~\ref{eq:hamilton6} following simple chain rules.
+\noindent Provided that Hamiltons's equations of motion are satisfied, the total time derivative of the Hamiltonian is given in equation~\ref{eq:hamilton6} following simple chain rules.
 
 \begin{equation}
   \frac{dH}{dt} = \frac{\partial H}{\partial \textbf{q}} \frac{\partial \textbf{q}}{\partial t} + \frac{\partial H}{\partial \textbf{p}} \frac{\partial \textbf{p}}{\partial t}
@@ -1009,7 +1010,7 @@ As molecular dynamics simulation aim to describe the time-dependant behaviour of
 
 \bigskip
 
-\noindent Applying this operator to the phase space vector $\mathbf{\Gamma}$ allows time evolution, with the solution to the Liouville equation being the phase space vector at a later time $t$ as in equation~\ref{eq:hamilton11}.
+\noindent Applying this operator to the phase space vector $\mathbf{\Theta}$ allows time evolution, with the solution to the Liouville equation being the phase space vector at a later time $t$ as in equation~\ref{eq:hamilton11}.
 
 \begin{equation}
   \mathbf{\Theta}(t) = e^{iLt}\mathbf{\Theta}(0)
@@ -1034,6 +1035,246 @@ As molecular dynamics simulation aim to describe the time-dependant behaviour of
   e^{iLt} = e^{iL_{\textbf{q}}t + iL_{\textbf{p}}t} \neq e^{iL_{\textbf{p}}t}e^{iL_{\textbf{q}}t}
   \label{eq:hamilton13}
 \end{equation}
+
+\bigskip
+
+\noindent Because the individual operators $exp(iL_{\textbf{q}}t)$ and $exp(iL_{\textbf{p}}t)$ can, in many instances, be evaluated exactly on a phase space vector $\mathbf{\Theta}$, it would be useful to express the time evolution \textit{via} both these factors. A solution to this problem is presented in the following chapter.
+
+\subsubsection{The Trotter Theorem}
+The derivations in this chapter are based on \textit{Statistical Mechanics: Theory and Molecular Simulation} by Tuckerman~\cite{Tuckerman2010}.
+\\ \par \noindent Formulated by Hale Trotter in 1959~\cite{Trotter1959}, the \textit{Trotter theorem} states that for two non commuting operators $A$ and $B$, the following equation~\ref{eq:trotter1} holds true.
+
+\begin{equation}
+  e^{A+B} = \lim_{N \to \infty} \Bigl[e^{B/2N}e^{A/N}e^{B/2N}\Bigl]^P
+  \label{eq:trotter1}
+\end{equation}
+
+\bigskip
+
+\noindent Where $N$ is an integer. Applying this general theorem to the classical operator established before, and by defining a time step $\Delta t = t/N$, one arrives at equation~\ref{eq:trotter2}.
+
+\begin{equation}
+  e^{iLt} = \lim_{N \to \infty , \Delta t \to 0} \Bigl[e^{iL_{\textbf{p}}t/2N}e^{iL_{\textbf{q}}t/N}e^{iL_{\textbf{p}}t/2N}\Bigl]^N
+  \label{eq:trotter2}
+\end{equation}
+
+\bigskip
+
+\noindent This equation states that a classical system may be propagated in time \textit{via} the separate factors $\exp(iL_{\textbf{q}}t/N)$ and $\exp(iL_{\textbf{p}}t/N)$ exactly for a time t, granted that the number of steps taken $P$ are infinite and the timesteps $\Delta t$ are infinitesimally small. For obvious reasons, these limits are unreachable in practice, hence an approximation to $\exp(iLt)$ is made as shown in equation~\ref{eq:trotter3}.
+
+\begin{equation}
+  e^{iLt} \approx \Bigl[e^{iL_{\textbf{p}}\Delta t/2}e^{iL_{\textbf{q}}\Delta t}e^{iL_{\textbf{p}}\Delta t/2}\Bigl]^N
+  \label{eq:trotter3}
+\end{equation}
+
+\bigskip
+
+\noindent An approximate time propagation may then be achieved by performing $N$ steps of length $\Delta t$ using the factorized opator seen in equation~\ref{eq:trotter4}.
+
+\begin{equation}
+  e^{iL\Delta t} \approx e^{iL_{\textbf{p}}\Delta t/2}e^{iL_{\textbf{q}}\Delta t}e^{iL_{\textbf{p}}\Delta t/2}
+  \label{eq:trotter4}
+\end{equation}
+
+\bigskip
+
+\noindent At this point it may be interesting to note that while the error of an individual step $n$ is proportional to $\Delta t^3$, the global error of a trajectory only scales with $\Delta t^2$~\cite{Allen2017}. Applying Trotter splitting now to the phase space vector and inserting into equation~\ref{eq:hamilton11} yields the time evolution of the phase space vector $\mathbf{\Theta}$ as in equation~\ref{eq:trotter5}.
+
+\begin{equation}
+  \mathbf{\Theta}(t+\Delta t) = e^{iL\Delta t}\mathbf{\Theta}(t) \approx e^{iL_{\textbf{p}}\Delta t/2}e^{iL_{\textbf{q}}\Delta t}e^{iL_{\textbf{p}}\Delta t/2}\mathbf{\Theta}(t)
+  \label{eq:trotter5}
+\end{equation}
+
+\bigskip
+
+\subsubsection{The Velocity Verlet Algorithm}
+Derived from the Trotter approach, a widely used numerical time integrator has been derived, the \textit{Verlet} algorithm~\cite{Verlet1967}. A more commonly used and demonstrative iteration of this algorithm has been developed by Swope et al.~\cite{Swope1982}, with the main deviation being that velocities and positions are calculated at the same value of time in this approach. This algorithm, starting from initial atomic positions, velocities and forces, acts over a timestep from $t$ to $t + \Delta t$ as in equations~\ref{eq:verlet1},~\ref{eq:verlet2} and~\ref{eq:verlet3}.
+
+\begin{gather}
+  \textbf{v}\Bigl(t + \frac{\Delta t}{2}\Bigr) = \textbf{v}(t) + \frac{\Delta t}{2}\ \textbf{a}(t) =\textbf{v}(t) + \frac{\Delta t}{2}\frac{\textbf{F}_t}{m}
+  \label{eq:verlet1}\\[5pt]
+  \textbf{q}\Bigl(t + \Delta t\Bigr) = \textbf{q}(t) + \Delta t\ \textbf{v}\Bigl(t + \frac{\Delta t}{2}\Bigr)
+  \label{eq:verlet2}\\[5pt]
+  \textbf{v}\Bigl(t + \Delta t\Bigr) = \textbf{v}\Bigl(t + \frac{\Delta t}{2}\Bigr) + \frac{\Delta t}{2}\ \textbf{a}\Bigl(t + \Delta t\Bigr) = \textbf{v}\Bigl(t + \frac{\Delta t}{2}\Bigr) + \frac{\Delta t}{2}\frac{\textbf{F}_{t + \Delta t}}{m}
+  \label{eq:verlet3}
+\end{gather}
+
+\bigskip
+
+\noindent At first, equation~\ref{eq:verlet1} may be thought of as `half-advancing' the initial velocity to a midpoint time $t + \Delta t/2$ using accelerations at time $t$. These midpoint velocities are then used as in equation~\ref{eq:verlet2} to propel the coordinates to time $t + \Delta t$. Finally, the endpoint velocities at time $t + \Delta t$ are calculated as in equation~\ref{eq:verlet3} using the endpoint forces as retrieved \textit{via} equation~\ref{eq:verlet4} from the respective endpoint positions.
+
+\begin{equation}
+  \textbf{F}_{t + \Delta t} = -\frac{\partial{V}}{\partial \textbf{q}_{t + \Delta t}}
+  \label{eq:verlet4}
+\end{equation}
+
+\bigskip
+
+\noindent Easily translatable into high-performance code, this algorithm allows for extracting macroscopic properties like e.g. total kinetic energy by simply summing up the squared velocities at a given time, whereas the potential energy is calculated in each step anyway and can simply be stored as output.
+
+\subsubsection{Constraint Dynamics}
+As mentioned before, the error over the total trajectory scales with $\Delta t^2$, leading to the setup of a molecular dynamics simulation becoming a balance act of choosing a small enough timestep to accurately represent even the fastest movements of a system with low error, while still being large enough to keep total simulation times in a reasonable frame. Usually, the fastest movement in any given system are X-H bond vibrations, typically oscillating at a period of around 10 fs~\cite{Wang2019}. Representing such movement then dictates going well beyond this timeframe up to an order of magnitude, e.g. 1 fs, vastly increasing computational cost~\cite{Braun2019}.
+\\ \par \noindent Luckily, should X-H bond vibrations be of no special concern, constraining certain bonds to a pre-determined length is a viable and commonly used way of increasing timestep size without losing out on vital information. The original method of constraint schemes designed to work in tandem with the verlet operator is the SHAKE algorithm by Ryckaert \textit{et al.}~\cite{Ryckaert1977}. Further developed for the velocity verlet variant by Andersen, the RATTLE algorithm~\cite{Andersen1983} utilizes Lagrange multipliers as demonstrated on a water molecule with fixed OH bonds in the following~\cite{Allen2017}. Oxygen is indexed with 2, whereas the two Hydrogen atoms are labelled 1 and 3 respectively. The constraint equations for the OH bonds are as in equations~\ref{eq:constraint1} and~\ref{eq:constraint2}.
+
+\begin{align}
+  \chi^{(q)}_{12}(t) = |\mathbf{q}_{12}(t)|^2 - d^2_{12} = 0, \quad \chi^{(q)}_{23}(t) = |\mathbf{q}_{23}(t)|^2 - d^2_{23} = 0
+  \label{eq:constraint1} \\
+  \chi^{(p)}_{12}(t) = \mathbf{q}_{12}(t)\cdot\mathbf{p}_{12}(t) = 0, \quad \chi^{(p)}_{23}(t) = \mathbf{q}_{23}(t)\cdot\mathbf{p}_{23}(t) = 0
+  \label{eq:constraint2}
+\end{align}
+
+\bigskip
+
+\noindent Where $\mathbf{q}_{ij}$ and $\mathbf{p}_{ij}$ are the relative position and momenta vectors of atoms $i$ and $j$ respectively, and $d_{ij}$ is the desired bond length. Equations of motion for constrained atoms now take the form of equation~\ref{eq:constraint3}.
+
+\begin{equation}
+  m_i\mathbf{a}_i = \textbf{F}_i + \mathbf{G}_i
+  \label{eq:constraint3}
+\end{equation}
+
+\bigskip
+
+\noindent Where $\mathbf{G}_i$ is the constraint force acting on atom $i$ ensuring that the above constraint equations are satisfied at all times, defined as in equation~\ref{eq:constraint4}.
+
+\begin{equation}
+  \mathbf{G}_i = \Lambda_{12} \mathbf{\nabla}_{\mathbf{q}_{12}}\chi^{(q)}_{12} + \Lambda_{23} \nabla_{\mathbf{q}_{23}}\chi^{(q)}_{23}
+  \label{eq:constraint4}
+\end{equation}
+
+\bigskip
+
+\noindent Where $\Lambda_{ij}$ are the undetermined Lagrange multipliers. Suggested by Ryckaert \textit{et al.}, the constraint forces are calculated so as to guarantee them being satisfied at each timestep, leading to the same error margins as the integrator they are applied to. Considering the first half-step of the velocity Verlet algorithm, equations~\ref{eq:constraint5} and~\ref{eq:constraint6} show the non-constrained absolute positions and velocities at time $t + \Delta t/2$.
+
+
+\begin{gather}
+  \textbf{v}'_i\Bigl(t + \frac{\Delta t}{2}\Bigr) =\textbf{v}_i(t) + \frac{\Delta t}{2m_i}\textbf{F}_i(t)
+  \label{eq:constraint5}\\[5pt]
+  \textbf{q}'_i(t + \Delta t) = \textbf{q}(t) + \Delta t\ \textbf{v}'_i\Bigl(t + \frac{\Delta t}{2}\Bigr) = \textbf{q}(t) + \Delta t \ \textbf{v}_i(t) + \frac{\Delta t^2}{2m_i}\textbf{F}_i(t)
+  \label{eq:constraint6}
+\end{gather}
+
+\bigskip
+
+\noindent Where the prime denotes non-constrained values. Including constraint forces concerning positions then leads to equation~\ref{eq:constraint7}.
+
+\begin{equation}
+  \mathbf{q}_i(t + \Delta t) = \mathbf{q}'_i(t + \Delta t) + \frac{\Delta t^2}{2m_i} \textbf{G}_i^{\mathbf{(q)}}(t)
+  \label{eq:constraint7}
+\end{equation}
+
+\bigskip
+
+\noindent The constraint forces $\textbf{G}_i^{\mathbf{(q)}}$ acting on the three atoms must act along the bond vectors $\textbf{q}_{12}$ and $\textbf{q}_{23}$, as well as adhere to Newton's third law, as in equations~\ref{eq:constraint8},~\ref{eq:constraint9} and ~\ref{eq:constraint10}.
+
+
+\begin{align}
+    &\Bigl(\frac{1}{2}\Delta t^2\Bigr)\mathbf{G}_1^{\mathbf{(q)}}(t) = \lambda_{12}\mathbf{q}_{12}(t)
+    \label{eq:constraint8}\\[5pt]
+    &\Bigl(\frac{1}{2}\Delta t^2\Bigr)\mathbf{G}_2^{\mathbf{(q)}}(t) = -\lambda_{12}\mathbf{q}_{12}(t) + \lambda_{23}\mathbf{q}_{23}(t)
+    \label{eq:constraint9}\\[5pt]
+    &\Bigl(\frac{1}{2}\Delta t^2\Bigr)\mathbf{G}_3^{\mathbf{(q)}}(t) = -\lambda_{23}\mathbf{q}_{23}(t)
+    \label{eq:constraint10}
+\end{align}
+
+
+\bigskip
+
+\noindent Where $\lambda_{ij}$ are the undetermined Lagrange multipliers. Inserting into equation~\ref{eq:constraint7}, bond vectors at the point $t + \Delta t$ are then calculated as in equations~\ref{eq:constraint11} and~\ref{eq:constraint12}. $\mathbf{q'}_{ij}$ again denotes the non-constrained bond vectors. 
+
+\begin{align}
+  \mathbf{q}_{12}(t + \Delta t) &= \mathbf{q}'_{12}(t + \Delta t) + (m_1^{-1} + m_2^{-1})\lambda^{(\mathbf{q})}_{12}\mathbf{q}_{12}(t)-m_2^{-1}\lambda^{(\mathbf{q})}_{23}\mathbf{q}_{23}(t) 
+  \label{eq:constraint11}\\[5pt]
+  \mathbf{q}_{23}(t + \Delta t) &= \mathbf{q}'_{23}(t + \Delta t) - m_2^{-1}\lambda^{(\mathbf{q})}_{12}\mathbf{q}_{12}(t)+(m_2^{-1} + m_3^{-1})\lambda^{(\mathbf{q})}_{23}\mathbf{q}_{23}(t)
+  \label{eq:constraint12}
+\end{align}
+
+\bigskip
+
+
+\noindent Taking then the square modulus of both sides and applying the constraints of the form $|\mathbf{q}_{ij}(t + \Delta t)|^2 =|\mathbf{q}_{ij}(t)|^2 = d_{ij}^2$ as defined in equation~\ref{eq:constraint1} results in a pair of quadratic equations, iteratively solvable for the two undetermined multipliers $\lambda_{12}$ and $\lambda_{23}$. These multipliers may then be inserted into equations~\ref{eq:constraint8},~\ref{eq:constraint9} and~\ref{eq:constraint10} to receive the constraint forces acting on the positions, which in turn allow absolute atomic positions at time $t + \Delta t$ to be calculated \textit{via} equation~\ref{eq:constraint7}.
+\\ \par \noindent In the same manner, unconstrained half-step velocities, equation~\ref{eq:constraint5}, are adjusted according to equation~\ref{eq:constraint13}.
+
+\begin{equation}
+  \mathbf{v}_i\Bigl(t + \frac{\Delta t}{2}\Bigr) = \mathbf{v}'_i\Bigl(t + \frac{\Delta t}{2}\Bigr) + \frac{\Delta t}{2m_i}\mathbf{G}_i^{\mathbf{(q)}}(t)
+  \label{eq:constraint13}
+\end{equation}
+
+\bigskip
+
+\noindent Leading to the constrained full-step velocities as in equation~\ref{eq:constraint14}.
+
+\begin{equation}
+  \mathbf{v}_i(t + \Delta t) =\mathbf{v}_i\Bigl(t+\frac{\Delta t}{2}\Bigr) + \frac{\Delta t}{2m_i}\mathbf{F}_i(t + \Delta t)+ \frac{\Delta t}{2m_i}\mathbf{G}_i^{\mathbf{(v)}}(t+\Delta t)
+  \label{eq:constraint14}
+\end{equation}
+
+\bigskip
+
+\noindent Where $\mathbf{G}_i^{\mathbf{(v)}}$ are the constraint forces acting on the velocities, which again are directed along the bond vectors, leading to a similar set of equations as for coordinates before, shown in equations~\ref{eq:constraint15},~\ref{eq:constraint16} and~\ref{eq:constraint17}.
+
+\begin{align}
+  &\Bigl(\frac{1}{2}\Delta t\Bigr)\mathbf{G}_1^{\mathbf{(v)}}(t + \Delta t) = \lambda_{12}^{(\mathbf{v})}\mathbf{q}_{12}(t + \Delta t)
+  \label{eq:constraint15}\\[5pt]
+  &\Bigl(\frac{1}{2}\Delta t\Bigr)\mathbf{G}_2^{\mathbf{(v)}}(t + \Delta t) = -\lambda_{12}^{(\mathbf{v})}\mathbf{q}_{12}(t + \Delta t) + \lambda_{23}^{(\mathbf{v})}\mathbf{q}_{23}(t + \Delta t)
+  \label{eq:constraint16}\\[5pt]
+  &\Bigl(\frac{1}{2}\Delta t\Bigr)\mathbf{G}_3^{\mathbf{(v)}}(t + \Delta t) = -\lambda_{23}^{(\mathbf{v})}\mathbf{q}_{23}(t + \Delta t)
+  \label{eq:constraint17}
+\end{align}
+
+\bigskip
+
+\noindent Inserting these expressions for constraint forces into the equation for full-step constrained velocities, equation~\ref{eq:constraint14}, leads to a new set of equations for the undetermined multipliers $\lambda_{12}^{(\mathbf{v})}$ and $\lambda_{23}^{(\mathbf{v})}$,~\ref{eq:constraint18} and~\ref{eq:constraint19}.
+
+\begin{align}
+  \mathbf{v}_{12}(t + \Delta t) &= \mathbf{v}'_{12}(t + \Delta t) + (m_1^{-1} + m_2^{-1})\lambda^{(\mathbf{v})}_{12}\mathbf{q}_{12}(t)-m_2^{-1}\lambda^{(\mathbf{v})}_{23}\mathbf{q}_{23}(t) 
+  \label{eq:constraint18}\\[5pt]
+  \mathbf{v}_{23}(t + \Delta t) &= \mathbf{v}'_{23}(t + \Delta t) - m_2^{-1}\lambda^{(\mathbf{v})}_{12}\mathbf{q}_{12}(t)+(m_2^{-1} + m_3^{-1})\lambda^{(\mathbf{v})}_{23}\mathbf{q}_{23}(t)
+  \label{eq:constraint19}
+\end{align}
+
+\bigskip
+
+\noindent With bond vectors $\mathbf{q}_{ij}$ already determined in the steps before. Since the constraint equations~\ref{eq:constraint2} are scalar products, the above equations are linear in the unknowns $\lambda_{12}$ and $\lambda_{23}$, which in turn are used in equations~\ref{eq:constraint15},~\ref{eq:constraint16} and~\ref{eq:constraint17} to receive constraint forces and subsequently equation~\ref{eq:constraint14} for absolute velocities at time $t + \Delta t$.
+
+\subsubsection{Periodic Boundary Conditions}
+While simulating small or few molecules is a computationally inexpensive and generally fast endeavor, especially on modern hardware, properties of e.g.~liquids in bulk may not be accurately extrapolated from small-scale systems. Increasing then the number of molecules towards a system more representative of a macroscopic bulk however leads to both unfeasibly high costs and a significant number of molecules being present on the bulks surface, experiencing different potentials and therefore skewing the overall simulation.
+\\ \par \noindent To counteract these surface effects, \textit{periodic boundary conditions} may be employed~\cite{Allen2017,Cramer2004-vy,Tuckerman2010}. The system being modeled is hereby assumed to be a cubic unit cell of an ideal and infinite crystal, replicated periodically and infinitely in all three dimensions, thus eliminating surface effects. As a particle moves, so do its ifninite mirror particles, and should it leave the box, one of its images will instantly replace it on the opposite face, keeping the number of particles constant. When employed, distances between particles are calculated \textit{via} \textit{minimum image convention}, stating that in the infinitely repeating array of unit cells, a particle $i$ interacts with another particle $j$ to which it is closest, even if that particle is located in one of the neighboring periodic cells. For any given dimension, this convention may be expressed as in equation~\ref{eq:pbc1}.
+
+\begin{equation}
+  \Delta r_{ij,\alpha}' = r_{ij,\alpha} - L_\alpha\cdot \text{round}\Bigl(\frac{r_{ij,\alpha}}{L_\alpha}\Bigr) \quad \text{with} \quad \alpha \in x, y, z
+  \label{eq:pbc1}
+\end{equation}
+
+\bigskip
+
+\noindent Where $r_{ij,\alpha}$ is the non-imaged distance between particles $i$ and $j$, $L_\alpha$ is the length of the unit cell and $\Delta r_{ij,\alpha}'$ is the imaged distance between particles $i$ and $j$, each in dimension $\alpha$. The round function rounds the fraction to the nearest integer.
+\\ \par \noindent A problem arising with periodicity is the need to limit the number of interactions to be calculated, since otherwise one would theoretically have to consider an infinite number of interactions. This is usually done by definining a cutoff radius $r_{cut}$, at most as long as half the length of the unit cell, beyond which interactions are considered negligible. To smoothly taper interactions around the cutoff region, switching functions are commonly employed. \\ \par \noindent As a final trick of the trade to increase efficiency, a list of particles $j$ within the cutoff radius of particle $i$ may be defined, known as a \textit{Verlet neighbor list}. Updated periodically, this list ensures that an algorithm does not have to loop over every pair $ij$ in the system at every step to determine if they are within the cutoff radius, but only over the pairs $ij$ in the list. Computational overhead is thus reduced indirectly proportional to however often the list is updated, at the cost of increased memory usage.
+
+\subsubsection{Temperature Control}
+In an NVT ensemble, temperature coupling is employed to scale the temperature of a system to a pre-defined value, representing the coupling of a system to an external heat bath. As the temperature of a given system is the sum of the kinetic energies of all particles, temperature coupling algorithms modify the velocities of particles to achieve the desired target temperature. In its simplest form, velocities are scaled in each timestep by a factor $\lambda$ as in equation~\ref{eq:heat2}, calculated as in equation~\ref{eq:temp1}.
+
+\begin{equation}
+  \textbf{v}_i' = \lambda \textbf{v}_i
+  \label{eq:heat2}
+\end{equation}
+
+\begin{equation}
+  \lambda = \sqrt{\frac{T_{Target}}{T_{System}}}
+  \label{eq:temp1}
+\end{equation}
+
+\bigskip
+
+\noindent Where $v_i$ and $v_i'$ are the velocities before and after scaling, $T_{Target}$ is the desired temperature and $T_{System}$ is the temperature of the system. Such a \textit{strong coupling} algorithm is computationally inexpensive, but leads to highly unrealistic trajectories as any movement is immediately dampened. A more sensible approach is the \textit{weak coupling} algorithm, presented by Berendsen \textit{et al.}~\cite{Berendsen1984}, where the rescaling factor $\lambda$ is balanced with a latency factor $\tau$ representing time-lagged heat exchange to the external heat bath. The rescaling factor $\lambda$ is then calculated as in equation~\ref{eq:temp2}.
+
+\begin{equation}
+  \lambda = \sqrt{1 + \frac{\Delta t}{\tau}\Bigl(\frac{T_{Target}}{T_{System}} - 1\Bigr)}
+  \label{eq:temp2}
+\end{equation}
+
+\bigskip
+
+\noindent Where $\Delta t$ is the timestep and $\tau$ is the coupling time constant, usually in the range of 0.1 to 1 ps. Since this also suppresses kinetic fluctuations that could be considered natural and physically realistic, the Berendsen thermostat does, stricty speaking, not represent a true NVT ensemble. It has however been shown that the approximation is sufficient for large enough systems in the order of hundreds of particles~\cite{Morishita2000}. A number of improvements to thermic coupling have been developed since, with notable examples being the \textit{Bussi-Donadio-Parrinello} thermostat~\cite{Bussi2007} and the \textit{Nosé-Hoover} thermostat~\cite{Hoover1996}, which will both however not be explored in this thesis.
 
 \bibliography{thesis}
 

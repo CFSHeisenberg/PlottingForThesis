@@ -359,4 +359,83 @@ Daan Frenkel, Berend Smit, and Mark~A. Ratner.
 \newblock Understanding molecular simulation: From algorithms to applications.
 \newblock {\em Physics Today}, 50(7):66–66, July 1997.
 
+\bibitem{Tuckerman2010}
+Mark~E. Tuckerman.
+\newblock {\em Statistical Mechanics: Theory and Molecular Simulation}.
+\newblock Oxford Graduate Texts. Oxford University Press, USA, 2010.
+
+\bibitem{Trotter1959}
+H.~F. Trotter.
+\newblock On the product of semi-groups of operators.
+\newblock {\em Proceedings of the American Mathematical Society},
+  10(4):545–551, 1959.
+
+\bibitem{Verlet1967}
+Loup Verlet.
+\newblock Computer “experiments” on classical fluids. i. thermodynamical
+  properties of lennard-jones molecules.
+\newblock {\em Physical Review}, 159(1):98–103, July 1967.
+
+\bibitem{Swope1982}
+William~C. Swope, Hans~C. Andersen, Peter~H. Berens, and Kent~R. Wilson.
+\newblock A computer simulation method for the calculation of equilibrium
+  constants for the formation of physical clusters of molecules: Application to
+  small water clusters.
+\newblock {\em The Journal of Chemical Physics}, 76(1):637–649, January 1982.
+
+\bibitem{Wang2019}
+Ze-Ren Wang, Xu-Liang Zhu, Lu~Jiang, Kai Zhang, Hui-Wen Luo, Yue Gu, and Peng
+  Zhang.
+\newblock Investigations of the hydrogen bonds and vibrational spectra of
+  clathrate ice xvi.
+\newblock {\em Materials}, 12(2):246, January 2019.
+
+\bibitem{Braun2019}
+Efrem Braun, Justin Gilmer, Heather~B. Mayes, David~L. Mobley, Jacob~I. Monroe,
+  Samarjeet Prasad, and Daniel~M. Zuckerman.
+\newblock Best practices for foundations in molecular simulations [article
+  v1.0].
+\newblock {\em Living Journal of Computational Molecular Science}, 1(1), 2019.
+
+\bibitem{Ryckaert1977}
+Jean-Paul Ryckaert, Giovanni Ciccotti, and Herman~J.C Berendsen.
+\newblock Numerical integration of the cartesian equations of motion of a
+  system with constraints: molecular dynamics of n-alkanes.
+\newblock {\em Journal of Computational Physics}, 23(3):327–341, March 1977.
+
+\bibitem{Andersen1983}
+Hans~C Andersen.
+\newblock Rattle: A “velocity” version of the shake algorithm for molecular
+  dynamics calculations.
+\newblock {\em Journal of Computational Physics}, 52(1):24–34, October 1983.
+
+\bibitem{Cramer2004-vy}
+Christopher~J Cramer.
+\newblock {\em Essentials of computational chemistry}.
+\newblock John Wiley \& Sons, Chichester, England, 2 edition, September 2004.
+
+\bibitem{Berendsen1984}
+H.~J.~C. Berendsen, J.~P.~M. Postma, W.~F. van Gunsteren, A.~DiNola, and J.~R.
+  Haak.
+\newblock Molecular dynamics with coupling to an external bath.
+\newblock {\em The Journal of Chemical Physics}, 81(8):3684–3690, October
+  1984.
+
+\bibitem{Morishita2000}
+Tetsuya Morishita.
+\newblock Fluctuation formulas in molecular-dynamics simulations with the weak
+  coupling heat bath.
+\newblock {\em The Journal of Chemical Physics}, 113(8):2976–2982, August
+  2000.
+
+\bibitem{Bussi2007}
+Giovanni Bussi, Davide Donadio, and Michele Parrinello.
+\newblock Canonical sampling through velocity rescaling.
+\newblock {\em The Journal of Chemical Physics}, 126(1), January 2007.
+
+\bibitem{Hoover1996}
+William~G. Hoover and Brad~Lee Holian.
+\newblock Kinetic moments method for the canonical ensemble distribution.
+\newblock {\em Physics Letters A}, 211(5):253–257, February 1996.
+
 \end{thebibliography}
