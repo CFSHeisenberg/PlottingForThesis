@@ -6,7 +6,7 @@
 \BOOKMARK [3][-]{subsubsection.2.1.3}{Dirac Notation}{subsection.2.1}% 6
 \BOOKMARK [3][-]{subsubsection.2.1.4}{Variational Principle}{subsection.2.1}% 7
 \BOOKMARK [2][-]{subsection.2.2}{Hartree-Fock Theory}{section.2}% 8
-\BOOKMARK [3][-]{subsubsection.2.2.1}{Non-relativistic stationary systems}{subsection.2.2}% 9
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Non-relativistic Stationary Systems}{subsection.2.2}% 9
 \BOOKMARK [3][-]{subsubsection.2.2.2}{Born-Oppenheimer Approximation}{subsection.2.2}% 10
 \BOOKMARK [3][-]{subsubsection.2.2.3}{Independant Particle approximation}{subsection.2.2}% 11
 \BOOKMARK [3][-]{subsubsection.2.2.4}{Slater Determinant}{subsection.2.2}% 12
@@ -21,7 +21,7 @@
 \BOOKMARK [3][-]{subsubsection.2.3.4}{Generalized Gradient Approximation}{subsection.2.3}% 21
 \BOOKMARK [3][-]{subsubsection.2.3.5}{Hybrid Functionals}{subsection.2.3}% 22
 \BOOKMARK [3][-]{subsubsection.2.3.6}{Dispersion Corrections}{subsection.2.3}% 23
-\BOOKMARK [3][-]{subsubsection.2.3.7}{Density Functional Tight Binding1}{subsection.2.3}% 24
+\BOOKMARK [3][-]{subsubsection.2.3.7}{Density Functional Tight Binding}{subsection.2.3}% 24
 \BOOKMARK [2][-]{subsection.2.4}{Molecular Dynamics Simulations}{section.2}% 25
 \BOOKMARK [3][-]{subsubsection.2.4.1}{Statistical Mechanics - Ensembles}{subsection.2.4}% 26
 \BOOKMARK [3][-]{subsubsection.2.4.2}{The Canonical Ensemble}{subsection.2.4}% 27

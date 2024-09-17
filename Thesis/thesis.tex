@@ -205,7 +205,7 @@ As previously mentioned, the exact solution to the Schrödinger equation for sys
 To this end, several approximations are employed to simplify the eigenvalue problem down to an analytically solvable form.
 The Hartree-Fock method employs such approximations and provides a fundamental framework for the analysis of many-electron systems.
 
-\subsubsection{Non-relativistic stationary systems}
+\subsubsection{Non-relativistic Stationary Systems}
 An important assumption not exclusive to Hartree-Fock Theory is the non-relativistic nature of the analysed system, 
 implying stationary systems with velocities much smaller than the speed of light.
 This assumption allows one to employ only the much simpler time-independant Schrödinger equation, with the trade-off being that effects arising from special relativity, e.g.~spatial contraction or time dilation in heavy atoms, are not accounted for.
@@ -566,7 +566,7 @@ To avoid causing additional divergence, these damping functions must be carefull
 \\ \par \noindent Moving further up the `stairway' of complexity, one may employ so called \textit{non-local} correlation functionals, which add non-local correlations to local correlation functionals and do not rely on external experimental data, with e.g.~the \textit{non-local van der Waals density functional} (vdW-DF)~promising high accuracies~\cite{Klime2009_vdW-DF}.
 Going beyond even these methods, the assumption of pairwise additivity must be left behind and many-body dispersion considered, though these methods would be too complex to elaborate on in the scope of this thesis.
 
-\subsubsection{Density Functional Tight Binding1}
+\subsubsection{Density Functional Tight Binding}
 The following derivations are functionally based on an article by Koskinen and Mäkinen titled \textit{Density-functional tight-binding for beginners}, published in 2009~\cite{Koskinen2009}, albeit with stylistic alterations to keep the overall thesis consistent.
 The penultimate section regarding DFTB3 is sourced from an article by Gaus \textit{et al.}~titled \textit{DFTB3: Extension of the Self-Consistent-Charge Density-Functional Tight-Binding Method}, published in 2011~\cite{Gaus2011}.
 \\ \par \noindent Despite the many advancements in DFT and every increasing chemical accuracy, faster and computationally less demanding methods are always subject of research with the goal of reaching longer timeframes of simulation or upscale the size of studied systems.
@@ -781,7 +781,7 @@ systems on ever larger scales. Where practical experiments are limited by equipm
 simulations can be conducted cost effectively and with an ever increasing level of precision.
 Simulating a chemical system to receive meaningful information starts with choosing the most viable
 theoretical framework. \textit{Molecular Dynamics} (MD), utilizing the DFTB method, is one of those frameworks particularly well suited for  the theoretical time-dependant analysis of periodic chemical systems. From the output of such a framework, macroscopic properties and structural information of a given system may be inferred using the principles of statistical mechanics.
-In this chapter, the most relevant aspects of MD simulations fore the scope of this thesis will be discussed, mostly based on \textit{Computer Simulation of Liquids} by Allen and Tildesley unless cited otherwise, again with stylistic changes for the sake of consistency~\cite{Allen2017}.
+In this chapter, the most relevant aspects of MD simulations for the scope of this thesis will be discussed, mostly based on \textit{Computer Simulation of Liquids} by Allen and Tildesley unless cited otherwise, again with stylistic changes for the sake of consistency~\cite{Allen2017}.
 
 \subsubsection{Statistical Mechanics - Ensembles}
 Unless calculating a system with no kinetic energy, i.e.~at absolute zero and at a state of least entropy, the various states of a chemical system during a simulation will cover a variety of conformations and, therefore, potential and kinetic energies. The potential energy of such a system is a function of the positions of all individual atoms, leading to what is called a potential energy surface (PES), in essence a 3N-dimensional function where N is the number of atoms in the system. To extract macroscopic properties from such a system, however, one must also consider the velocities each atom has at specific points in time, as the total energy of a closed system is the sum of kinetic and potential energies as in equation~\ref{eq:total}
@@ -794,18 +794,18 @@ Unless calculating a system with no kinetic energy, i.e.~at absolute zero and at
 \bigskip
 
 \noindent Where $\textbf{Q}$ and $\textbf{P}$ are the position and momenta vectors respectively.
-The positions and momenta of all atoms are thought of as coordinates in a multidimensional space with 6N dimensions, the \textit{phase space}. Over the course of a simulation, many different phase space vectors are sampled, leading to what is referred to as an \textit{ensemble} of configurations weighted by their probability of occuring. Such an ensemble may be regarded as a collection of all accessible points $\Gamma$ in phase space, with different ensembles defined by which macroscopic parametres (volume, pressure, temperature,  ...) are fixed.
+The positions and momenta of all atoms are thought of as coordinates in a multidimensional space with 6N dimensions, the \textit{phase space}. Over the course of a simulation, many different phase space vectors are sampled, leading to what is referred to as an \textit{ensemble} of configurations weighted by their probability of occuring. Such an ensemble may be regarded as a collection of all accessible points $\Theta$ in phase space, with different ensembles defined by which macroscopic parametres (volume, pressure, temperature,  ...) are fixed.
 \\ \par \noindent
-Given a particular point in phase space, one may simply calculate the microscopic value of some property as a function of the phase space vector. According to the principles of the \textit{Ergodic Hypothesis}, a central approximation in statistical analysis, the time average of a process parameter equals the observable equilibrium value of said property on a macroscopic scale as desribed in equation~\ref{eq:ergoden}, so long as sufficiently long sampling times are employed. This assumption must be made as MD simulations, limited by computational resources, cannot sample system sizes even close to real world scales and is key to extracting macroscopic properties. In such an \textit{ergodic system}, an equal amount of time is spent in each possible phase state~\cite{Gupta1990-au}.
+Given a particular point in phase space, one may simply calculate the microscopic value of some property as a function of the phase space vector. According to the principles of the \textit{Ergodic hypothesis}, a central approximation in statistical analysis, the time average of a process parameter equals the observable equilibrium value of said property on a macroscopic scale as desribed in equation~\ref{eq:ergoden}, so long as sufficiently long sampling times are employed. This assumption must be made as MD simulations, limited by computational resources, cannot sample system sizes even close to real world scales and is key to extracting macroscopic properties. In such an \textit{ergodic system}, an equal amount of time is spent in each possible phase state~\cite{Gupta1990-au}.
 
 \begin{equation}
-  A_{obs} = \langle A  \rangle_{time} = \bigl\langle A \bigl(\mathbf{\Gamma}(t)\bigr) \bigl\rangle_{time} = \lim_{t_{obs} \to \infty} \frac{1}{t_{obs}}\int_{0}^{t_{obs}}A\bigl(\mathbf{\Gamma}(t)\bigr)dt
+  A_{obs} = \langle A  \rangle_{time} = \bigl\langle A \bigl(\mathbf{\Theta}(t)\bigr) \bigl\rangle_{time} = \lim_{t_{obs} \to \infty} \frac{1}{t_{obs}}\int_{0}^{t_{obs}}A\bigl(\mathbf{\Theta}(t)\bigr)dt
   \label{eq:ergoden}
 \end{equation}
 
 \bigskip
 
-\noindent Where $A_{obs}$ is the observable macroscopic value of a property, $A$ the property itself at a given phase space vector $\mathbf{\Gamma}(t)$ at time $t$ and $t_{obs}$ the observation time. As it is impossible to extend the observation time to infinity, equations of motions are usually solved over a large but finite number of equally long timesteps, as in equation~\ref{eq:ergoden2}.
+\noindent Where $A_{obs}$ is the observable macroscopic value of a property, $A$ the property itself at a given phase space vector $\mathbf{\Theta}(t)$ at time $t$ and $t_{obs}$ the observation time. As it is impossible to extend the observation time to infinity, equations of motions are usually solved over a large but finite number of equally long timesteps, as in equation~\ref{eq:ergoden2}.
 
 \begin{equation}
   A_{obs} = \langle A  \rangle_{time} = \frac{1}{\tau_{obs}}\sum_{\tau=1}^{\tau_{obs}}A\bigl(\mathbf{\Gamma}(t)\bigr)
