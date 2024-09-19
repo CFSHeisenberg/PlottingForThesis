@@ -438,4 +438,140 @@ William~G. Hoover and Brad~Lee Holian.
 \newblock Kinetic moments method for the canonical ensemble distribution.
 \newblock {\em Physics Letters A}, 211(5):253–257, February 1996.
 
+\bibitem{Oliveira2009}
+Augusto~F. Oliveira, Gotthard Seifert, Thomas Heine, and Hélio~A. Duarte.
+\newblock Density-functional based tight-binding: an approximate dft method.
+\newblock {\em Journal of the Brazilian Chemical Society}, 20(7):1193–1205,
+  2009.
+
+\bibitem{Hourahine2020}
+B.~Hourahine, B.~Aradi, V.~Blum, F.~Bonafé, A.~Buccheri, C.~Camacho,
+  C.~Cevallos, M.~Y. Deshaye, T.~Dumitrică, A.~Dominguez, S.~Ehlert,
+  M.~Elstner, T.~van~der Heide, J.~Hermann, S.~Irle, J.~J. Kranz,
+  C.~K\"{o}hler, T.~Kowalczyk, T.~Kubař, I.~S. Lee, V.~Lutsker, R.~J. Maurer,
+  S.~K. Min, I.~Mitchell, C.~Negre, T.~A. Niehaus, A.~M.~N. Niklasson, A.~J.
+  Page, A.~Pecchia, G.~Penazzi, M.~P. Persson, J.~Řezáč, C.~G. Sánchez,
+  M.~Sternberg, M.~St\"{o}hr, F.~Stuckenberg, A.~Tkatchenko, V.~W.-z. Yu, and
+  T.~Frauenheim.
+\newblock Dftb+, a software package for efficient approximate density
+  functional theory based atomistic simulations.
+\newblock {\em The Journal of Chemical Physics}, 152(12), March 2020.
+
+\bibitem{Elstner1998}
+M.~Elstner, D.~Porezag, G.~Jungnickel, J.~Elsner, M.~Haugk, Th. Frauenheim,
+  S.~Suhai, and G.~Seifert.
+\newblock Self-consistent-charge density-functional tight-binding method for
+  simulations of complex materials properties.
+\newblock {\em Physical Review B}, 58(11):7260–7268, September 1998.
+
+\bibitem{Yang2008}
+Yang Yang, Haibo Yu, Darrin York, Marcus Elstner, and Qiang Cui.
+\newblock Description of phosphate hydrolysis reactions with the
+  self-consistent-charge density-functional-tight-binding (scc-dftb) theory. 1.
+  parameterization.
+\newblock {\em Journal of Chemical Theory and Computation}, 4(12):2067–2084,
+  November 2008.
+
+\bibitem{Szcs2004}
+B~Szuecs, Z~Hajnal, R~Scholz, S~Sanna, and Th~Frauenheim.
+\newblock Theoretical study of the adsorption of a ptcda monolayer on
+  s-passivated gaas(l00).
+\newblock {\em Applied Surface Science}, 234(1–4):173–177, July 2004.
+
+\bibitem{SzuxBcs2003}
+B.~Szuecs, Z.~Hajnal, Th. Frauenheim, C.~González, J.~Ortega, R.~Pérez, and
+  F.~Flores.
+\newblock Chalcogen passivation of gaas(1 0 0) surfaces: theoretical study.
+\newblock {\em Applied Surface Science}, 212–213:861–865, May 2003.
+
+\bibitem{VandenBossche2024}
+Maxime Van~den Bossche.
+\newblock Three-center tight-binding together with multipolar auxiliary
+  functions.
+\newblock {\em Journal of Chemical Theory and Computation}, 20(6):2538–2550,
+  March 2024.
+
+\bibitem{VandenBossche2019}
+Maxime Van~den Bossche.
+\newblock Dftb-assisted global structure optimization of 13- and 55-atom late
+  transition metal clusters.
+\newblock {\em The Journal of Physical Chemistry A}, 123(13):3038–3045, March
+  2019.
+
+\bibitem{Perdew1996}
+John~P. Perdew, Kieron Burke, and Matthias Ernzerhof.
+\newblock Generalized gradient approximation made simple.
+\newblock {\em Physical Review Letters}, 77(18):3865–3868, October 1996.
+
+\bibitem{Ditchfield1971-lb}
+R~Ditchfield, W~J Hehre, and J~A Pople.
+\newblock Self-consistent molecular-orbital methods. {IX}. an extended
+  gaussian-type basis for molecular-orbital studies of organic molecules.
+\newblock {\em J. Chem. Phys.}, 54(2):724--728, January 1971.
+
+\bibitem{Becke1993-qq}
+Axel~D Becke.
+\newblock Density-functional thermochemistry. {III}. the role of exact
+  exchange.
+\newblock {\em J. Chem. Phys.}, 98(7):5648--5652, April 1993.
+
+\bibitem{Hariharan1973-nu}
+P~C Hariharan and J~A Pople.
+\newblock The influence of polarization functions on molecular orbital
+  hydrogenation energies.
+\newblock {\em Theoret. Chim. Acta}, 28(3):213--222, 1973.
+
+\bibitem{Hehre1972-vi}
+W~J Hehre, R~Ditchfield, and J~A Pople.
+\newblock Self---consistent molecular orbital methods. {XII}. further
+  extensions of gaussian---type basis sets for use in molecular orbital studies
+  of organic molecules.
+\newblock {\em J. Chem. Phys.}, 56(5):2257--2261, March 1972.
+
+\bibitem{Rassolov2001-or}
+Vitaly~A Rassolov, Mark~A Ratner, John~A Pople, Paul~C Redfern, and Larry~A
+  Curtiss.
+\newblock 6‐31g* basis set for third‐row atoms.
+\newblock {\em J. Comput. Chem.}, 22(9):976--984, July 2001.
+
+\bibitem{Bergner1993-ua}
+Andreas Bergner, Michael Dolg, Wolfgang K{\"u}chle, Hermann Stoll, and
+  Heinzwerner Preu{\ss}.
+\newblock Ab initio energy-adjusted pseudopotentials for elements of groups
+  13--17.
+\newblock {\em Mol. Phys.}, 80(6):1431--1441, December 1993.
+
+\bibitem{VandenBossche2018}
+Maxime Van~den Bossche, Henrik Gr\"{o}nbeck, and Bjørk Hammer.
+\newblock Tight-binding approximation-enhanced global optimization.
+\newblock {\em Journal of Chemical Theory and Computation}, 14(5):2797–2807,
+  March 2018.
+
+\bibitem{Hofer2015-wy}
+Thomas~S Hofer and Andreas~O Tirler.
+\newblock Combining 2d-periodic quantum chemistry with molecular force fields:
+  A novel {QM/MM} procedure for the treatment of solid-state surfaces and
+  interfaces.
+\newblock {\em J. Chem. Theory Comput.}, 11(12):5873--5887, December 2015.
+
+\bibitem{Saleh2019-yz}
+Muhammad Saleh and Thomas~S Hofer.
+\newblock A {DFTB/MM} {MD} approach for solid-state interfaces: Structural and
+  dynamical properties of {H$_{2}$O} and {NH$_{3}$on} {R-TiO$_{2}$(001}).
+\newblock {\em J. Phys. Chem. C Nanomater. Interfaces}, 123(12):7230--7245,
+  March 2019.
+
+\bibitem{Prasetyo2019-eh}
+Niko Prasetyo and Thomas~S Hofer.
+\newblock Adsorption and dissociation of water molecules at the
+  {$\alpha$-Al2O3(0001}) surface: A 2-dimensional hybrid self-consistent charge
+  density functional based tight-binding/molecular mechanics molecular dynamics
+  (2d {SCC-DFTB/MM} {MD}) simulation study.
+\newblock {\em Comput. Mater. Sci.}, 164:195--204, June 2019.
+
+\bibitem{Humphrey1996}
+William Humphrey, Andrew Dalke, and Klaus Schulten.
+\newblock Vmd: Visual molecular dynamics.
+\newblock {\em Journal of Molecular Graphics}, 14(1):33–38, February 1996.
+
 \end{thebibliography}

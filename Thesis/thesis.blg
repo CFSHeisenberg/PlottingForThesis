@@ -5,45 +5,45 @@ The style file: unsrt.bst
 Database file #1: thesis.bib
 Warning--empty title in Boys1950
 Warning--empty publisher in Gupta1990-au
-You've used 73 entries,
+You've used 93 entries,
             1791 wiz_defined-function locations,
-            967 strings with 16079 characters,
-and the built_in function-call counts, 17491 in all, are:
-= -- 1531
-> -- 619
+            1096 strings with 20825 characters,
+and the built_in function-call counts, 23298 in all, are:
+= -- 1999
+> -- 968
 < -- 2
-+ -- 241
-- -- 168
-* -- 1479
-:= -- 2731
-add.period$ -- 220
-call.type$ -- 73
-change.case$ -- 64
++ -- 365
+- -- 272
+* -- 2052
+:= -- 3686
+add.period$ -- 280
+call.type$ -- 93
+change.case$ -- 84
 chr.to.int$ -- 0
-cite$ -- 75
-duplicate$ -- 695
-empty$ -- 1809
-format.name$ -- 168
-if$ -- 3831
+cite$ -- 95
+duplicate$ -- 874
+empty$ -- 2320
+format.name$ -- 272
+if$ -- 5037
 int.to.chr$ -- 0
-int.to.str$ -- 73
-missing$ -- 83
-newline$ -- 367
-num.names$ -- 73
-pop$ -- 129
+int.to.str$ -- 93
+missing$ -- 103
+newline$ -- 467
+num.names$ -- 93
+pop$ -- 149
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 278
+skip$ -- 343
 stack$ -- 0
-substring$ -- 1660
-swap$ -- 105
+substring$ -- 2221
+swap$ -- 125
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 2
-while$ -- 136
-width$ -- 75
-write$ -- 801
+while$ -- 184
+width$ -- 95
+write$ -- 1021
 (There were 2 warnings)

@@ -32,3 +32,9 @@
 \contentsline {subsubsection}{\numberline {2.4.7}Constraint Dynamics}{33}{subsubsection.2.4.7}%
 \contentsline {subsubsection}{\numberline {2.4.8}Periodic Boundary Conditions}{36}{subsubsection.2.4.8}%
 \contentsline {subsubsection}{\numberline {2.4.9}Temperature Control}{37}{subsubsection.2.4.9}%
+\contentsline {section}{\numberline {3}Results and Discussion}{38}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Calculation Setup}{38}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}SCC DFTB Setup and Parametrization}{39}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Molecular Dynamics Protocol}{39}{subsubsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.2}Interaction Energy}{40}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Guest Dimers}{40}{subsubsection.3.2.1}%

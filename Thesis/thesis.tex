@@ -8,7 +8,11 @@
 \geometry{a4paper, portrait, margin=30mm, bmargin=30mm, tmargin=30mm}
 \usepackage{amsmath}
 \usepackage{esvect}
+\usepackage{cite}
 \usepackage[hidelinks]{hyperref}
+\usepackage[version=4,arrows=pgf-filled,
+textfontname=sffamily,
+mathfontname=mathsf]{mhchem}
 
 \newcommand{\pvec}[1]{\vec{#1}\mkern2mu\vphantom{#1}}
 
@@ -1276,6 +1280,46 @@ In an NVT ensemble, temperature coupling is employed to scale the temperature of
 
 \noindent Where $\Delta t$ is the timestep and $\tau$ is the coupling time constant, usually in the range of 0.1 to 1 ps. Since this also suppresses kinetic fluctuations that could be considered natural and physically realistic, the Berendsen thermostat does, stricty speaking, not represent a true NVT ensemble. It has however been shown that the approximation is sufficient for large enough systems in the order of hundreds of particles~\cite{Morishita2000}. A number of improvements to thermic coupling have been developed since, with notable examples being the \textit{Bussi-Donadio-Parrinello} thermostat~\cite{Bussi2007} and the \textit{Nosé-Hoover} thermostat~\cite{Hoover1996}, which will both however not be explored in this thesis.
 
+\section{Results and Discussion}
+\subsection{Calculation Setup}
+Settings for the SCC DFTB MD simulation approach as well as information on general workflow are provided in the following.
+
+\subsubsection{SCC DFTB Setup and Parametrization}
+
+Based on previous succesful simulations of MIL-68(Ga)~\cite{Fischereder2023,Purtscher2023,Hofer2023}, self-consistent charge density functional tight binding (SCC DFTB)~\cite{Oliveira2009} of 2nd-order parametrization (DFTB2) was employed in this work, as implemented in the DFTB+ package~\cite{Hourahine2020} and utilizing the mio/hyb parameter set~\cite{Elstner1998, Yang2008, Szcs2004,SzuxBcs2003}. The mio/hyb parameter set was extended for Ga-N interactions based on the workflow presented by \textit{Van den Bossche et al.} using the hotcent tool~\cite{VandenBossche2024,VandenBossche2019} and Perdew-Burke-Enzerhofer functional~\cite{Perdew1996}, with the confinement parameters for Ga and N taken as provided by mio/hyb literature. Repulsive interactions where then fitted to a potential energy scan reference of planar \ce{Ga(NH_2)_3} at the B3LYP/SDD+6-31G(d) level of theory calculated with Gaussian16~\cite{Ditchfield1971-lb,Becke1993-qq,Hariharan1973-nu,Hehre1972-vi,Rassolov2001-or,Bergner1993-ua} and using the tango package~\cite{VandenBossche2018}.
+
+\subsubsection{Molecular Dynamics Protocol}\label{setup}
+For the SCC DFTB MD simulation, the DFTB+ package was used in conjunction with in-house MD routines, used to satisfying effect in previous works regarding solid-state systems~\cite{Hofer2015-wy,Saleh2019-yz,Prasetyo2019-eh}. Time propagation was performed at steps of 2.0 fs \textit{via} the previously described velocity verlet propagator, made possible by employing the SHAKE/RATTLE algorithm to constrain hydrogen-containing bonds.
+\\ \par \noindent As shown in previous works and touched on briefly in the theory section, MIL-68(Ga) undergoes a phase transition under constant pressure conditions, resulting in structural collapse~\cite{Purtscher2023,Fischereder2023} and is therefore subjected to the NVT conditions of the canonical ensemble. A constant temperature of 298.15 K was then achieved by a Bussi-Donadio-Parrinello thermostat algorithm with a relaxation time of 0.1 ps.
+\\ \par \noindent Visualizations of configurations were generated using the \textit{visual molecular dynamics} (VMD) package~\cite{Humphrey1996}, with the initial configurations generated from pristine MIL-68(Ga) structures of previous works~\cite{Fischereder2023}. For the different guest-loaded systems, the 4,5-dimethoxy-N-butylphthalamide guests were randomly placed into the large pores of the pristine MOF system while maintaining a sensible initial distances of at least 1.5 Å between the guest and host atoms.
+
+\subsection{Interaction Energy}
+\subsubsection{Guest Dimers}
+To investigate the interaction energies and relative orientations of a homo-dimer of 4,5-dimethoxy-N-butylphthalamide guests, two idential molecules were placed in a cubic box with an edge length of 100 Å to simulate a vacuum environment at an intermolecular distance of around 3.5 Å. Sampling was then done under the conditions described in~\ref{setup} for  300ps.  Similarly, a singular guest molecule was sampled under the same conditions for a total of 200 ps. The interaction energies $U_{int}$ were then calculated by subtracting the time-averaged energy of the monomer$<U_{mono}>$ twice from the running internaa energy of the dimer $U_{dimer}$, as described in equation~\ref{eq:energydimer}.
+
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=1\textwidth]{Images/3Energies.png}
+  \caption{Caption for Image 1}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{Images/3Energies.png}
+    \caption{Caption for Image 1}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{Images/3Energies.png}
+    \caption{Caption for Image 2}
+  \end{minipage}
+\end{figure}
+
 \bibliography{thesis}
+
+
 
 \end{document}
