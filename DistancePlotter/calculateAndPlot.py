@@ -73,7 +73,8 @@ class DistancePlotter:
         #stepframe_values_previous = self.merged_df_values[(i-2)*self.numAtoms:(i-1)*self.numAtoms, :]
 
         # Get partial numpy array of shape (108,7) of the current step only containing those entries of stepframe_values whose fifth element, i.e. the cleanedIndex are in centroid_indices_j
-        stepframe_j_values = np.array([stepframe_values[stepframe_values[:, 3] == index] for index in self.centroid_indices_j.values.ravel()])
+        #stepframe_j_values = np.array([stepframe_values[stepframe_values[:, 3] == index] for index in self.centroid_indices_j.values.ravel()])
+        stepframe_j_values = stepframe_values[np.isin(stepframe_values[:, 3], self.centroid_indices_j)]
         #print("centroid_indies_j: ", self.centroid_indices_j)
         # Get partial numpy array of shape (108,7) of the previous step only containing those entries of stepframe_values_next whose fifth element, i.e. the cleanedIndex are in centroid_indices_j
         #stepframe_j_values_previous = stepframe_values_previous[np.isin(stepframe_values_previous[:, 5], self.centroid_indices_j)]       
@@ -198,10 +199,10 @@ def plotFromSavedDistances(centroid_vars, file_path):
     results = np.load(file_path)
         
     # Get the steps to plot from the name of the file
-    stepsToPlot = int(file_path.split('_')[7])
+    stepsToPlot = int(file_path.split('_')[6])
     
     # Get the selected guest
-    guestNumber = int(file_path.split('_')[5])
+    guestNumber = int(file_path.split('_')[4])
         
     # Get the selected centroids to plot
     selected_centroids = [var.get() for var in centroid_vars]
@@ -241,19 +242,19 @@ def plotFromSavedDistances(centroid_vars, file_path):
     #plt.axvline(x = 0.40, color = 'k', linestyle = '--')
     #plt.axvline(x = 0.503, color = 'k', linestyle = '--')
     #plt.axvline(x = 0.6272, color = 'k', linestyle = '--')
-    plt.axvline(x = 0.28, color = 'k', linestyle = '--')
-    plt.axvline(x = 0.4, color = 'k', linestyle = '--')
+    #plt.axvline(x = 0.28, color = 'k', linestyle = '--')
+    plt.axvline(x = 0.092, color = 'k', linestyle = '--')
 
 
     #labels for vertical lines
     #labels = ['S1', 'S2', 'S3', 'S4']
     #labels = ['S1']
-    labels = ['S1', 'S2']
+    labels = ['S1']
 
     #label positions
     #label_positions = [0.032, 0.112, 0.168, 0.24]
     #label_positions = [0.25]
-    label_positions = [0.28, 0.4]
+    label_positions = [0.092]
 
     #Place labels above figure
     fig = plt.gcf()

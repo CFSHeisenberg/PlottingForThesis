@@ -433,11 +433,6 @@ Giovanni Bussi, Davide Donadio, and Michele Parrinello.
 \newblock Canonical sampling through velocity rescaling.
 \newblock {\em The Journal of Chemical Physics}, 126(1), January 2007.
 
-\bibitem{Hoover1996}
-William~G. Hoover and Brad~Lee Holian.
-\newblock Kinetic moments method for the canonical ensemble distribution.
-\newblock {\em Physics Letters A}, 211(5):253–257, February 1996.
-
 \bibitem{Oliveira2009}
 Augusto~F. Oliveira, Gotthard Seifert, Thomas Heine, and Hélio~A. Duarte.
 \newblock Density-functional based tight-binding: an approximate dft method.
@@ -572,6 +567,20 @@ Niko Prasetyo and Thomas~S Hofer.
 \bibitem{Humphrey1996}
 William Humphrey, Andrew Dalke, and Klaus Schulten.
 \newblock Vmd: Visual molecular dynamics.
-\newblock {\em Journal of Molecular Graphics}, 14(1):33–38, February 1996.
+\newblock {\em Journal of Molecular Graphics}, 14(1-4):33--38, February 1996.
+
+\bibitem{Zhan2017}
+Yizhen Zhan, Xue Zhao, and Wei Wang.
+\newblock Synthesis of phthalimide disperse dyes and study on the interaction
+  energy.
+\newblock {\em Dyes and Pigments}, 146:240–250, November 2017.
+
+\bibitem{Schwartz2024}
+Heidi~A. Schwartz, Murat Atar, Matthias Spilles, Michael Fill, Manuel Ott,
+  Felix R.~S. Purtscher, Josef~M. Gallmetzer, Baris \"{O}cal, Selina Olthof,
+  Axel Griesbeck, Klaus Meerholz, Thomas~S. Hofer, and Uwe Ruschewitz.
+\newblock Polarity profiling of porous architectures: solvatochromic dye
+  encapsulation in metal–organic frameworks.
+\newblock {\em Journal of Materials Chemistry C}, 12(24):8759–8776, 2024.
 
 \end{thebibliography}

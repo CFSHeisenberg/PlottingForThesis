@@ -1240,7 +1240,7 @@ As mentioned before, the error over the total trajectory scales with $\Delta t^2
 
 \noindent With bond vectors $\mathbf{q}_{ij}$ already determined in the steps before. Since the constraint equations~\ref{eq:constraint2} are scalar products, the above equations are linear in the unknowns $\lambda_{12}$ and $\lambda_{23}$, which in turn are used in equations~\ref{eq:constraint15},~\ref{eq:constraint16} and~\ref{eq:constraint17} to receive constraint forces and subsequently equation~\ref{eq:constraint14} for absolute velocities at time $t + \Delta t$.
 
-\subsubsection{Periodic Boundary Conditions}
+\subsubsection{Periodic Boundary Conditions}\label{periodic}
 While simulating small or few molecules is a computationally inexpensive and generally fast endeavor, especially on modern hardware, properties of e.g.~liquids in bulk may not be accurately extrapolated from small-scale systems. Increasing then the number of molecules towards a system more representative of a macroscopic bulk however leads to both unfeasibly high costs and a significant number of molecules being present on the bulks surface, experiencing different potentials and therefore skewing the overall simulation.
 \\ \par \noindent To counteract these surface effects, \textit{periodic boundary conditions} may be employed~\cite{Allen2017,Cramer2004-vy,Tuckerman2010}. The system being modeled is hereby assumed to be a cubic unit cell of an ideal and infinite crystal, replicated periodically and infinitely in all three dimensions, thus eliminating surface effects. As a particle moves, so do its ifninite mirror particles, and should it leave the box, one of its images will instantly replace it on the opposite face, keeping the number of particles constant. When employed, distances between particles are calculated \textit{via} \textit{minimum image convention}, stating that in the infinitely repeating array of unit cells, a particle $i$ interacts with another particle $j$ to which it is closest, even if that particle is located in one of the neighboring periodic cells. For any given dimension, this convention may be expressed as in equation~\ref{eq:pbc1}.
 
@@ -1278,7 +1278,16 @@ In an NVT ensemble, temperature coupling is employed to scale the temperature of
 
 \bigskip
 
-\noindent Where $\Delta t$ is the timestep and $\tau$ is the coupling time constant, usually in the range of 0.1 to 1 ps. Since this also suppresses kinetic fluctuations that could be considered natural and physically realistic, the Berendsen thermostat does, stricty speaking, not represent a true NVT ensemble. It has however been shown that the approximation is sufficient for large enough systems in the order of hundreds of particles~\cite{Morishita2000}. A number of improvements to thermic coupling have been developed since, with notable examples being the \textit{Bussi-Donadio-Parrinello} thermostat~\cite{Bussi2007} and the \textit{Nosé-Hoover} thermostat~\cite{Hoover1996}, which will both however not be explored in this thesis.
+\noindent Where $\Delta t$ is the timestep and $\tau$ is the coupling time constant, usually in the range of 0.1 to 1 ps. Since this also suppresses kinetic fluctuations that could be considered natural and physically realistic, the Berendsen thermostat does, stricty speaking, not represent a true NVT ensemble. It has however been shown that the approximation is sufficient for large enough systems in the order of hundreds of particles~\cite{Morishita2000}. A number of improvements to thermic coupling have been developed since, with another notable example being the \textit{Bussi-Donadio-Parrinello} thermostat~\cite{Bussi2007} that approaches velocity-rescaling with a stochastic approach whereby the rescaling factor $\alpha$ is calculated as in equation~\ref{eq:temp3}.
+
+\begin{equation}
+  \alpha = \sqrt{\frac{K_t}{K}}
+  \label{eq:temp3}
+\end{equation}
+
+\bigskip
+
+\noindent Where the target $K_t$ is not simply calculated as the average kinetic energy at the target temperature $T_{Target}$, but is instead drawn from the canonical equilibrium distribution for the kinetic energy, allowing for more precise sampling of the canonical ensemble compared to simply forcing every atoms kinetic energy to align with the target temperature.
 
 \section{Results and Discussion}
 \subsection{Calculation Setup}
@@ -1291,32 +1300,141 @@ Based on previous succesful simulations of MIL-68(Ga)~\cite{Fischereder2023,Purt
 \subsubsection{Molecular Dynamics Protocol}\label{setup}
 For the SCC DFTB MD simulation, the DFTB+ package was used in conjunction with in-house MD routines, used to satisfying effect in previous works regarding solid-state systems~\cite{Hofer2015-wy,Saleh2019-yz,Prasetyo2019-eh}. Time propagation was performed at steps of 2.0 fs \textit{via} the previously described velocity verlet propagator, made possible by employing the SHAKE/RATTLE algorithm to constrain hydrogen-containing bonds.
 \\ \par \noindent As shown in previous works and touched on briefly in the theory section, MIL-68(Ga) undergoes a phase transition under constant pressure conditions, resulting in structural collapse~\cite{Purtscher2023,Fischereder2023} and is therefore subjected to the NVT conditions of the canonical ensemble. A constant temperature of 298.15 K was then achieved by a Bussi-Donadio-Parrinello thermostat algorithm with a relaxation time of 0.1 ps.
-\\ \par \noindent Visualizations of configurations were generated using the \textit{visual molecular dynamics} (VMD) package~\cite{Humphrey1996}, with the initial configurations generated from pristine MIL-68(Ga) structures of previous works~\cite{Fischereder2023}. For the different guest-loaded systems, the 4,5-dimethoxy-N-butylphthalamide guests were randomly placed into the large pores of the pristine MOF system while maintaining a sensible initial distances of at least 1.5 Å between the guest and host atoms.
+\\ \par \noindent Visualizations of configurations were generated using the \textit{visual molecular dynamics} (VMD) package~\cite{Humphrey1996}, with the initial configurations generated from pristine MIL-68(Ga) structures of previous works~\cite{Fischereder2023}. For the different guest-loaded systems, the 4,5-dimethoxy-N-butylphthalamide guests (=Phth) were randomly placed into the large pores of the pristine MOF system while maintaining a sensible initial distance of at least 1.5 Å between the guest and host atoms.
 
-\subsection{Interaction Energy}
-\subsubsection{Guest Dimers}
-To investigate the interaction energies and relative orientations of a homo-dimer of 4,5-dimethoxy-N-butylphthalamide guests, two idential molecules were placed in a cubic box with an edge length of 100 Å to simulate a vacuum environment at an intermolecular distance of around 3.5 Å. Sampling was then done under the conditions described in~\ref{setup} for  300ps.  Similarly, a singular guest molecule was sampled under the same conditions for a total of 200 ps. The interaction energies $U_{int}$ were then calculated by subtracting the time-averaged energy of the monomer$<U_{mono}>$ twice from the running internaa energy of the dimer $U_{dimer}$, as described in equation~\ref{eq:energydimer}.
+\subsection{Results}
+\subsubsection{Guest Dimer}
+To investigate the interaction energies and relative orientations of a homo-dimer of 2-butyl-5,6-dimethoxyisoindoline-1,3-dione guests, especially in relation to the behaviour once embedded in MIL-68(Ga), two idential molecules were placed in a cubic box with an edge length of 100 Å to simulate a vacuum environment at an intermolecular distance of around 3.5 Å. Sampling was then done under the conditions described in~\ref{setup} for  200ps.  Similarly, a singular guest molecule was sampled under the same conditions for a total of 200 ps. The instantaneous interaction energies $U_{int}$ were then calculated by subtracting the time-averaged energy of the monomer $\langle U_{mono}\rangle$ twice from the running internal energy of the dimer $U_{dimer}$, as described in equation~\ref{eq:energydimer}.
+
+ \begin{equation}
+  U_{int} = U_{dimer} - 2 \cdot \langle U_{mono}\rangle
+  \label{eq:energydimer}
+ \end{equation}
+
+\noindent With angular brackets $\langle ... \rangle$ denoting an ensemble average. Figure~\ref{fig:dimer} shows the evolution of interaction energy, with the mean interaction energy taken from the arithmetic average of the last 0.15 ns of simulation, marked in yellow.
 
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\textwidth]{Images/dimer.png}
+  \caption{Time series of the interaction energies of a Phth guest dimer (black). Blue lines are the running average over a window size of 2500 data points, while the yellow line starting at 0.15 ns marks the average interaction energy during the later half of the simulation at -20.55 kJ mol$^{-1}$.}\label{fig:dimer}
+\end{figure}
 
-\begin{figure}[htbp]
+\noindent To determine the relative orientations and the prevalence of parallel stacking, the centroids of the aromatic rings of the guest molecules were calculated as spatial averages. Image~\ref{fig:dimerCentroid} shows the distances of these centroids over the course of the simulation, as well as a representative structural snapshot.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\textwidth]{Images/dimerDistance.png}
+  \caption{Time series of dimer centroid-centroid distances (bottom) with running average over a window size of 1000 steps. The snapshot (top) shows a representative configuration of the dimer taken at the point in time denoted \textit{via} the dashed line and with the two rings making up the centroids in green and yellow.}\label{fig:dimerCentroid}
+\end{figure}
+
+\noindent Unsurprisingly, a dimer of Phth prefers an offset parallel stacking configuration, with the distances between aromatic ring centroids averaging at around 3.5 Å despite slight deviations due to thermal fluctuation. These distances align well with phthalimide-dimer single-point calculations done at the $\omega$B97X-D/6-31G(d,p) level of theory~\cite{Zhan2017}, which also arrived at an optimal distance of 3.5 Å and energies within the same order of magnitude, granted that the structures are not entirely identical.
+
+\subsubsection{Guest@MOF-Systems}
+In addition to the pristine MIL-68(Ga), three different loading scenarios were prepared as described in~\ref{setup}, resulting in three systems with one, two and three Phth guest molecules respectively, referred to as Phth$_1$@MIL-68(Ga), Phth$_2$@MIL-68(Ga) and Phth$_3$@MIL-68(Ga) in the following. As periodicity is now a concern and simulations are carried out under canonic conditions, the MOFs were placed in a cubic simulation box with the constant dimensions 21.83(x) $\times$ 37.49(y) $\times$ 20.12(z) Å. Simulations were carried out under the conditions described in section~\ref{setup} for 1 ns per loaded system and 200 ps for the pristine MOF.
+\subsubsection*{Interaction Energies}
+Instantaneous interaction energies $U_{int}$ were then calculated as in equation~\ref{eq:energyLoaded} by subtracting the time-averaged energy of the pristine MOF $\langle U_{MOF}\rangle$ and that of the guest monomer $\langle U_{mono}\rangle$ from the running internal energy of the loaded systems $U_{Phth_x@MOF}$.
+
+\begin{equation}
+  U_{int} = U_{Phth_x@MOF} - \langle U_{MOF}\rangle -  x \cdot \langle U_{mono}\rangle
+  \label{eq:energyLoaded}
+\end{equation}
+
+\bigskip
+
+\noindent Where x is the number of guest molecules in each system. Figure~\ref{fig:interactionEnergies} shows the evolution of interaction energies for the three degrees of loading, with the mean interaction energies taken from the arithmetic averages of the last 0.5 ns of simulation, marked in yellow. 
+\par \noindent \\ An interaction energy of -152.6 kJ mol$^{-1}$ was found for Phth$_1$@MIL-68(Ga), indicating a strong interaction between the guest and host system. This interaction is further reinforced by a simulation executed under the same conditions in which a guest dimer in a parallel stacked configuration was placed inside of the host system and, within 50 ps, seperated in favor of the more favourable guest-host stacking. Interestingly, interaction energy is more than doubled for Phth$_2$@MIL-68(Ga) at -328.5 kJ mol$^{-1}$, suggesting that even though the guest molecules prefer stacking to the secondary building units of the host, there is still a notable contribution of guest-guest interactions present. This is further supported by the interaction energy of Phth$_3$@MIL-68(Ga) at -517.7 kJ mol$^{-1}$, an indication that the guest molecules are not only interacting with the host but also  possibly forming a stable guest-guest network within the pores of the MOF.
+
+
+\begin{figure}[h]
   \centering
   \includegraphics[width=1\textwidth]{Images/3Energies.png}
-  \caption{Caption for Image 1}
+  \caption{Time series of the interaction energies (black) of Phth$_1$@MIL-68(Ga) (top), Phth$_2$@MIL-68(Ga) (middle) and Phth$_3$@MIL-68(Ga) (bottom). Blue lines are the running average over a window size of 2500 data points, while the yellow line starting at 0.5 ns marks the average interaction energies during the later half of the simulations at -152.6, -328.5 and -517.7 kJ mol$^{-1}$ respectively.}\label{fig:interactionEnergies}
 \end{figure}
 
-\begin{figure}[htbp]
+\subsubsection*{Guest Movement And Structural Changes}
+To understand movement of the guests over the course of the simulation and their relative orientations to the pore of the MOF, the centroids of the aromatic guest rings were again calculated as spatial averages. Additionally, centroids for the 18 bdc linkers making up the hexagonal faces of the pore were modelled. All centroid distance calculations were of course now subject to minimum image conventions as explained in chapter~\ref{periodic}. Furthermore, while often reserved for biomolecular systems, a two-dimensional RMSD approach was employed to visualize the effects of guest movement on structural changes of the MOF scaffold. 
+
+\subsubsection*{Phth$_1$@MIL-68(Ga)}
+In the case of a single guest molecule, both movement paralell to the pore axis as well as rotation around the inner pore-face, or face changes, were observed. Figure~\ref{fig:Phth1GuestMovement} shows the centroid-centroid distances of the guest and the bdc-linkers, as well as representative structural snapshots viewed across the x-axis and sliced for visibility.
+
+\begin{figure}[h]
   \centering
-  \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{Images/3Energies.png}
-    \caption{Caption for Image 1}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[b]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{Images/3Energies.png}
-    \caption{Caption for Image 2}
-  \end{minipage}
+  \includegraphics[width=1\textwidth]{Images/CentroidPlotGuestAndSS.png}
+  \caption{Time series of guest-linker centroid-centroid distances (top) with running average over a window size of 1000 steps. The snapshots (bottom) show representative configurations taken at the point in time denoted \textit{via} dashed lines at S1 (bottom left), S2 (bottom middle) and S3 (bottom right). Guest ring is orange, while bdc rings are coloured in accordance to the plot.}\label{fig:Phth1GuestMovement}
 \end{figure}
+
+\noindent As figure~\ref*{fig:Phth1GuestMovement} shows, two forms of significant guest movement are present in the Phth$_1$@MIL-68(Ga) system. The first form is a sliding movement of the guest along the pore axis, visualized in transition from snapshot S1 to S2. The second form is a rotation of the guest around the inner pore face, or face change, as seen when transitioning from snapshot S2 to S3. It is also apparent that the distances to the closest bdc-linker always hover at around 3.8 Å, with any movement just being a momentary breakout from this equilibrium to another stable stacked conformation. 
+\newpage \noindent To further emphasize on this preference for stacking, image~\ref{fig:heatmap1} shows a two-dimensional histogram of the x and y coordinates of the guest centroid over the course of the simulation, providing an abstracted view through the pore as a sort of heatmap.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{Images/HeatMap1GuestCropped.png}
+  \caption{Two-dimensional histogram of the x and y coordinates of the guest centroid in the Phth$_1$@MIL-68(Ga) system, with the pore abstracted as a hexagon.}\label{fig:heatmap1}
+\end{figure}
+
+\noindent Finally, the effects of guest movement on the overall MOF structure were of interest. To this end, a two-dimensional RMSD approach was employed on only the MOF-scaffold atoms, excluding hydrogen atoms. Since RMSD calculations are not often employed for solid state systems, the usual imaging conventions had to be implemented in addition to anchoring the MOF structure to the heavy Gallium atoms to prevent any outlier values due to structural shifts caused by total momenta conservation. Figure~\ref{fig:RMSD1} shows the RMSD values over the course of the simulation.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\textwidth]{Images/2DRMSD1Guestshift.png}
+  \caption{2D-RMSD of MIL-68(Ga) scaffold in Phth$_1$@MIL-68(Ga) system over 1 ns of simulation. Area of short spike in RMSD-values is highlighted in red.}\label{fig:RMSD1}
+\end{figure}\newpage
+
+\noindent At a first glance, no lasting structural change occurs over the course of the simulation, evident by the absence of characteristic RMSD-domains in the plot. However when looking closer at around 0.5 ns of simulation time, a short upheap in RMSD-values, visually highlighted in red and presented as a slighly brighter yellow streak, may be observed. While this could be attributed to a one-off event, and the structure seems to quickly recover, this short structural variation in the otherwise stable scaffold coincides with the guest movement from snapshot S2, as in figure~\ref{fig:Phth1GuestMovement},  suggesting that the MOF structure and (parallel) guest movement are indeed correlated.
+
+\subsubsection*{Phth$_2$@MIL-68(Ga)}
+With a second guest present, many of the same movements as in the Phth$_1$@MIL-68(Ga) system may be observed, albeit at a higher frequency. While some parallel movement is present, most of the guest movement is rotational around the inner pore face and guests seem to stick mostly to their respective corner, while still maintaining the same average distance to the bdc-linkers, as can be seen in the histogram of the guest centroid in image~\ref{fig:heatmap2}. Another two-dimensional RMSD approach, as seen in figure~\ref{fig:RMSD2}, then confirmed what was speculated in the previous section. Highlighted in red is once more a short-lived structural disturbance of the scaffold that quickly subsides, correlating with the parallel movement of one of the guest molecules as screenshots 1 and 2 show. A much more drastic change however appears towards around 0.65 nanoseconds, hightlighted in black, where a simultaneous face change of both guest molecules is observed, as seen in screenshots 3 and 4, correlating with the scaffold changing into a structural domain that persists until the end of the simulation.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{Images/HeatMap2GuestCropped.png}
+  \caption{Two-dimensional histogram of the x and y coordinates of the guest centroid in the Phth$_2$@MIL-68(Ga) system, with the pore abstracted as a hexagon.}\label{fig:heatmap2}
+\end{figure}
+
+
+\begin{figure}[hpt]
+  \centering
+  \includegraphics[width=0.6\textwidth]{Images/2GuestAll.png}
+  \caption{2D-RMSD of MIL-68(Ga) scaffold in Phth$_2$@MIL-68(Ga) system over 1 ns of simulation. First spike in RMSD values correlating to structural change from screenshot 1 (top left) to screenshot 2 (top right) highlighted in red. Second spike correlating to structural change from screenshot 3 (bottom left) to screenshot 4 (bottom right) highlighted in black. Guest rings are orange.}\label{fig:RMSD2}
+\end{figure}
+
+
+\subsubsection*{Phth$_3$@MIL-68(Ga)}
+Finally, a system containing three Phth guests was again simulated for 1 nanoseconds. As expected, the same movements as in the previous systems are present, although it would appear that the high number of guests limit eachother in their maneuvrability. Once more, the same coordination to the inner pore faces with the already established distances is prevalent, as the heatmap in figure~\ref{fig:heatmap3} shows. The beforementioned limited mobility is also reflected in this heatmap, with the guests clearly favoring certain positions and distances to eachother.
+
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{Images/HeatMap3GuestCropped.png}
+  \caption{Two-dimensional histogram of the x and y coordinates of the guest centroid in the Phth$_3$@MIL-68(Ga) system, with the pore abstracted as a hexagon.}\label{fig:heatmap3}
+\end{figure}
+
+\noindent Guests appear to only rarely move in a parallel fashion, with movement being made up almost only of face changes. A correlation to the scaffold structure is once more confirmed by a two-dimensional RMSD approach, as seen in figure~\ref{fig:RMSD3}. After around 0.25 ns of turbulence, between screenshots 1 and 2, above and below the RMSD plot respectively, a quick movement of all three guests coincides with the scaffold adopting a new stable structural domain, indicated by the large blue area of low RMSD values that remains until the end of the simulation. Just like the scaffold remains largely the same, significant guest movement also ceases after the adoption of this seemingly stable configuration, suggesting that the guests are now ``locked'' in place by the MOF structure.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{Images/3GuestAll.png}
+  \caption{2D-RMSD of MIL-68(Ga) scaffold in Phth$_3$@MIL-68(Ga) system over 1 ns of simulation. Guest positions from two angles shortly before structural change (red) are shown above, while positions shortly after change (black) can be seen below. Guest rings are orange.}\label{fig:RMSD3}
+\end{figure}
+
+\section{Conclusion and Outlook}
+To conclude, the DFTB MD framework was shown as a suitable approach to achieve a highly adequate compromise between accuracy and computational effort for the study of complex host-guest systems.
+\\ \par \noindent
+Overall, interaction energies calculated in the scope of this thesis \textit{via} the SCCDFTB framework predict a strong interaction between 2-butyl-5,6-dimethoxyisoindoline-1,3-dione guests and MIL-68(Ga), vastly stronger than simple dimer interaction energies and notably increasing in proportion to the number of guests. As these interaction energies increase more than linearly with the number of guests, it is possible that the guests are not only interacting with the host but also forming a stable guest-guest network within the pores of the MOF dependant on loading.
+\\ \par \noindent
+Furthermore, the guest molecules were observed to always prefer a parallel stacking configuration, with the distance between aromatic ring centroids averaging at around 3.5 Å and, together with the strong interaction energies, providing a possible explanation for the solvatochromatic behaviour of the guest molecules. It is hereby however important to remember that polarity and solvatochromatic behaviour are not only dependent on the interaction energies of the guest molecules with the host, but could also encompass e.g. relative permittivities and permanent dipole moments, both of which were not subject of study in this work. A similary study conducted at the same level of theory but encapsulating Phth into the pores of MOF-5 showed a much lower interaction energy of -63.3 kJ mol$^{-1}$ for the 1-guest system. Experimentally, the embedded guests are redshifted by about 20 nm, a phenomenon associated with solvatochromatic dyes being solvated in a more polar environment, further underlining the myriad of factors that could influence the solvatochromatic behaviour of the Phth guests apart from just interaction energies~\cite{Schwartz2024}.
+\\ \par \noindent
+Movement of the guests seems to be limited to face changes and parallel sliding, with the latter being more prevalent in systems with fewer guests, possibly due to steric bulk. As evidenced by two-dimensional RMSD calculations, guest movement correlates to changes in the overall scaffold structure, with the MOF adopting new and sometimes more stable configurations. It is unclear wether the movement of the guests predates this change or if the structural shift causes the guests to move, but a correlation is undeniable. Again, the Phth guests and the MOF scaffold adopting new stable configurations in tandem, as in the case of Phth$_3$@MIL-68(Ga), could factor into the solvatochromatic behaviour of the Phth guests like a sort of molecular locking.
+\\ \par \noindent
+Judging now from the energetic viewpoint, the relative size of the guest to the larger pore and the behaviour of the guests, some assumptions could be made about the possible loading of the MOF. Keeping in mind that defects and non-Phth guests could change the behaviour of the system, it is reasonable to assume that in a real-world scenario at room temperature, the MOF would be able to host at least three guest molecules per 20 Å of pore length.
+
+\clearpage
+
+
+
+
+
 
 \bibliography{thesis}
 

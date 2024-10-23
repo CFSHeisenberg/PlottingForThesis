@@ -8,12 +8,14 @@ import tkinter as tk
 from tkinter import *
 import os
 
-DEFAULT_FILE_PREFIX = "MIL68Ga"
-DEFAULT_DIRECTORY = "/home/mfi/Desktop/mfi/full_simulations/3_Guest"
+#DEFAULT_FILE_PREFIX = "MIL68Ga"
+DEFAULT_FILE_PREFIX = "ligand"
+DEFAULT_DIRECTORY = "/home/mfi/Desktop/mfi/full_simulations/dimer/vacuum"
 DEFAULT_INDEX_FILENAME = "indicessorted.dat"  # Set default index filename
 #DEFAULT_GUEST_INDICES = [685, 686, 687, 688, 689, 690]#1
 #DEFAULT_GUEST_INDICES = [723, 724, 722, 721, 725, 726]#2
-DEFAULT_GUEST_INDICES = [757, 762, 758, 759, 760, 761]#3
+#DEFAULT_GUEST_INDICES = [757, 762, 758, 759, 760, 761]#3
+DEFAULT_GUEST_INDICES = [1,2,3,4,5,6]#Dimer
 
 ReaderAndLoader = ReaderAndLoader()
 distancePlotter = None

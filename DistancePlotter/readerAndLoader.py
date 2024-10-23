@@ -11,7 +11,8 @@ class ReaderAndLoader:
         self.centroid_indices = None
         self.centroid_indices_flat = None
         self.lattice_values = None
-        self.latticefilename = 'MIL68Ga-3rdguest-09.xyz'
+        #self.latticefilename = 'MIL68Ga-3rdguest-09.xyz'
+        self.latticefilename = 'ligand-03.xyz'
         self.numRelevantAtoms = None
 
     def read_and_save_data(self, directory, file_prefix, index_filename):
@@ -53,7 +54,6 @@ class ReaderAndLoader:
                 df['cleanedIndex'] = (df.index) % (self.numAtoms) + 1
                 # If the first element is Ga, H or O, replace the first three entries with 0
                 # drop all rows that are an Ga or H or O element
-                #df = df[df[0] != 'Ga']
                 df = df[df[0] != 'H']
                 df = df[df[0] != 'O']
                 # drop the first column
